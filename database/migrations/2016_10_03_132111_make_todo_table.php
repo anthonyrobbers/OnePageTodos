@@ -15,7 +15,7 @@ class MakeTodoTable extends Migration
     {
         //
         Schema::create('laravelToDos',function(blueprint $table){
-            $table->increments('id')->primary();
+            $table->increments('id');
             $table->string('task',90);
             $table->integer('priority');
             $table->boolean('complete');
