@@ -6,6 +6,6 @@ ToDo List
 
 @section('content')
 
-    {!! view('pages.Section',['id'=>'view','class'=>NULL,'content'=>view('pages.tableList', compact('todos'))]) !!}
+    {!! view('pages.Section',['id'=>'todos','class'=>NULL,'content'=>view('pages.tableList', compact('todos'))]) !!}
 @stop
     
