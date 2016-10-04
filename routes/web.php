@@ -12,3 +12,4 @@
 */
 
 Route::get('/','ListController@home');
+Route::post('/','ListController@posthome');
