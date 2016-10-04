@@ -5,6 +5,6 @@ ToDo List
 @stop
 
 @section('content')
-    {!! view('pages.SectionOpen',['id'=>'view','class'=>NULL],'content'=>view(pages.tableList, compact($todos))) !!}
+    {!! view('pages.Section',['id'=>'view','class'=>NULL],'content'=>view(pages.tableList, compact($todos))) !!}
 @stop
     
