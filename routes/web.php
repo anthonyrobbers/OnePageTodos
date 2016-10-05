@@ -11,5 +11,6 @@
 |
 */
 
-Route::get('/','ListController@home');
-Route::post('/','ListController@posthome');
+Route::get('about','ListController@about');
+Route::resource('/','ListController');
+Route::resource('todos','todoscontroller');
