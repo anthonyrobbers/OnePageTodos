@@ -55,7 +55,7 @@ class ListController extends Controller
      */
     public function show($id)
     {
-        //GET /todos/{id}
+        //GET /{id}
         //needs to be modified to only show one
         $todos = laraveltodos::all();
         return view('pages.list', compact('todos'));
@@ -69,7 +69,7 @@ class ListController extends Controller
      */
     public function edit($id)
     {
-        // GET  /todos/{id}/edit
+        // GET  /{id}/edit
     }
 
     /**
@@ -81,7 +81,7 @@ class ListController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // PUT/PATCH /todos/{id}
+        // PUT/PATCH /{id}
     }
 
     /**
@@ -92,7 +92,7 @@ class ListController extends Controller
      */
     public function destroy($id)
     {
-        //DELETE /todos/{id}
+        //DELETE /{id}
     }
     
  }
