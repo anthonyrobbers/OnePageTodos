@@ -44,7 +44,7 @@ class ListController extends Controller
     {
         // POST to /
         $todos = laraveltodos::all();
-        return view('pages.list', compact('todos'));
+        return view('pages.list', compact('request'));
     }
 
     /**
