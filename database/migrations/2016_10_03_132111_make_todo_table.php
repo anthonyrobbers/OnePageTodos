@@ -20,6 +20,7 @@ class MakeTodoTable extends Migration
             $table->integer('priority');
             $table->boolean('complete');
             $table->string('group',90);
+            $table->timestamps();
             
         });
     }
@@ -33,5 +34,6 @@ class MakeTodoTable extends Migration
     {
         //
         Schema::dropIfExists('laravelToDos');
+        Schema::dropIfExists('laraveltodos');
     }
 }
