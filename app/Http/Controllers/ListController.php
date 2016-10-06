@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use DB;
+// use DB;
 use App\laraveltodos;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 
 use App\Http\Requests;
 
