@@ -19,7 +19,8 @@ class ListController extends Controller
     {
         // GET at /
         $todos = laraveltodos::all();
-        return view('pages.list', compact('todos'));
+        $cssClass = NULL;
+        return view('pages.list', ['todos' => $todos, 'class' => $cssClass]);
     }
 
     /**
@@ -31,7 +32,8 @@ class ListController extends Controller
     {
         // GET  at /create  
         $todos = laraveltodos::all();
-        return view('pages.list', compact('todos'));
+        $cssClass = NULL;
+        return view('pages.list', ['todos' => $todos, 'class' => $cssClass]);
     }
 
     /**
@@ -43,8 +45,21 @@ class ListController extends Controller
     public function store(Request $request)
     {
         // POST to /
-        $todos = laraveltodos::all();
-        return view('pages.list', compact('request'));
+        try {
+            $inputTodo = $request->input("new-todo");
+            $inputPriority = $request->input("priority");
+            // TODO: validate input data here
+            $newTodoItem = new laravelTodo($inputTodo, $inputPriority);
+            // TODO: add newTodoItem to the repository of todos (i.e., store in the database)        
+            $cssClass = "success";
+        }
+        
+        catch (Illuminate\Database\QueryException $ex){
+            
+            $cssClass = NULL;
+        }                
+        $todos = laraveltodos::all();                           
+        return view('pages.list', ['todos' => $todos, 'class' => $cssClass]);
     }
 
     /**
@@ -55,7 +70,7 @@ class ListController extends Controller
      */
     public function show($id)
     {
-        //GET /{id}
+        //GET //{id}
         //needs to be modified to only show one
         $todos = laraveltodos::all();
         return view('pages.list', compact('todos'));
