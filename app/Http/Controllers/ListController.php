@@ -19,7 +19,7 @@ class ListController extends Controller
     public function index()
     {
         // GET at /
-        $todos = laraveltodos::all();
+        $todos = laraveltodos::where('group','INDEX')->orderBy('priority','asc')->get();
         $cssClass = NULL;
         return view('pages.list', ['todos' => $todos, 'class' => $cssClass]);
     }
@@ -32,7 +32,7 @@ class ListController extends Controller
     public function create()
     {
         // GET  at /create  
-        $todos = laraveltodos::all();
+        $todos = laraveltodos::where('group','INDEX')->orderBy('priority','asc')->get();
         $cssClass = NULL;
         return view('pages.list', ['todos' => $todos, 'class' => $cssClass]);
     }
@@ -50,8 +50,10 @@ class ListController extends Controller
             $inputTodo = $request->input("new-todo");
             $inputPriority = $request->input("priority");
             // TODO: validate input data here
-            $newTodoItem = new laravelTodo($inputTodo, $inputPriority);
-            // TODO: add newTodoItem to the repository of todos (i.e., store in the database)        
+            $group = 'INDEX';
+            $newTodoItem = new laravelTodos(['task'=>$inputTodo, 'priority'=>$inputPriority, 'group'=>$group, 'complete'=>0]);
+            // TODO: add newTodoItem to the repository of todos (i.e., store in the database)   
+            $newTodoItem->Save();
             $cssClass = "success";
         }
         
@@ -59,7 +61,7 @@ class ListController extends Controller
             
             $cssClass = NULL;
         }                
-        $todos = laraveltodos::all();                           
+        $todos = laraveltodos::where('group','INDEX')->orderBy('priority','asc')->get();                           
         return view('pages.list', ['todos' => $todos, 'class' => $cssClass]);
     }
 
@@ -73,7 +75,7 @@ class ListController extends Controller
     {
         //GET //{id}
         //needs to be modified to only show one
-        $todos = laraveltodos::all();
+        $todos = laraveltodos::where('group','INDEX')->orderBy('priority','asc')->get();
         return view('pages.list', compact('todos'));
     }
 
