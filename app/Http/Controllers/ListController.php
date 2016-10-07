@@ -79,7 +79,7 @@ class ListController extends Controller
      */
     public function show($id)
     {
-        //GET //{id}
+        //GET /{id}
         //needs to be modified to only show one
         $todos = laraveltodos::where('group','INDEX')->orderBy('priority','asc')->get();
         return view('pages.list', compact('todos'));
