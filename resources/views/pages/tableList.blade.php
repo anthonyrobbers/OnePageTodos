@@ -1,4 +1,4 @@
-
+<div class="listContainer">
 {!! view('pages/TodoForm') !!}
         <form name="updateTask" id="updateTask" novalidate="" method="POST" {{ method_field('DELETE') }}
         @foreach ($todos as $todo)
@@ -15,4 +15,5 @@
         
         @endforeach
         </form>
+</div>
     
