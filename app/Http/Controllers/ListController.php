@@ -43,27 +43,33 @@ class ListController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         // POST to /
-        try {
-            $inputTodo = $request->input("new-todo");
-            $inputPriority = $request->input("priority");
-            // TODO: validate input data here
-            $group = 'INDEX';
-            $newTodoItem = new laravelTodos(['task'=>$inputTodo, 'priority'=>$inputPriority, 'group'=>$group, 'complete'=>0]);
-            // TODO: add newTodoItem to the repository of todos (i.e., store in the database)   
-            $newTodoItem->Save();
-            $cssClass = "success";
-        }
-        
-        catch (Illuminate\Database\QueryException $ex){
+        if(null!==($request->input("new-todo"))){
+            try {
+                $inputTodo = $request->input("new-todo");
+                $inputPriority = $request->input("priority");
+                // TODO: validate input data here
+                $group = 'INDEX';
+                $newTodoItem = new laravelTodos(['task'=>$inputTodo, 'priority'=>$inputPriority, 'group'=>$group, 'complete'=>0]);
+                // TODO: add newTodoItem to the repository of todos (i.e., store in the database)   
+                $newTodoItem->Save();
+                $cssClass = "success";
+            }
+
+            catch (Illuminate\Database\QueryException $ex){
+
+                $cssClass = NULL;
+            }                
+            $todos = laraveltodos::where('group','INDEX')->orderBy('priority','asc')->get();                           
+            return view('pages.list', ['todos' => $todos, 'class' => $cssClass]);
+        }elseif(null!==($request->input("del-todo"))){
             
-            $cssClass = NULL;
-        }                
-        $todos = laraveltodos::where('group','INDEX')->orderBy('priority','asc')->get();                           
-        return view('pages.list', ['todos' => $todos, 'class' => $cssClass]);
-    }
+            
+        }
+    }        
+        
+    
 
     /**
      * Display the specified resource.
