@@ -129,6 +129,7 @@ class ListController extends Controller
     public function destroy($id)
     {
         //DELETE /todos/{id}
+        $active=laravelTodos::find($id);
         return 'you hit the empty destroy function';
     }
     
