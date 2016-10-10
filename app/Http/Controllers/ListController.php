@@ -130,7 +130,8 @@ class ListController extends Controller
     {
         //DELETE /todos/{id}
         $active=laravelTodos::find($id);
-        return 'you hit the empty destroy function';
+        $active->delete();
+        return 'you hit the destroy function task deleted';
     }
     
  }
