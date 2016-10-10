@@ -94,6 +94,7 @@ class ListController extends Controller
     public function edit($id)
     {
         // GET  /{id}/edit
+        
         $todos = laraveltodos::find($id);
         if($todos['group']==='INDEX'){
         return view('pages.edit', ['todo'=>$todos, 'class'=>'success']);
