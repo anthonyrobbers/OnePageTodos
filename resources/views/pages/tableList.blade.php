@@ -8,7 +8,7 @@
                     {{$todo['task']}}
                 </div>
                 <div class="listButton col-sm-4 todos-item">
-                    <a href="{{action('ListController@edit',['laraveltodo'=>$todo['id']])}}" class="btn btn-success btn-sm">X</a>
+                    <a href="{{action('ListController@edit',['id'=>$todo['id']])}}" class="btn btn-success btn-sm">X</a>
                     
                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                 </div>
