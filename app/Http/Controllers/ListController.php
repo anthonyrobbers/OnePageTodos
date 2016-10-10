@@ -116,10 +116,12 @@ class ListController extends Controller
         // PUT/PATCH /laraveltodos/{id}
         $active=laravelTodos::find($id);
         // check for filled form entries
-        // fill variables $active->task=$request['new-task']; and so forth
+        // fill variables 
+        $active->task=$request['new-todo'];
+        $active->priority=$request['priority'];
         $active->save();
         
-        return 'you hit the empty update function'.$request;
+        return 'you hit the update function item updated to '.$request['new-todo'].'with priority '.$request['priority'].$active;
     }
 
     /**
