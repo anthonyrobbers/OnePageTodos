@@ -31,7 +31,7 @@ class ListController extends Controller
      */
     public function create()
     {
-        // GET  at /todos/create  
+        // GET  at /laraveltodos/create  
         $todos = laraveltodos::where('group','INDEX')->orderBy('priority','asc')->get();
         $cssClass = NULL;
         return view('pages.list', ['todos' => $todos, 'class' => $cssClass]);
@@ -79,7 +79,7 @@ class ListController extends Controller
      */
     public function show($id)
     {
-        //GET /todos/{id}
+        //GET /laraveltodos/{id}
         //needs to be modified to only show one
         $todos = laraveltodos::where('group','INDEX')->orderBy('priority','asc')->get();
         return view('pages.list', compact('todos'));
@@ -93,7 +93,7 @@ class ListController extends Controller
      */
     public function edit($id)
     {
-        // GET  /todos/{id}/edit
+        // GET  /laraveltodos/{id}/edit
         
         $todos = laraveltodos::find($id);
         if($todos['group']==='INDEX'){
@@ -113,7 +113,7 @@ class ListController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // PUT/PATCH /todos/{id}
+        // PUT/PATCH /laraveltodos/{id}
         $active=laravelTodos::find($id);
         // check for filled form entries
         // fill variables $active->task=$request['new-task']; and so forth
@@ -130,7 +130,7 @@ class ListController extends Controller
      */
     public function destroy($id)
     {
-        //DELETE /todos/{id}
+        //DELETE /laraveltodos/{id}
         $active=laravelTodos::find($id);
         $active->delete();
         return 'you hit the destroy function task deleted';
