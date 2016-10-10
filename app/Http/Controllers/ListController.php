@@ -31,7 +31,7 @@ class ListController extends Controller
      */
     public function create()
     {
-        // GET  at /create  
+        // GET  at /todos/create  
         $todos = laraveltodos::where('group','INDEX')->orderBy('priority','asc')->get();
         $cssClass = NULL;
         return view('pages.list', ['todos' => $todos, 'class' => $cssClass]);
@@ -79,7 +79,7 @@ class ListController extends Controller
      */
     public function show($id)
     {
-        //GET /{id}
+        //GET /todos/{id}
         //needs to be modified to only show one
         $todos = laraveltodos::where('group','INDEX')->orderBy('priority','asc')->get();
         return view('pages.list', compact('todos'));
@@ -93,7 +93,7 @@ class ListController extends Controller
      */
     public function edit($id)
     {
-        // GET  /{id}/edit
+        // GET  /todos/{id}/edit
         
         $todos = laraveltodos::find($id);
         if($todos['group']==='INDEX'){
@@ -113,7 +113,9 @@ class ListController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // PUT/PATCH /{id}
+        // PUT/PATCH /todos/{id}
+        
+        return 'you hit the empty update function';
     }
 
     /**
@@ -124,7 +126,8 @@ class ListController extends Controller
      */
     public function destroy($id)
     {
-        //DELETE /{id}
+        //DELETE /todos/{id}
+        return 'you hit the empty destroy function';
     }
     
  }
