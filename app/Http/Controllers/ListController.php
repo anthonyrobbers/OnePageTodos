@@ -114,6 +114,8 @@ class ListController extends Controller
     public function update(Request $request, $id)
     {
         // PUT/PATCH /todos/{id}
+        $active=laravelTodos::find($id);
+        
         
         return 'you hit the empty update function';
     }
