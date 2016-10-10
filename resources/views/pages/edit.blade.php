@@ -1,8 +1,7 @@
-
 @extends('layout')
 
 @section('Title')
-ToDo List - Edit {{$id}}
+ToDo List - Edit {{$todo['id']}}
 @stop
 
 @section('content')
