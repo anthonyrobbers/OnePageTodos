@@ -32,9 +32,9 @@ class ListController extends Controller
     public function create()
     {
         // GET  at /laraveltodos/create  
-        $todos = laraveltodos::where('group','INDEX')->orderBy('priority','asc')->get();
+        
         $cssClass = NULL;
-        return view('pages.list', ['todos' => $todos, 'class' => $cssClass]);
+        return view('pages.newItem', ['class' => $cssClass]);
     }
 
     /**
