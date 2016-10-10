@@ -1,7 +1,7 @@
 <div class="listContainer">
 
     <div class="row">
-        <form name="updateTask" id="updateTask" novalidate="" method="POST" action="{{action('ListController@update'),['id'=>$todo['id']]}}" {{ method_field('PUT') }}
+        <form name="updateTask" id="updateTask" novalidate="" method="POST" action="{{action('ListController@update',['id'=>$todo['id']])}}" >{{ method_field('PUT') }}
             <div class="listText col-sm-4 todos-item">            
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <input id="new-todo" name="new-todo" value="{{$todo['task']}}" autofocus="" class="">
@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="row">
-            <form name="deleteTask" id="updateTask" novalidate="" method="POST" action="{{action('ListController@destroy'),['id'=>$todo['id']]}}" {{ method_field('DELETE') }}
+            <form name="deleteTask" id="updateTask" novalidate="" method="POST" action="{{action('ListController@destroy',['id'=>$todo['id']])}}"> {{ method_field('DELETE') }}
             <div class="listText col-sm-4 todos-item">
                 {{$todo['task']}}
             </div>
