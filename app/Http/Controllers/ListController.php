@@ -61,8 +61,8 @@ class ListController extends Controller
 
                 $cssClass = NULL;
             }                
-            $todos = laraveltodos::where('group','INDEX')->orderBy('priority','asc')->get();                           
-            return view('pages.list', ['todos' => $todos, 'class' => $cssClass]);
+            
+            return redirect('/'); //->with(['msg'=> 'new task added','oldtodo' => $newTodoItem, 'class' => $cssClass]);
         }elseif(null!==($request->input("del-todo"))){
             
             
@@ -117,12 +117,14 @@ class ListController extends Controller
         // PUT/PATCH /laraveltodos/{id}
         $active=laravelTodos::find($id);
         // check for filled form entries
+        //make a backup so it can be sent forward for later reversion
+        $backup=$active;
         // fill variables 
         $active->task=$request['new-todo'];
         $active->priority=$request['priority'];
         $active->save();
         
-        return 'you hit the update function item updated to '.$request['new-todo'].'with priority '.$request['priority'].$active;
+        return redirect('/'); //->with(['msg'=>'you hit the update function item updated to '.$request['new-todo'].'with priority '.$request['priority'], 'oldtask'=>$backup]);
     }
 
     /**
@@ -136,7 +138,7 @@ class ListController extends Controller
         //DELETE /laraveltodos/{id}
         $active=laravelTodos::find($id);
         $active->delete();
-        return 'you hit the destroy function task deleted';
+        return redirect('/'); //->with(['msg'=>'you hit the destroy function task deleted.', 'oldtask'=>$active]);
     }
     
  }
