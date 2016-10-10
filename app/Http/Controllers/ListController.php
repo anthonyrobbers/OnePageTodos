@@ -81,8 +81,9 @@ class ListController extends Controller
     {
         //GET /laraveltodos/{id}
         //needs to be modified to only show one
-        $todos = laraveltodos::where('group','INDEX')->orderBy('priority','asc')->get();
-        return view('pages.list', compact('todos'));
+        $todo = laraveltodos::find($id);
+        $cssClass = 'todos';
+        return view('pages.showOne', ['todo'=>$todo, 'class' => $cssClass]);
     }
 
     /**
