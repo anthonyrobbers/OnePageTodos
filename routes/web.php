@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('about','ListController@about');
-Route::get('/','ListController@index');
-Route::post('/','ListController@store');
-Route::resource('laraveltodos','ListController');
+Route::get('about','TodoItemController@about');
+Route::get('/','TodoItemController@index');
+Route::post('/','TodoItemController@store');
+Route::resource('TodoItem','TodoItemController');

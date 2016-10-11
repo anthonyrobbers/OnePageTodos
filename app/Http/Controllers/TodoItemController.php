@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 // use DB;
-use App\laraveltodos;
+use App\TodoItem;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 
 use App\Http\Requests;
 
-class ListController extends Controller
+class TodoItemController extends Controller
 {
     //
     public function about() {
@@ -18,8 +18,8 @@ class ListController extends Controller
     
     public function index()
     {
-        // GET at /
-        $todos = laraveltodos::where('group','INDEX')->orderBy('priority','asc')->get();
+        // GET at / 
+        $todos = TodoItem::where('group','INDEX')->orderBy('priority','asc')->get();          
         $cssClass = NULL;
         return view('pages.list', ['todos' => $todos, 'class' => $cssClass]);
     }
@@ -31,7 +31,7 @@ class ListController extends Controller
      */
     public function create()
     {
-        // GET  at /laraveltodos/create  
+        // GET  at /TodoItem/create  
         
         $cssClass = NULL;
         return view('pages.newItem', ['class' => $cssClass]);
@@ -51,7 +51,7 @@ class ListController extends Controller
                 $inputPriority = $request->input("priority");
                 // TODO: validate input data here
                 $group = 'INDEX';
-                $newTodoItem = new laravelTodos(['task'=>$inputTodo, 'priority'=>$inputPriority, 'group'=>$group, 'complete'=>0]);
+                $newTodoItem = new TodoItem(['task'=>$inputTodo, 'priority'=>$inputPriority, 'group'=>$group, 'complete'=>0]);
                 // TODO: add newTodoItem to the repository of todos (i.e., store in the database)   
                 $newTodoItem->Save();
                 $cssClass = "success";
@@ -79,9 +79,9 @@ class ListController extends Controller
      */
     public function show($id)
     {
-        //GET /laraveltodos/{id}
+        //GET /TodoItem/{id}
         //needs to be modified to only show one
-        $todo = laraveltodos::find($id);
+        $todo = TodoItem::find($id);
         $cssClass = 'todos';
         return view('pages.showOne', ['todo'=>$todo, 'class' => $cssClass]);
     }
@@ -94,9 +94,9 @@ class ListController extends Controller
      */
     public function edit($id)
     {
-        // GET  /laraveltodos/{id}/edit
+        // GET  /TodoItem/{id}/edit
         
-        $todos = laraveltodos::find($id);
+        $todos = TodoItem::find($id);
         if($todos['group']==='INDEX'){
         return view('pages.edit', ['todo'=>$todos, 'class'=>'success']);
         }
@@ -114,8 +114,8 @@ class ListController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // PUT/PATCH /laraveltodos/{id}
-        $active=laravelTodos::find($id);
+        // PUT/PATCH /TodoItem/{id}
+        $active=TodoItem::find($id);
         // check for filled form entries
         //make a backup so it can be sent forward for later reversion
         $backup=$active;
@@ -135,8 +135,8 @@ class ListController extends Controller
      */
     public function destroy($id)
     {
-        //DELETE /laraveltodos/{id}
-        $active=laravelTodos::find($id);
+        //DELETE /TodoItem/{id}
+        $active=TodoItem::find($id);
         $active->delete();
         return redirect('/'); //->with(['msg'=>'you hit the destroy function task deleted.', 'oldtask'=>$active]);
     }

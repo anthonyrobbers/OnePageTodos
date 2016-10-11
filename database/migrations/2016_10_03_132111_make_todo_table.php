@@ -14,7 +14,7 @@ class MakeTodoTable extends Migration
     public function up()
     {
         //
-        Schema::create('laravelToDos',function(blueprint $table){
+        Schema::create('TodoItem',function(blueprint $table){
             $table->increments('id');
             $table->string('task',90);
             $table->integer('priority');
@@ -33,7 +33,7 @@ class MakeTodoTable extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('laravelToDos');
-        Schema::dropIfExists('laraveltodos');
+        Schema::dropIfExists('TodoItem');
+        Schema::dropIfExists('TodoItem');
     }
 }

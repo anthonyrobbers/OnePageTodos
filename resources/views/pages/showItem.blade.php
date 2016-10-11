@@ -3,14 +3,14 @@
     
         <div class="row">
             <div class="listText col-sm-4 todos-item">
-                Current Version:   <a href="{{action('ListController@edit',['id'=>$todo['id']])}}" class="btn btn-success btn-sm">edit</a>
+                Current Version:   <a href="{{action('TodoItemController@edit',['id'=>$todo['id']])}}" class="btn btn-success btn-sm">edit</a>
             </div>
             <div class="listButton col-sm-4 todos-item">
                 DELETE
             </div>
         </div>
         <div class="row">
-            <form name="deleteTask" id="updateTask" novalidate="" method="POST" action="{{action('ListController@destroy',['id'=>$todo['id']])}}"> {{ method_field('DELETE') }}
+            <form name="deleteTask" id="updateTask" novalidate="" method="POST" action="{{action('TodoItemController@destroy',['id'=>$todo['id']])}}"> {{ method_field('DELETE') }}
             <div class="listText col-sm-4 todos-item">
                 {{$todo['task']}}
             </div>
