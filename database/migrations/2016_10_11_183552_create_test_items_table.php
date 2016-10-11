@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class MakeTodoTable extends Migration
+class CreateTestItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,9 @@ class MakeTodoTable extends Migration
      */
     public function up()
     {
-        //
-        Schema::create('todo_items',function(blueprint $table){
+        Schema::create('test_items', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('task',90);
-            $table->integer('priority');
-            $table->boolean('complete');
-            $table->string('group',90);
             $table->timestamps();
-            
         });
     }
 
@@ -32,8 +26,6 @@ class MakeTodoTable extends Migration
      */
     public function down()
     {
-        //
-        Schema::dropIfExists('TodoItem');
-        Schema::dropIfExists('todo_items');
+        Schema::dropIfExists('test_items');
     }
 }
