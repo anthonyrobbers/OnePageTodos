@@ -10,7 +10,7 @@
 | to using a Closure or controller method. Build something great!
 |
 */
-
+Route::get('mvc','TodoItemController@viewMvc');
 Route::get('about','TodoItemController@about');
 Route::get('/','TodoItemController@index');
 Route::post('/','TodoItemController@store');

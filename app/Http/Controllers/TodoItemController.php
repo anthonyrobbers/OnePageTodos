@@ -142,5 +142,11 @@ class TodoItemController extends Controller
         return redirect('/'); //->with(['msg'=>'you hit the destroy function task deleted.', 'oldtask'=>$active]);
     }
     
+    public function viewMvc() {
+        // GET at /mvc/
+        return view('pages.Mvc');
+    }
+    
+    
  }
 

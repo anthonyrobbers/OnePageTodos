@@ -1,0 +1,8 @@
+#main,
+#footer {
+	display: none;
+}
+.loading {
+	background-color: yellow;
+	background-image: url("css/progressbar.gif");
+}
