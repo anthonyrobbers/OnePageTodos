@@ -61,14 +61,18 @@ class TodoItemController extends Controller
                 // TODO: add newTodoItem to the repository of todos (i.e., store in the database)   
                 $newTodoItem->Save();
                 $cssClass = "success";
+                $msg = 'new task added';
             }
 
             catch (Illuminate\Database\QueryException $ex){
 
                 $cssClass = NULL;
+                $msg= 'new task failed to be created'.$ex;
+                $newTodoItem=NULL;
             }                
             
-            return redirect('/'); //->with(['msg'=> 'new task added','oldtodo' => $newTodoItem, 'class' => $cssClass]);
+            return redirect('/'); 
+                //->with(['msg'=> $msg,'oldtodo' => $newTodoItem, 'currentTodo'=>$newTodoItem,'class' => $cssClass]);
         }elseif(null!==($request->input("del-todo"))){
             
             
