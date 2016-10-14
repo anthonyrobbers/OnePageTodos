@@ -5,7 +5,7 @@
         
             <div class="row">
                 <div class="listText col-sm-4 todos-item">
-                    {{$todo['task']}}
+                    <a href="{{action('TodoItemController@edit',['id'=>$todo['id']])}}">{{$todo['task']}}</a>
                 </div>
                 <div class="listButton col-sm-4 todos-item">
                     <a href="{{action('TodoItemController@edit',['id'=>$todo['id']])}}" class="btn btn-success btn-sm">X</a>
