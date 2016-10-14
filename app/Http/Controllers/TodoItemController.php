@@ -128,13 +128,14 @@ class TodoItemController extends Controller
         $active=TodoItem::find($id);
         // check for filled form entries
         //make a backup so it can be sent forward for later reversion
-        $backup=$active;
+        $backup=['task'=>$active['task'],'priority'=>$active['priority'],'id'=>$active['id']];
         // fill variables 
         $active->task=$request['new-todo'];
         $active->priority=$request['priority'];
         $active->save();
         
-        return redirect('/'); //->with(['msg'=>'you hit the update function item updated to '.$request['new-todo'].'with priority '.$request['priority'], 'oldtask'=>$backup]);
+        return redirect('/') 
+            ->with(['msg'=>'An item has been changed. Item updated to: ', 'currentTodo'=>$active, 'oldtodo'=>$backup]);
     }
 
     /**
@@ -147,8 +148,10 @@ class TodoItemController extends Controller
     {
         //DELETE /TodoItem/{id}
         $active=TodoItem::find($id);
+        $backup=['task'=>$active['task'],'priority'=>$active['priority'],'id'=>$active['id']];
         $active->delete();
-        return redirect('/'); //->with(['msg'=>'you hit the destroy function task deleted.', 'oldtask'=>$active]);
+        return redirect('/') 
+            ->with(['msg'=>'you hit the destroy function task deleted.', 'oldtask'=>$backup,'currentTodo'=>$active]);
     }
     
     public function viewMvc() {
