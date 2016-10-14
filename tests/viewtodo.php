@@ -17,4 +17,12 @@ class viewtodo extends TestCase
              ->see('Todos');
         
     }
+    
+    public function testContent(){
+        
+        $this->visit('/')
+             ->see('Todos');
+        // change to look at database and find something to look for
+        
+    }
 }
