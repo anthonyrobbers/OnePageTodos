@@ -151,7 +151,7 @@ class TodoItemController extends Controller
         $backup=['task'=>$active['task'],'priority'=>$active['priority'],'id'=>$active['id']];
         $active->delete();
         return redirect('/') 
-            ->with(['msg'=>'you hit the destroy function task deleted.', 'oldtask'=>$backup,'currentTodo'=>$active]);
+            ->with(['msg'=>'A task has been deleted.', 'oldtask'=>$backup,'currentTodo'=>$active]);
     }
     
     public function viewMvc() {
