@@ -22,7 +22,12 @@ class TodoItemController extends Controller
         // GET at / 
         $todos = TodoItem::where('group','INDEX')->orderBy('priority','asc')->get();          
         $cssClass = NULL;
-        return view('pages.list', ['todos' => $todos, 'class' => $cssClass]);
+        $msg = session('msg',NULL);
+        $currentTodo =session('currentTodo',NULL);
+        $oldtodo =session('oldtodo',NULL);
+        
+        return view('pages.list', 
+            ['todos' => $todos, 'class' => $cssClass, 'msg'=>$msg, 'currentTodo'=>$currentTodo, 'oldtodo'=>$oldtodo]);
     }
 
     /**
