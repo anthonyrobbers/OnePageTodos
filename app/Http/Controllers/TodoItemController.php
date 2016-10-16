@@ -24,10 +24,10 @@ class TodoItemController extends Controller
         $cssClass = NULL;
         $msg = session('msg',NULL);
         $currentTodo =session('currentTodo',NULL);
-        $oldtodo =session('oldtodo',NULL);
+        $oldTodo =session('oldTodo',NULL);
         
         return view('pages.list', 
-            ['todos' => $todos, 'class' => $cssClass, 'msg'=>$msg, 'currentTodo'=>$currentTodo, 'oldtodo'=>$oldtodo]);
+            ['todos' => $todos, 'class' => $cssClass, 'msg'=>$msg, 'currentTodo'=>$currentTodo, 'oldTodo'=>$oldTodo]);
     }
 
     /**
@@ -72,7 +72,7 @@ class TodoItemController extends Controller
             }                
             
             return redirect('/'); 
-                //->with(['msg'=> $msg,'oldtodo' => $newTodoItem, 'currentTodo'=>$newTodoItem,'class' => $cssClass]);
+                //->with(['msg'=> $msg,'oldTodo' => $newTodoItem, 'currentTodo'=>$newTodoItem,'class' => $cssClass]);
         }elseif(null!==($request->input("del-todo"))){
             
             
@@ -148,10 +148,10 @@ class TodoItemController extends Controller
     {
         //DELETE /TodoItem/{id}
         $active=TodoItem::find($id);
-        $backup=['task'=>$active['task'],'priority'=>$active['priority'],'id'=>$active['id']];
+        
         $active->delete();
         return redirect('/') 
-            ->with(['msg'=>'A task has been deleted.', 'oldtask'=>$backup,'currentTodo'=>$active]);
+            ->with(['msg'=>'A task has been deleted.', 'oldTodo'=>$active,'currentTodo'=>NULL]);
     }
     
     public function viewMvc() {
