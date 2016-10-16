@@ -126,16 +126,38 @@ class TodoItemController extends Controller
     {
         // PUT/PATCH /TodoItem/{id}
         $active=TodoItem::find($id);
-        // check for filled form entries
-        //make a backup so it can be sent forward for later reversion
-        $backup=['task'=>$active['task'],'priority'=>$active['priority'],'id'=>$active['id']];
-        // fill variables 
-        $active->task=$request['new-todo'];
-        $active->priority=$request['priority'];
-        $active->save();
+        if($active['group'==='INDEX']){
+            // check for filled form entries
+            //make a backup so it can be sent forward for later reversion
+            $backup=['task'=>$active['task'],'priority'=>$active['priority'],'id'=>$active['id']];
+            // fill variables 
+            $active->task=$request['new-todo'];
+            $active->priority=$request['priority'];
+            $active->save();
+        }
+        elseif ($active['task']==NULL) {
+            try {
+                $inputTodo = $request->input("new-todo");
+                $inputPriority = $request->input("priority");
+                $group = 'INDEX';
+                $newTodoItem = new TodoItem(['task'=>$inputTodo, 'priority'=>$inputPriority, 'group'=>$group, 'complete'=>0]);
+                $newTodoItem->Save();
+                $cssClass = "success";
+                $backup=NULL;
+                $active=$newTodoItem;
+            }
+
+            catch (Illuminate\Database\QueryException $ex){
+                $cssClass = NULL;
+                $msg= 'new task failed to be created'.$ex;
+                $active=NULL;
+                $backup=['task'=>$request->input("new-todo"),'priority'=>$request->input("priority"),'id'=>$id];
+            } 
+            
+        }
         
         return redirect('/') 
-            ->with(['msg'=>'An item has been changed. Item updated to: ', 'currentTodo'=>$active, 'oldtodo'=>$backup]);
+            ->with(['msg'=>'An item has been changed. Item updated to: ', 'currentTodo'=>$active, 'oldTodo'=>$backup]);
     }
 
     /**
