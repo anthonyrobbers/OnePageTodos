@@ -19,7 +19,7 @@
     <link href="{{asset('vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
 
     <!-- Theme CSS -->
-    <link href="{{asset('css/SUInfo.min.css')}}" rel="stylesheet">
+    <link href="{{asset('css/todos.min.css')}}" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="{{asset('vendor/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
