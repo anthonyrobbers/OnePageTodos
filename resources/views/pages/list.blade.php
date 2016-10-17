@@ -6,7 +6,7 @@ ToDo List
 
 @section('content')
     @if ($msg)
-        <section id="todos" class="success">
+        <section id="status" class="success">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 text-center">
