@@ -155,6 +155,10 @@ class TodoItemController extends Controller
                 $backup=['task'=>$request->input("new-todo"),'priority'=>$request->input("priority"),'id'=>$id];
             } 
             
+        } 
+        else {
+            return redirect('/')
+                ->with(['msg'=>'something went wrong updating an entry.','currentTodo'=>NULL, 'oldTodo'=>NULL]);
         }
         
         return redirect('/') 
