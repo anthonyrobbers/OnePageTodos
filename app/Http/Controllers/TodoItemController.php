@@ -126,7 +126,8 @@ class TodoItemController extends Controller
     {
         // PUT/PATCH /TodoItem/{id}
         $active=TodoItem::find($id);
-        if($active['group'==='INDEX']){
+        
+        if($active['group']==='INDEX'){
             // check for filled form entries
             //make a backup so it can be sent forward for later reversion
             $backup=['task'=>$active['task'],'priority'=>$active['priority'],'id'=>$active['id']];
