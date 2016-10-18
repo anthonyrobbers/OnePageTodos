@@ -21,10 +21,12 @@ ToDo List
                     </div>
                 
                     @include('pages.defaultTodoDisplay',['verbose'=>TRUE,'todo'=>$currentTodo])
+                    @unless($oldTodo['task']==NULL)
                     <div class="row">
                          The old version was:
                     </div>
                     @include('pages.undoTodoDisplay',['verbose'=>TRUE,'todo'=>$oldTodo])
+                    @endunless
                     
                 </div>
             </div>
