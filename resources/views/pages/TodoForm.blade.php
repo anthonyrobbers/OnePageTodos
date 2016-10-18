@@ -3,6 +3,7 @@
         <div class="listText col-sm-4 todos-item">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
             <input id="new-todo" name="new-todo" placeholder="What needs to be done?" autofocus="" class="">
+            Priority: 
             <input id="priority" name="priority" type="number" value="5">
         </div>
         <div class="listButton col-sm-4 todos-item">
