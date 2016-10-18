@@ -1,6 +1,11 @@
 @unless($todo==NULL)
     <div class="row">
         <div class="listText col-sm-4 todos-item">
+            @if($todo['complete'])
+            <a href="#" class="glyphicon glyphicon-ok" aria-hidden="true"></a>
+            @else
+            <a href="#" class="glyphicon glyphicon-unchecked" aria-hidden="true"></a>
+            @endif
             <a href="{{action('TodoItemController@edit',['id'=>$todo['id']])}}">{{$todo['task']}}
             @if($verbose)
                 Priority: {{$todo['priority']}}
