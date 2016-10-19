@@ -15,7 +15,9 @@ ToDo List - Show task {{$todo['id']}}
                 </div>
 
                 <div class="row">
-                     @include('pages.showItem')
+                    <div class="listContainer">
+                        @include('pages.defaultTodoDisplay',['verbose'=>TRUE])
+                    </div>
                 </div>
             </div>
     </section>
