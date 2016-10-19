@@ -18,6 +18,11 @@ Route::get('mvc','TodoItemController@viewMvc');
 Route::get('about','TodoItemController@about');
 Route::get('/','TodoItemController@index');
 Route::post('/','TodoItemController@store');
+
+Route::patch('TodoItem/{id}/undo','TodoItemController@undo');
+Route::get('TodoItem/{id}/complete','TodoItemController@toggleComplete');
+Route::patch('complete','TodoItemController@markAllComplete');
+
 Route::resource('TodoItem','TodoItemController');
 
 
