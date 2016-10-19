@@ -1,6 +1,11 @@
 <div class="row">
     <form name="updateTask" id="updateTask" novalidate="" method="POST" action="{{action('TodoItemController@update',['id'=>$todo['id']])}}"> {{ method_field('PATCH') }}
         <div class="listText col-sm-4 todos-item">
+            @if($todo['complete'])
+            <a href="#" class="glyphicon glyphicon-ok" aria-hidden="true"></a>
+            @else
+            <a href="#" class="glyphicon glyphicon-unchecked" aria-hidden="true"></a>
+            @endif
             {{$todo['task']}} 
             @if($verbose)
                 Priority: {{$todo['priority']}}
