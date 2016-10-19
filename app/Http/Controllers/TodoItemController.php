@@ -71,8 +71,8 @@ class TodoItemController extends Controller
                 $newTodoItem=NULL;
             }                
             
-            return redirect('/'); 
-                //->with(['msg'=> $msg,'oldTodo' => $newTodoItem, 'currentTodo'=>$newTodoItem,'class' => $cssClass]);
+            return redirect('/')
+                ->with(['msg'=> $msg,'oldTodo' => NULL, 'currentTodo'=>$newTodoItem,'class' => $cssClass]);
         }elseif(null!==($request->input("del-todo"))){
             
             
@@ -130,7 +130,8 @@ class TodoItemController extends Controller
         if($active['group']==='INDEX'){
             // check for filled form entries
             //make a backup so it can be sent forward for later reversion
-            $backup=['task'=>$active['task'],'priority'=>$active['priority'],'id'=>$active['id']];
+            $backup=['task'=>$active['task'],'priority'=>$active['priority'],'id'=>$active['id'],
+                'complete'=>$active['complete']];
             // fill variables 
             $active->task=$request['new-todo'];
             $active->priority=$request['priority'];
@@ -152,7 +153,7 @@ class TodoItemController extends Controller
                 $cssClass = NULL;
                 $msg= 'new task failed to be created'.$ex;
                 $active=NULL;
-                $backup=['task'=>$request->input("new-todo"),'priority'=>$request->input("priority"),'id'=>$id];
+                $backup=['task'=>$request->input("new-todo"),'priority'=>$request->input("priority"),'id'=>$id,'complete'=>0];
             } 
             
         } 
