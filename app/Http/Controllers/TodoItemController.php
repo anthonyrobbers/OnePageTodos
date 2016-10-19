@@ -187,6 +187,45 @@ class TodoItemController extends Controller
         return view('pages.Mvc');
     }
     
+    public function markAllComplete() {
+        //PATCH at /complete
+        
+        return redirect('/') 
+            ->with(['msg'=>'All tasks marked complete.', 'oldTodo'=>NULL,'currentTodo'=>NULL]);
+    }
+    
+    public function toggleComplete($id) {
+        //GET at /TodoItem/{id}/complete
+        $active=TodoItem::find($id);
+        if($active['complete']){
+            $active->complete=FALSE;
+        }
+        else{
+            $active->complete=TRUE;
+        }
+        $active->save();
+        
+        return redirect('/') 
+            ->with(['msg'=>'A task was marked complete.', 'oldTodo'=>NULL,'currentTodo'=>NULL]);
+        
+    }
+    
+    public function undo(Request $request, $id) {
+        //PATCH at /TodoItem/{id}/undo
+        $active=TodoItem::find($id);
+        
+        if ($active['task']==NULL) {
+            return redirect()->action('TodoItemController@store',['request'=>$request]);
+        }
+        else {
+            return redirect()->action('TodoItemController@update',['id'=>$id,'request'=>$request]);
+        }
+        
+        //final return to catch if the others do not redirect to the right controller
+        return redirect('/') 
+            ->with(['msg'=>'A task failed to be restored.', 'oldTodo'=>NULL,'currentTodo'=>NULL]);
+        
+    }
     
  }
 
