@@ -25,7 +25,7 @@ Route::patch('complete','TodoItemController@markAllComplete');
 
 Route::resource('TodoItem','TodoItemController');
 
-
+Route::resource('optionList','optionListController');
 
 
 
