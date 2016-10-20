@@ -44,11 +44,15 @@ ToDo List
                 <div class="row">
                      <div class="listContainer">
                         @include('pages/TodoForm')
-
+                        <?php $activeCount=0;?>
                         @foreach ($todos as $todo)
+                            @if($filter==2 or $todo['complete']==$filter)
                             @include('pages.defaultTodoDisplay',['verbose'=>FALSE])
+                            @endif
+                            <?php $activeCount+=1-$todo['complete']; ?>
                         @endforeach
-
+                        @include('partials/filterButtons')
+                        @include('partials/batchButtons')
                     </div>
                 </div>
             </div>
