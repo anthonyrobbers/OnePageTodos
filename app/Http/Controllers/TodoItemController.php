@@ -130,11 +130,14 @@ class TodoItemController extends Controller
         $todos = TodoItem::find($id);
         if($todos['group']===$options['group']){
             Log::debug('active group detected');
-            return view('pages.edit', ['todo'=>$todos, 'class'=>'success']);
+            return view('pages.edit', ['todo'=>$todos, 'class'=>'todos']);
         }
         else {
             Log::debug('active group not detected');
-            return 'Task not found.';            
+            
+            return redirect('/') 
+            ->with(['msg'=>'Task not found.', 
+                'currentTodo'=>NULL, 'oldTodo'=>NULL]);
         }
     }
 
@@ -289,7 +292,9 @@ class TodoItemController extends Controller
         }
         else {
             Log::debug('active group not detected');
-            return 'Task not found.';            
+            return redirect('/') 
+            ->with(['msg'=>'Task not found.', 
+                'currentTodo'=>NULL, 'oldTodo'=>NULL]);          
         }
         
     }
