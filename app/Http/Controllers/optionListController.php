@@ -22,6 +22,7 @@ class TodoItemController extends Controller
     public function create()
     {
         // GET  at /optionList/create  
+        Log::info('Hit create function of the optionList controller');
         
         $cssClass = NULL;
         return view('pages.newOption', ['class' => $cssClass]);
@@ -35,6 +36,7 @@ class TodoItemController extends Controller
      */
     public function store(Request $request){
         // POST to /optionList
+        Log::info('Hit store function of the optionList controller');
         
         try {
             $inputGroup = $request->input("new-group");
@@ -75,6 +77,7 @@ class TodoItemController extends Controller
     {
         //GET /optionlist/{id}
         //needs to be modified to only show one
+        Log::info('Hit show ('.$id.') function of the optionList controller');
         $optionList = optionList::find($id);
         $cssClass = 'todos';
         return view('pages.showOptionList', ['list'=>$optionList, 'class' => $cssClass]);
@@ -89,6 +92,7 @@ class TodoItemController extends Controller
     public function edit($id)
     {
         // GET  /optionlist/{id}/edit
+        Log::info('Hit edit ('.$id.') function of the optionList controller');
         
         $list = optionList::find($id);
         
@@ -106,6 +110,7 @@ class TodoItemController extends Controller
     public function update(Request $request, $id)
     {
         // PUT/PATCH /optionlist/{id}
+        Log::info('Hit update ('.$id.') function of the optionList controller');
         $active=optionList::find($id);
         
         // check for filled form entries
@@ -132,11 +137,18 @@ class TodoItemController extends Controller
     public function destroy($id)
     {
         //DELETE /optionlist/{id}
-        $active=  optionList::find($id);
-        
-        $active->delete();
+        Log::info('Hit destroy ('.$id.') function of the optionList controller');
+        if($id!==1){
+            $active=  optionList::find($id);
+
+            $active->delete();
+            $msg='A list of options has been deleted.';
+        }
+        else {
+            $msg='Deleting ID 1 is not allowed.  Edit it instead.';
+        }
         return redirect('/') 
-            ->with(['msg'=>'A list of options has been deleted.', 'oldTodo'=>NULL,'currentTodo'=>NULL]);
+            ->with(['msg'=>$msg, 'oldTodo'=>NULL,'currentTodo'=>NULL]);
     }
     
     
