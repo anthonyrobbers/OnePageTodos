@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\TodoItem;
 use App\optionList;
 
+use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
@@ -21,6 +22,7 @@ class TodoItemController extends Controller
     public function index()
     {
         // GET at / 
+        Log::info('Hit index function of the TodoItem controller');
         $options=optionList::find(1);
         $todos = TodoItem::where('group',$options['group'])->orderBy('priority','asc')->get();          
         $cssClass = NULL;
@@ -49,6 +51,7 @@ class TodoItemController extends Controller
     public function create()
     {
         // GET  at /TodoItem/create  
+        Log::info('Hit create function of the TodoItem controller');
         
         $cssClass = NULL;
         return view('pages.newItem', ['class' => $cssClass]);
@@ -62,6 +65,7 @@ class TodoItemController extends Controller
      */
     public function store(Request $request){
         // POST to /
+        Log::info('Hit store function of the TodoItem controller');
         if(null!==($request->input("new-todo"))){
             try {
                 $inputTodo = $request->input("new-todo");
@@ -101,6 +105,7 @@ class TodoItemController extends Controller
     public function show($id)
     {
         //GET /TodoItem/{id}
+        Log::info('Hit show ('.$id.') function of the TodoItem controller');
         //needs to be modified to only show one
         $todo = TodoItem::find($id);
         $cssClass = 'todos';
@@ -116,6 +121,7 @@ class TodoItemController extends Controller
     public function edit($id)
     {
         // GET  /TodoItem/{id}/edit
+        Log::info('Hit edit ('.$id.') function of the TodoItem controller');
         
         $todos = TodoItem::find($id);
         if($todos['group']==='INDEX'){
@@ -136,6 +142,7 @@ class TodoItemController extends Controller
     public function update(Request $request, $id)
     {
         // PUT/PATCH /TodoItem/{id}
+        Log::info('Hit update ('.$id.') function of the TodoItem controller');
         $active=TodoItem::find($id);
         
         
@@ -189,6 +196,7 @@ class TodoItemController extends Controller
     public function destroy($id)
     {
         //DELETE /TodoItem/{id}
+        Log::info('Hit destroy ('.$id.') function of the TodoItem controller');
         $active=TodoItem::find($id);
         
         $active->delete();
@@ -198,11 +206,13 @@ class TodoItemController extends Controller
     
     public function viewMvc() {
         // GET at /mvc/
+        Log::info('Hit viewMvc function of the TodoItem controller');
         return view('pages.Mvc');
     }
     
     public function markAllComplete() {
         //GET at /complete
+        Log::info('Hit markAllComplete function of the TodoItem controller');
         $todos = TodoItem::where('group','INDEX')->orderBy('priority','asc')->get(); 
         foreach($todos as $active){
             $active->complete=TRUE;
@@ -215,6 +225,7 @@ class TodoItemController extends Controller
     
     public function toggleComplete($id) {
         //GET at /TodoItem/{id}/complete
+        Log::info('Hit toggleComplete ('.$id.') function of the TodoItem controller');
         $active=TodoItem::find($id);
         if($active['complete']){
             $active->complete=FALSE;
@@ -233,6 +244,7 @@ class TodoItemController extends Controller
     
     public function undo(Request $request, $id) {
         //PATCH at /TodoItem/{id}/undo
+        Log::info('Hit undo ('.$id.') function of the TodoItem controller');
         $active=TodoItem::find($id);
         
         if ($active['task']==NULL) {
