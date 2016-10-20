@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 // use DB;
 use App\optionList;
 
+use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 
 use App\Http\Requests;
 
-class TodoItemController extends Controller
+class optionListController extends Controller
 {
     //
     
@@ -39,10 +40,30 @@ class TodoItemController extends Controller
         Log::info('Hit store function of the optionList controller');
         
         try {
-            $inputGroup = $request->input("new-group");
-            $inputFilter = $request->input("filter");
-            $inputStyle = $request->input("new-style");
-            $inputVerbosity = $request->input("verbosity");
+            if(null!==($request->input("new-group"))){
+                $inputGroup = $request->input("new-group");
+            }
+            else {
+                $inputGroup = 'INDEX';
+            }
+            if(null!==($request->input("filter"))){
+                $inputFilter = $request->input("filter");
+            }
+            else {
+                $inputFilter =2;
+            }
+            if(null!==($request->input("new-style"))){
+                $inputStyle = $request->input("new-style");
+            }
+            else {
+                $inputStyle = 'todos';
+            }
+            if(null!==($request->input("verbosity"))){
+                $inputVerbosity = $request->input("verbosity");
+            }
+            else {
+                $inputVerbosity = 1;
+            }
             // TODO: validate input data here
             
             $newOptionList = new optionList(['group'=>$inputGroup, 'filter'=>$inputFilter, 
@@ -54,6 +75,7 @@ class TodoItemController extends Controller
         }
 
         catch (Illuminate\Database\QueryException $ex){
+            Log::debug('an exception has been caught'.$ex);
 
             $cssClass = NULL;
             $msg= 'new option list failed to be created'.$ex;
@@ -116,10 +138,18 @@ class TodoItemController extends Controller
         // check for filled form entries
         
         // fill variables 
-        $active->group = $request->input("new-group");
-        $active->filter = $request->input("filter");
-        $active->style = $request->input("new-style");
-        $active->verbosity = $request->input("verbosity");
+        if(null!==($request->input("new-group"))){
+            $active->group = $request->input("new-group");
+        }
+        if(null!==($request->input("filter"))){
+            $active->filter = $request->input("filter");
+        }
+        if(null!==($request->input("style"))){
+            $active->style = $request->input("new-style");
+        }
+        if(null!==($request->input("verbosity"))){
+            $active->verbosity = $request->input("verbosity");
+        }
         $active->save();
         
         
@@ -139,12 +169,14 @@ class TodoItemController extends Controller
         //DELETE /optionlist/{id}
         Log::info('Hit destroy ('.$id.') function of the optionList controller');
         if($id!==1){
+            Log::debug('active id 1 not detected');
             $active=  optionList::find($id);
 
             $active->delete();
             $msg='A list of options has been deleted.';
         }
         else {
+            Log::debug('active id 1 detected');
             $msg='Deleting ID 1 is not allowed.  Edit it instead.';
         }
         return redirect('/') 
