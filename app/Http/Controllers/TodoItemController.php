@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 // use DB;
 use App\TodoItem;
+use App\optionList;
 
 
 use Illuminate\Http\Request;
@@ -20,14 +21,24 @@ class TodoItemController extends Controller
     public function index()
     {
         // GET at / 
-        $todos = TodoItem::where('group','INDEX')->orderBy('priority','asc')->get();          
+        $options=optionList::find(1);
+        $todos = TodoItem::where('group',$options['group'])->orderBy('priority','asc')->get();          
         $cssClass = NULL;
-        $msg = session('msg',NULL);
-        $currentTodo =session('currentTodo',NULL);
-        $oldTodo =session('oldTodo',NULL);
+        if($options['verbosity']){
+            $msg = session('msg',NULL);
+            $currentTodo =session('currentTodo',NULL);
+            $oldTodo =session('oldTodo',NULL);
+        }
+        else {
+            $msg = NULL;
+            $currentTodo = NULL;
+            $oldTodo = NULL;
+        }
+        $filter=$options['filter']; // filter 2 is all 0 and 1 only display matching completion.
         
         return view('pages.list', 
-            ['todos' => $todos, 'class' => $cssClass, 'msg'=>$msg, 'currentTodo'=>$currentTodo, 'oldTodo'=>$oldTodo]);
+            ['todos' => $todos, 'class' => $cssClass, 'msg'=>$msg, 'currentTodo'=>$currentTodo, 
+                'oldTodo'=>$oldTodo, 'filter'=>$filter]);
     }
 
     /**
@@ -127,6 +138,7 @@ class TodoItemController extends Controller
         // PUT/PATCH /TodoItem/{id}
         $active=TodoItem::find($id);
         
+        
         if($active['group']==='INDEX'){
             // check for filled form entries
             //make a backup so it can be sent forward for later reversion
@@ -159,11 +171,13 @@ class TodoItemController extends Controller
         } 
         else {
             return redirect('/')
-                ->with(['msg'=>'something went wrong updating an entry.','currentTodo'=>NULL, 'oldTodo'=>NULL]);
+                ->with(['msg'=>'something went wrong updating an entry.','currentTodo'=>NULL, 
+                    'oldTodo'=>NULL]);
         }
         
         return redirect('/') 
-            ->with(['msg'=>'An item has been changed. Item updated to: ', 'currentTodo'=>$active, 'oldTodo'=>$backup]);
+            ->with(['msg'=>'An item has been changed. Item updated to: ', 
+                'currentTodo'=>$active, 'oldTodo'=>$backup]);
     }
 
     /**
