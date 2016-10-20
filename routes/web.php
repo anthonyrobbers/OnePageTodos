@@ -21,7 +21,7 @@ Route::post('/','TodoItemController@store');
 
 Route::patch('TodoItem/{id}/undo','TodoItemController@undo');
 Route::get('TodoItem/{id}/complete','TodoItemController@toggleComplete');
-Route::patch('complete','TodoItemController@markAllComplete');
+Route::get('complete','TodoItemController@markAllComplete');
 
 Route::resource('TodoItem','TodoItemController');
 

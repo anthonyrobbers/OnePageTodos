@@ -202,7 +202,12 @@ class TodoItemController extends Controller
     }
     
     public function markAllComplete() {
-        //PATCH at /complete
+        //GET at /complete
+        $todos = TodoItem::where('group','INDEX')->orderBy('priority','asc')->get(); 
+        foreach($todos as $active){
+            $active->complete=TRUE;
+            $active->save();
+        }
         
         return redirect('/') 
             ->with(['msg'=>'All tasks marked complete.', 'oldTodo'=>NULL,'currentTodo'=>NULL]);
@@ -213,14 +218,16 @@ class TodoItemController extends Controller
         $active=TodoItem::find($id);
         if($active['complete']){
             $active->complete=FALSE;
+            $msg='A task was marked as incomplete';
         }
         else{
             $active->complete=TRUE;
+            $msg='A task was marked complete';
         }
         $active->save();
         
         return redirect('/') 
-            ->with(['msg'=>'A task was marked complete.', 'oldTodo'=>NULL,'currentTodo'=>NULL]);
+            ->with(['msg'=>$msg, 'oldTodo'=>NULL,'currentTodo'=>NULL]);
         
     }
     
