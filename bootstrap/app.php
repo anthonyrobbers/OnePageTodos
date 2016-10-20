@@ -43,6 +43,19 @@ $app->singleton(
 
 /*
 |--------------------------------------------------------------------------
+| Custom Monolog Configuration
+|--------------------------------------------------------------------------
+|
+| This script configures the Monolog for logging errors.
+| 
+| $app->configureMonologUsing(function($monolog) {
+|    $monolog->pushHandler(...);
+|    }); 
+*/
+
+
+/*
+|--------------------------------------------------------------------------
 | Return The Application
 |--------------------------------------------------------------------------
 |
