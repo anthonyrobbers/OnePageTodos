@@ -276,5 +276,23 @@ class TodoItemController extends Controller
         
     }
     
+    public function toDelete($id){
+        
+        // GET  /TodoItem/{id}/delete
+        Log::info('Hit edit ('.$id.') function of the TodoItem controller');
+        
+        $options=optionList::find(1);
+        $todos = TodoItem::find($id);
+        if($todos['group']===$options['group']){
+            Log::debug('active group detected');
+            return view('pages.edit', ['todo'=>$todos, 'class'=>'success']);
+        }
+        else {
+            Log::debug('active group not detected');
+            return 'Task not found.';            
+        }
+        
+    }
+    
  }
 

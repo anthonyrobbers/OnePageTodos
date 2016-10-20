@@ -19,6 +19,8 @@ Route::get('about','TodoItemController@about');
 Route::get('/','TodoItemController@index');
 Route::post('/','TodoItemController@store');
 
+Route::get('TodoItem/{id}/delete','TodoItemController@toDelete');
+
 Route::patch('TodoItem/{id}/undo','TodoItemController@undo');
 Route::get('TodoItem/{id}/complete','TodoItemController@toggleComplete');
 Route::get('complete','TodoItemController@markAllComplete');
