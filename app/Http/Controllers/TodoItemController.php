@@ -27,11 +27,13 @@ class TodoItemController extends Controller
         $todos = TodoItem::where('group',$options['group'])->orderBy('priority','asc')->get();          
         $cssClass = NULL;
         if($options['verbosity']){
+            Log::debug('status msg enabled by verbosity option');
             $msg = session('msg',NULL);
             $currentTodo =session('currentTodo',NULL);
             $oldTodo =session('oldTodo',NULL);
         }
         else {
+            Log::debug('status msg disabled by verbosity option');
             $msg = NULL;
             $currentTodo = NULL;
             $oldTodo = NULL;
@@ -67,6 +69,7 @@ class TodoItemController extends Controller
         // POST to /
         Log::info('Hit store function of the TodoItem controller');
         if(null!==($request->input("new-todo"))){
+            Log::debug('new todo detected');
             try {
                 $inputTodo = $request->input("new-todo");
                 $inputPriority = $request->input("priority");
@@ -89,7 +92,7 @@ class TodoItemController extends Controller
             return redirect('/')
                 ->with(['msg'=> $msg,'oldTodo' => NULL, 'currentTodo'=>$newTodoItem,'class' => $cssClass]);
         }elseif(null!==($request->input("del-todo"))){
-            
+            Log::debug('del-todo detected');
             
         }
     }        
@@ -123,11 +126,14 @@ class TodoItemController extends Controller
         // GET  /TodoItem/{id}/edit
         Log::info('Hit edit ('.$id.') function of the TodoItem controller');
         
+        $options=optionList::find(1);
         $todos = TodoItem::find($id);
-        if($todos['group']==='INDEX'){
-        return view('pages.edit', ['todo'=>$todos, 'class'=>'success']);
+        if($todos['group']===$options['group']){
+            Log::debug('active group detected');
+            return view('pages.edit', ['todo'=>$todos, 'class'=>'success']);
         }
         else {
+            Log::debug('active group not detected');
             return 'Task not found.';            
         }
     }
@@ -144,9 +150,11 @@ class TodoItemController extends Controller
         // PUT/PATCH /TodoItem/{id}
         Log::info('Hit update ('.$id.') function of the TodoItem controller');
         $active=TodoItem::find($id);
+        $options=optionList::find(1);
         
         
-        if($active['group']==='INDEX'){
+        if($active['group']===$options['group']){
+            Log::debug('active group detected');
             // check for filled form entries
             //make a backup so it can be sent forward for later reversion
             $backup=['task'=>$active['task'],'priority'=>$active['priority'],'id'=>$active['id'],
@@ -157,6 +165,7 @@ class TodoItemController extends Controller
             $active->save();
         }
         elseif ($active['task']==NULL) {
+            Log::debug('active group not detected, active task is NULL');
             try {
                 $inputTodo = $request->input("new-todo");
                 $inputPriority = $request->input("priority");
@@ -169,6 +178,7 @@ class TodoItemController extends Controller
             }
 
             catch (Illuminate\Database\QueryException $ex){
+                Log::debug('catch statement'.$ex);
                 $cssClass = NULL;
                 $msg= 'new task failed to be created'.$ex;
                 $active=NULL;
@@ -177,6 +187,7 @@ class TodoItemController extends Controller
             
         } 
         else {
+            Log::debug('active group not detected, active task is not NULL.  Nothing should reach here.');
             return redirect('/')
                 ->with(['msg'=>'something went wrong updating an entry.','currentTodo'=>NULL, 
                     'oldTodo'=>NULL]);
@@ -213,7 +224,8 @@ class TodoItemController extends Controller
     public function markAllComplete() {
         //GET at /complete
         Log::info('Hit markAllComplete function of the TodoItem controller');
-        $todos = TodoItem::where('group','INDEX')->orderBy('priority','asc')->get(); 
+        $options=optionList::find(1);
+        $todos = TodoItem::where('group',$options['group'])->orderBy('priority','asc')->get(); 
         foreach($todos as $active){
             $active->complete=TRUE;
             $active->save();
@@ -228,10 +240,12 @@ class TodoItemController extends Controller
         Log::info('Hit toggleComplete ('.$id.') function of the TodoItem controller');
         $active=TodoItem::find($id);
         if($active['complete']){
+            Log::debug('active complete detected');
             $active->complete=FALSE;
             $msg='A task was marked as incomplete';
         }
         else{
+            Log::debug('active complete not detected');
             $active->complete=TRUE;
             $msg='A task was marked complete';
         }
@@ -248,9 +262,11 @@ class TodoItemController extends Controller
         $active=TodoItem::find($id);
         
         if ($active['task']==NULL) {
+            Log::debug('active task not detected');
             return redirect()->action('TodoItemController@store',['request'=>$request]);
         }
         else {
+            Log::debug('active task detected');
             return redirect()->action('TodoItemController@update',['id'=>$id,'request'=>$request]);
         }
         
