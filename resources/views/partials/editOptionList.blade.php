@@ -34,7 +34,7 @@
         </div>
     </div>
     <div class="row">
-        @include('partials/defaultOptionListDisplay')
+        @include('partials/defaultOptionListDisplay',['verbose'=>TRUE])
     </div>
 </div>
 

@@ -4,19 +4,19 @@
       <input type="hidden" name="_token" value="{{csrf_token()}}">
       <button type="button" class="btn btn-secondary btn-sm">Filters:</button>
       <button type="submit" name="filter" value="2" id="filter-all" class="btn btn-success btn-sm <?php 
-        if($filter==2){
+        if($options['filter']==2){
             echo('active');
         }
         ?>"> All
       </button>
       <button type="submit" name="filter" value="1" id="filter-complete" class="btn btn-success btn-sm <?php 
-        if($filter==1){
+        if($options['filter']==1){
             echo('active');
         }
         ?>"> Complete
       </button>
       <button type="submit" name="filter" value="0" id="filter-active" class="btn btn-success btn-sm <?php 
-        if($filter==0){
+        if($options['filter']==0){
             echo('active');
         }
         ?>"> Active

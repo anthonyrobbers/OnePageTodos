@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('Title')
-ToDo List Options - Show List {{$list['id']}}
+ToDo List Options - Show Lists
 @stop
 
 @section('content')
@@ -16,7 +16,7 @@ ToDo List Options - Show List {{$list['id']}}
 
                 <div class="row">
                     <div class="listContainer">
-                        @foreach($Lists as $list)
+                        @foreach($lists as $list)
                             @include('partials.defaultOptionListDisplay',['verbose'=>TRUE])
                         @endforeach
                     </div>
