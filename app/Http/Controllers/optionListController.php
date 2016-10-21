@@ -25,7 +25,7 @@ class optionListController extends Controller
         // GET at /optionList 
         Log::info('Hit index function of the OptionList controller');
         $options=optionList::find(1);
-        $lists = optionList::all;          
+        $lists = optionList::all();          
         $cssClass = NULL;
         if($options['verbosity']){
             Log::debug('status msg enabled by verbosity option');
@@ -50,9 +50,10 @@ class optionListController extends Controller
     {
         // GET  at /optionList/create  
         Log::info('Hit create function of the optionList controller');
+        $options=optionList::find(1);
         
         $cssClass = NULL;
-        return view('pages.newOption', ['class' => $cssClass]);
+        return view('pages.newOption', ['class' => $cssClass,'options'=>$options]);
     }
 
     /**
@@ -126,9 +127,10 @@ class optionListController extends Controller
         //GET /optionlist/{id}
         //needs to be modified to only show one
         Log::info('Hit show ('.$id.') function of the optionList controller');
+        $options=optionList::find(1);
         $optionList = optionList::find($id);
         $cssClass = 'todos';
-        return view('pages.showOptionList', ['list'=>$optionList, 'class' => $cssClass]);
+        return view('pages.showOptionList', ['list'=>$optionList, 'class' => $cssClass,'options'=>$options]);
     }
 
     /**
@@ -141,10 +143,11 @@ class optionListController extends Controller
     {
         // GET  /optionlist/{id}/edit
         Log::info('Hit edit ('.$id.') function of the optionList controller');
+        $options=optionList::find(1);
         
         $list = optionList::find($id);
         
-        return view('pages.editOptions', ['list'=>$list, 'class'=>'success']);
+        return view('pages.editOptionList', ['list'=>$list, 'class'=>'success','options'=>$options]);
         
     }
 
