@@ -5,6 +5,7 @@ ToDo List - Show task {{$todo['id']}}
 @stop
 
 @section('content')
+    @include('partials/status')
     <section id="todos" class="{{$class}}">
             <div class="container">
                 <div class="row">
