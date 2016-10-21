@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use Illuminate\Database\Eloquent\ModelNotFoundException as ModelNotFoundException;
 
 use App\Http\Requests;
 
@@ -23,12 +24,22 @@ class TodoItemController extends Controller
     {
         // GET at / 
         Log::info('Hit index function of the TodoItem controller');
-        $options=optionList::find(1);
-        $todos = TodoItem::where('group',$options['group'])->orderBy('priority','asc')->get();          
+        $msg='';
+        try{
+            $options=optionList::find(1);
+            $groups=TodoItem::select('group')->distinct()->get();
+            $todos = TodoItem::where('group',$options['group'])->orderBy('priority','asc')->get();    
+        }
+        catch(Illuminate\Database\QueryException $ex){
+            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2];
+            $groups=['INDEX'];
+            $todos=[];
+            $msg='database error.';
+        }
         $cssClass = NULL;
         if($options['verbosity']){
             Log::debug('status msg enabled by verbosity option');
-            $msg = session('msg',NULL);
+            $msg = $msg.session('msg',NULL);
             $currentTodo =session('currentTodo',NULL);
             $oldTodo =session('oldTodo',NULL);
         }
@@ -56,7 +67,7 @@ class TodoItemController extends Controller
         Log::info('Hit create function of the TodoItem controller');
         
         $cssClass = NULL;
-        return view('pages.newItem', ['class' => $cssClass]);
+        return view('pages.newItem', ['class' => $cssClass, 'msg'=>NULL]);
     }
 
     /**
@@ -68,13 +79,21 @@ class TodoItemController extends Controller
     public function store(Request $request){
         // POST to /
         Log::info('Hit store function of the TodoItem controller');
+        try{
+            $options=optionList::find(1);
+            $emergencyMsg='';
+        }
+        catch(Illuminate\Database\QueryException $ex){
+            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2];
+            $emergencyMsg='database error.'.$ex;
+        }
         if(null!==($request->input("new-todo"))){
             Log::debug('new todo detected');
             try {
                 $inputTodo = $request->input("new-todo");
                 $inputPriority = $request->input("priority");
                 // TODO: validate input data here
-                $group = 'INDEX';
+                $group = $options['group'];
                 $newTodoItem = new TodoItem(['task'=>$inputTodo, 'priority'=>$inputPriority, 'group'=>$group, 'complete'=>0]);
                 // TODO: add newTodoItem to the repository of todos (i.e., store in the database)   
                 $newTodoItem->Save();
@@ -112,7 +131,7 @@ class TodoItemController extends Controller
         //needs to be modified to only show one
         $todo = TodoItem::find($id);
         $cssClass = 'todos';
-        return view('pages.showOne', ['todo'=>$todo, 'class' => $cssClass]);
+        return view('pages.showOne', ['todo'=>$todo, 'class' => $cssClass, 'msg'=>NULL]);
     }
 
     /**
@@ -125,12 +144,18 @@ class TodoItemController extends Controller
     {
         // GET  /TodoItem/{id}/edit
         Log::info('Hit edit ('.$id.') function of the TodoItem controller');
-        
-        $options=optionList::find(1);
+        try{
+            $options=optionList::find(1);
+            $emergencyMsg='';
+        }
+        catch(Illuminate\Database\QueryException $ex){
+            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2];
+            $emergencyMsg='database error.'.$ex;
+        }
         $todos = TodoItem::find($id);
         if($todos['group']===$options['group']){
             Log::debug('active group detected');
-            return view('pages.edit', ['todo'=>$todos, 'class'=>'todos']);
+            return view('pages.edit', ['todo'=>$todos, 'class'=>'todos', 'msg'=>NULL]);
         }
         else {
             Log::debug('active group not detected');
@@ -153,7 +178,15 @@ class TodoItemController extends Controller
         // PUT/PATCH /TodoItem/{id}
         Log::info('Hit update ('.$id.') function of the TodoItem controller');
         $active=TodoItem::find($id);
-        $options=optionList::find(1);
+        try{
+            $active=TodoItem::find($id);
+            $options=optionList::find(1);
+            $emergencyMsg='';
+        }
+        catch(Illuminate\Database\QueryException $ex){
+            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2];
+            $emergencyMsg='database error.'.$ex;
+        }
         
         
         if($active['group']===$options['group']){
@@ -172,7 +205,7 @@ class TodoItemController extends Controller
             try {
                 $inputTodo = $request->input("new-todo");
                 $inputPriority = $request->input("priority");
-                $group = 'INDEX';
+                $group = $options['group'];
                 $newTodoItem = new TodoItem(['task'=>$inputTodo, 'priority'=>$inputPriority, 'group'=>$group, 'complete'=>0]);
                 $newTodoItem->Save();
                 $cssClass = "success";
@@ -227,8 +260,17 @@ class TodoItemController extends Controller
     public function markAllComplete() {
         //GET at /complete
         Log::info('Hit markAllComplete function of the TodoItem controller');
-        $options=optionList::find(1);
-        $todos = TodoItem::where('group',$options['group'])->orderBy('priority','asc')->get(); 
+        try{
+            $options=optionList::find(1);
+            $emergencyMsg='';
+            $todos = TodoItem::where('group',$options['group'])->orderBy('priority','asc')->get(); 
+        }
+        catch(Illuminate\Database\QueryException $ex){
+            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2];
+            $emergencyMsg='database error.'.$ex;
+            $todos=[];
+        }
+        
         foreach($todos as $active){
             $active->complete=TRUE;
             $active->save();
@@ -241,21 +283,33 @@ class TodoItemController extends Controller
     public function toggleComplete($id) {
         //GET at /TodoItem/{id}/complete
         Log::info('Hit toggleComplete ('.$id.') function of the TodoItem controller');
-        $active=TodoItem::find($id);
-        if($active['complete']){
-            Log::debug('active complete detected');
-            $active->complete=FALSE;
-            $msg='A task was marked as incomplete';
+        try{
+            $active=TodoItem::findOrFail($id);
+            if($active['complete']){
+                Log::debug('active complete detected');
+                $active->complete=FALSE;
+                $msg='A task was marked as incomplete';
+            }
+            else{
+                Log::debug('active complete not detected');
+                $active->complete=TRUE;
+                $msg='A task was marked complete';
+            }
+            $active->save();
+
+            return redirect('/') 
+                ->with(['msg'=>$msg, 'oldTodo'=>NULL,'currentTodo'=>NULL]);
         }
-        else{
-            Log::debug('active complete not detected');
-            $active->complete=TRUE;
-            $msg='A task was marked complete';
+        catch(ModelNotFoundException $ex){
+            $msg='database error. id not found.';
         }
-        $active->save();
+        catch(Illuminate\Database\QueryException $ex){
+            $msg='database error.'.$ex;
+        }
         
         return redirect('/') 
             ->with(['msg'=>$msg, 'oldTodo'=>NULL,'currentTodo'=>NULL]);
+        
         
     }
     
@@ -284,11 +338,18 @@ class TodoItemController extends Controller
         // GET  /TodoItem/{id}/delete
         Log::info('Hit toDelete ('.$id.') function of the TodoItem controller');
         
-        $options=optionList::find(1);
+        try{
+            $options=optionList::find(1);
+            $emergencyMsg='';
+        }
+        catch(Illuminate\Database\QueryException $ex){
+            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2];
+            $emergencyMsg='database error.'.$ex;
+        }
         $todos = TodoItem::find($id);
         if($todos['group']===$options['group']){
             Log::debug('active group detected');
-            return view('pages.edit', ['todo'=>$todos, 'class'=>'todos']);
+            return view('pages.edit', ['todo'=>$todos, 'class'=>'todos', 'msg'=>NULL]);
         }
         else {
             Log::debug('active group not detected');
