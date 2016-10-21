@@ -20,6 +20,32 @@ class optionListController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function index()
+    {
+        // GET at /optionList 
+        Log::info('Hit index function of the OptionList controller');
+        $options=optionList::find(1);
+        $lists = optionList::all;          
+        $cssClass = NULL;
+        if($options['verbosity']){
+            Log::debug('status msg enabled by verbosity option');
+            $msg = session('msg',NULL);
+            $currentTodo =session('currentTodo',NULL);
+            $oldTodo =session('oldTodo',NULL);
+        }
+        else {
+            Log::debug('status msg disabled by verbosity option');
+            $msg = NULL;
+            $currentTodo = NULL;
+            $oldTodo = NULL;
+        }
+        $filter=$options['filter']; // filter 2 is all 0 and 1 only display matching completion.
+        
+        return view('pages.list', 
+            ['lists' => $lists, 'class' => $cssClass, 'msg'=>$msg, 'currentTodo'=>$currentTodo, 
+                'oldTodo'=>$oldTodo, 'filter'=>$filter, 'options'=>$options]);
+    }
+    
     public function create()
     {
         // GET  at /optionList/create  
