@@ -22,7 +22,7 @@ ToDo List
                         <?php $activeCount=0;?>
                         @foreach ($todos as $todo)
                             @if($options['filter']==2 or $todo['complete']==$options['filter'])
-                            @include('pages.defaultTodoDisplay',['verbose'=>FALSE])
+                                @include('pages.defaultTodoDisplay',['verbose'=>FALSE])
                             @endif
                             <?php $activeCount+=1-$todo['complete']; ?>
                         @endforeach
