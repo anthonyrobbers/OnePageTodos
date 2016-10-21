@@ -38,11 +38,11 @@ class TodoItemController extends Controller
             $currentTodo = NULL;
             $oldTodo = NULL;
         }
-        $filter=$options['filter']; // filter 2 is all 0 and 1 only display matching completion.
+        //$filter=$options['filter']; filter 2 is all 0 and 1 only display matching completion.
         
         return view('pages.list', 
             ['todos' => $todos, 'class' => $cssClass, 'msg'=>$msg, 'currentTodo'=>$currentTodo, 
-                'oldTodo'=>$oldTodo, 'filter'=>$filter]);
+                'oldTodo'=>$oldTodo, 'options'=>$options]);
     }
 
     /**
