@@ -159,7 +159,7 @@ class TodoItemController extends Controller
         $todos = TodoItem::find($id);
         if($todos['group']===$options['group']){
             Log::debug('active group detected');
-            return view('pages.edit', ['todo'=>$todos, 'class'=>'todos', 'msg'=>NULL]);
+            return view('pages.edit', ['todo'=>$todos, 'class'=>'todos','options'=>$options, 'msg'=>NULL]);
         }
         else {
             Log::debug('active group not detected');
@@ -349,7 +349,7 @@ class TodoItemController extends Controller
         
         try{
             $options=optionList::find(1);
-            $emergencyMsg='';
+            $emergencyMsg=NULL;
         }
         catch(Illuminate\Database\QueryException $ex){
             $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2,'fast'=>0];
@@ -359,12 +359,13 @@ class TodoItemController extends Controller
         $todos = TodoItem::find($id);
         if($todos['group']===$options['group']){
             Log::debug('active group detected');
-            return view('pages.edit', ['todo'=>$todos, 'class'=>'todos', 'msg'=>NULL]);
+            $options['fast']=TRUE;
+            return view('pages.preDelete', ['todo'=>$todos, 'class'=>'todos','options'=>$options, 'msg'=>$emergencyMsg]);
         }
         else {
             Log::debug('active group not detected');
             return redirect('/') 
-            ->with(['msg'=>'Task not found.', 
+            ->with(['msg'=>'Task not found.'.$emergencyMsg, 
                 'currentTodo'=>NULL, 'oldTodo'=>NULL]);          
         }
         

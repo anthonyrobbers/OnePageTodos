@@ -16,7 +16,9 @@ ToDo List - Delete {{$todo['id']}}?
                 </div>
 
                 <div class="row">
-                     @include('pages.editItem')
+                    <div class="listContainer">
+                     @include('pages.defaultTodoDisplay',['verbose'=>TRUE])
+                    </div>
                 </div>
             </div>
     </section>

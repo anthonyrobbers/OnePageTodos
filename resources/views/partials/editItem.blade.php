@@ -21,16 +21,6 @@
 
         </div>
     </div>
-    <div class="row">
-        <form name="deleteTask" id="updateTask" novalidate="" method="POST" action="{{action('TodoItemController@destroy',['id'=>$todo['id']])}}"> {{ method_field('DELETE') }}
-        <div class="listText col-sm-4 todos-item">
-            {{$todo['task']}}
-        </div>
-        <div class="listButton col-sm-4 todos-item">
-            <button name="del-todo" value="{{$todo['id']}}" type="submit" class="btn btn-success btn-sm">Delete</button>    
-            <input type="hidden" name="_token" value="{{csrf_token()}}">
-        </div>
-        </form>
-    </div>
+    @include('pages.defaultTodoDisplay',['verbose'=>TRUE])
 </div>
     
