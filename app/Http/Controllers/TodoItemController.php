@@ -301,10 +301,12 @@ class TodoItemController extends Controller
                 ->with(['msg'=>$msg, 'oldTodo'=>NULL,'currentTodo'=>NULL]);
         }
         catch(ModelNotFoundException $ex){
-            $msg='database error. id not found.';
+            $msg='database error.  Id '.$id.' not found.';
+            Log::debug('not found TodoItem'.$id.$ex);
         }
         catch(Illuminate\Database\QueryException $ex){
-            $msg='database error.'.$ex;
+            $msg='database error.';
+            Log::debug('database error.'.$ex);
         }
         
         return redirect('/') 
