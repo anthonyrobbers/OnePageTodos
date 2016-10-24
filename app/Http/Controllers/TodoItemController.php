@@ -31,10 +31,11 @@ class TodoItemController extends Controller
             $todos = TodoItem::where('group',$options['group'])->orderBy('priority','asc')->get();    
         }
         catch(Illuminate\Database\QueryException $ex){
-            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2];
+            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2,'fast'=>0];
             $groups=['INDEX'];
             $todos=[];
             $msg='database error.';
+            Log::debug('failed to load options.  loading defaults.'.$ex);
         }
         $cssClass = NULL;
         if($options['verbosity']){
@@ -84,8 +85,9 @@ class TodoItemController extends Controller
             $emergencyMsg='';
         }
         catch(Illuminate\Database\QueryException $ex){
-            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2];
-            $emergencyMsg='database error.'.$ex;
+            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2,'fast'=>0];
+            $emergencyMsg='database error. loading default options instead of saved options';
+            Log::debug('failed to load options.  loading defaults.'.$ex);
         }
         if(null!==($request->input("new-todo"))){
             Log::debug('new todo detected');
@@ -106,6 +108,7 @@ class TodoItemController extends Controller
                 $cssClass = NULL;
                 $msg= 'new task failed to be created'.$ex;
                 $newTodoItem=NULL;
+                Log::debug('failed to create new task.  '.$ex);
             }                
             
             return redirect('/')
@@ -149,8 +152,9 @@ class TodoItemController extends Controller
             $emergencyMsg='';
         }
         catch(Illuminate\Database\QueryException $ex){
-            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2];
-            $emergencyMsg='database error.'.$ex;
+            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2,'fast'=>0];
+            $emergencyMsg='database error.  Failed to load saved options.  Loading defaults instead.';
+            Log::debug('failed to load options.  loading defaults.'.$ex);
         }
         $todos = TodoItem::find($id);
         if($todos['group']===$options['group']){
@@ -184,8 +188,9 @@ class TodoItemController extends Controller
             $emergencyMsg='';
         }
         catch(Illuminate\Database\QueryException $ex){
-            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2];
-            $emergencyMsg='database error.'.$ex;
+            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2,'fast'=>0];
+            $emergencyMsg='options database error.';
+            Log::debug('failed to load options.  loading defaults.'.$ex);
         }
         
         
@@ -216,8 +221,9 @@ class TodoItemController extends Controller
             catch (Illuminate\Database\QueryException $ex){
                 Log::debug('catch statement'.$ex);
                 $cssClass = NULL;
-                $msg= 'new task failed to be created'.$ex;
+                $msg= 'new task failed to be created';
                 $active=NULL;
+                Log::debug('new task failed to be created'.$ex);
                 $backup=['task'=>$request->input("new-todo"),'priority'=>$request->input("priority"),'id'=>$id,'complete'=>0];
             } 
             
@@ -266,9 +272,10 @@ class TodoItemController extends Controller
             $todos = TodoItem::where('group',$options['group'])->orderBy('priority','asc')->get(); 
         }
         catch(Illuminate\Database\QueryException $ex){
-            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2];
+            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2,'fast'=>0];
             $emergencyMsg='database error.'.$ex;
             $todos=[];
+            Log::debug('failed to load options.  loading defaults.'.$ex);
         }
         
         foreach($todos as $active){
@@ -345,8 +352,9 @@ class TodoItemController extends Controller
             $emergencyMsg='';
         }
         catch(Illuminate\Database\QueryException $ex){
-            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2];
-            $emergencyMsg='database error.'.$ex;
+            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2,'fast'=>0];
+            $emergencyMsg='database error.';
+            Log::debug('failed to load options.  loading defaults.'.$ex);
         }
         $todos = TodoItem::find($id);
         if($todos['group']===$options['group']){
