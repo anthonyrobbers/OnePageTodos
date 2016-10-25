@@ -33,28 +33,37 @@ class TodoItemController extends Controller
         catch(Illuminate\Database\QueryException $ex){
             $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2,'fast'=>0];
             $groups=['INDEX'];
-            $todos=[];
             $msg='database error.';
             Log::debug('failed to load options.  loading defaults.'.$ex);
+        }
+        try{
+            $todos = TodoItem::where('group',$options['group'])->orderBy('priority','asc')->get();    
+        }
+        catch(Illuminate\Database\QueryException $ex){
+            $msg='database error. failed to load list';
+            $todos=[];
+            Log::debug('failed to load list.'.$ex);
         }
         $cssClass = NULL;
         if($options['verbosity']){
             Log::debug('status msg enabled by verbosity option');
-            $msg = $msg.session('msg',NULL);
-            $currentTodo =session('currentTodo',NULL);
-            $oldTodo =session('oldTodo',NULL);
+            $statusPartial = session('statusPartial','defaultStatus');
+            $statusArgs = session('statusArgs',['msg'=>$msg.session('msg',NULL),
+                'currentTodo'=>session('currentTodo',NULL),'oldTodo'=>session('oldTodo',NULL)]);
+            
+            
+            
         }
         else {
             Log::debug('status msg disabled by verbosity option');
-            $msg = NULL;
-            $currentTodo = NULL;
-            $oldTodo = NULL;
+            $statusPartial = NULL;
+            $statusArgs = NULL;
         }
         //$filter=$options['filter']; filter 2 is all 0 and 1 only display matching completion.
         
         return view('pages.list', 
-            ['todos' => $todos, 'class' => $cssClass, 'msg'=>$msg, 'currentTodo'=>$currentTodo, 
-                'oldTodo'=>$oldTodo, 'options'=>$options]);
+            ['todos' => $todos, 'class' => $cssClass, 'statusArgs'=>$statusArgs, 
+                'statusPartial'=>$statusPartial, 'options'=>$options]);
     }
 
     /**
