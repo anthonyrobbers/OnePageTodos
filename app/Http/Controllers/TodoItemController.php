@@ -106,7 +106,7 @@ class TodoItemController extends Controller
         if(null!==($request->input("new-todo-list"))){
             Log::debug('new-todo-list detected');
             $inputTodos = $request->input("new-todo-list");
-            $statusPartial = 'createdMany';
+            $statusPartial = NULL; // should eventually be createdMany later
         }
         foreach($inputTodos as $inputTodo)    {
             try {
