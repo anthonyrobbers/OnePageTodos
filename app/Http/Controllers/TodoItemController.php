@@ -380,5 +380,63 @@ class TodoItemController extends Controller
         
     }
     
+    public function removeAllCompleted(string $group){
+        // DELETE  /TodoItem/{group}/scour
+        try{
+            
+            $todos = TodoItem::where([['group','=',$group],['complete','=',1]])->orderBy('priority','asc')->get();    
+            
+            foreach($todos as $active){
+                $active->delete();
+            }
+            $msg='All complete tasks in '.$group.' deleted. ';
+        }
+        catch(Illuminate\Database\QueryException $ex){
+            
+            $msg='database error.';
+            Log::debug('failed to load options.  loading defaults.'.$ex);
+        }
+        
+        return redirect('/') 
+            ->with(['statusPartial'=>'removedAllCompleted', 'statusArgs'=>['msg'=>$msg,'removedTodos'=>$todos]]);
+    }
+    
+    public function toRemoveAllCompleted(string $group){
+        // GET  /TodoItem/{group}/scour
+        
+        Log::info('Hit toRemoveAllCompleted '.$group.' function of the TodoItem controller');
+        $msg='';
+        try{
+            $options=optionList::find(1);
+            $groups=TodoItem::select('group')->distinct()->get();
+            $todos = TodoItem::where([['group','=',$group],['complete','=',1]])->orderBy('priority','asc')->get();    
+            
+        }
+        catch(Illuminate\Database\QueryException $ex){
+            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2,'fast'=>0];
+            $groups=['INDEX'];
+            $todos=[];
+            $msg='database error.';
+            Log::debug('failed to load options.  loading defaults.'.$ex);
+        }
+        $cssClass = NULL;
+        if($options['verbosity']){
+            Log::debug('status msg enabled by verbosity option');
+            $statusPartial = session('statusPartial','partials/status/defaultStatus');
+            $statusArgs = session('statusArgs',['msg'=>$msg.session('msg',NULL),
+                'currentTodo'=>session('currentTodo',NULL),'oldTodo'=>session('oldTodo',NULL)]);
+        }
+        else {
+            Log::debug('status msg disabled by verbosity option');
+            $statusPartial = NULL;
+            $statusArgs = NULL;
+        }
+        //$filter=$options['filter']; filter 2 is all 0 and 1 only display matching completion.
+        
+        
+        return view('pages/clearComplete'.['todos'=>$todos, 'options'=>$options, 'groups'=>$groups, 
+            'statusPartial'=>$statusPartial, 'statusArgs'=>$statusArgs]);
+    }
+    
  }
 
