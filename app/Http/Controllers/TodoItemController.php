@@ -100,12 +100,28 @@ class TodoItemController extends Controller
         }
         if(null!==($request->input("new-todo"))){
             Log::debug('new todo detected');
+            $inputTodos = [''];
+            $statusPartial = 'created';
+        }
+        if(null!==($request->input("new-todo-list"))){
+            Log::debug('new-todo-list detected');
+            $inputTodos = $request->input("new-todo-list");
+            $statusPartial = 'createdMany';
+        }
+        foreach($inputTodos as $inputTodo)    {
             try {
-                $inputTodo = $request->input("new-todo");
-                $inputPriority = $request->input("priority");
+                $inputTodo = $request->input("new-todo".$inputTodo);
+                $inputPriority = $request->input("priority".$inputTodo);
                 // TODO: validate input data here
                 $group = $options['group'];
-                $newTodoItem = new TodoItem(['task'=>$inputTodo, 'priority'=>$inputPriority, 'group'=>$group, 'complete'=>0]);
+                if(null!==($request->input("group".$inputTodo))){
+                    $group =$request->input("group".$inputTodo);
+                }
+                $complete = 0;
+                if(null!==($request->input("complete".$inputTodo))){
+                    $complete =$request->input("complete".$inputTodo);
+                }
+                $newTodoItem = new TodoItem(['task'=>$inputTodo, 'priority'=>$inputPriority, 'group'=>$group, 'complete'=>$complete]);
                 // TODO: add newTodoItem to the repository of todos (i.e., store in the database)   
                 $newTodoItem->Save();
                 $cssClass = "success";
@@ -118,14 +134,34 @@ class TodoItemController extends Controller
                 $msg= 'new task failed to be created'.$ex;
                 $newTodoItem=NULL;
                 Log::debug('failed to create new task.  '.$ex);
-            }                
-            
-            return redirect('/')
-                ->with(['msg'=> $msg,'oldTodo' => NULL, 'currentTodo'=>$newTodoItem,'class' => $cssClass]);
-        }elseif(null!==($request->input("del-todo"))){
-            Log::debug('del-todo detected');
+            }  
+        }
+
+        return redirect('/')
+        ->with(['msg'=> $msg,'oldTodo' => NULL, 'currentTodo'=>$newTodoItem,'class' => $cssClass]);
+
+        
+        if(null!==($request->input("new-todo-list"))){
+            Log::debug('new-todo-list detected');
+            $inputTodos = $request->input("new-todo-list");
+            try{
+                foreach($inputTodos as $todoId){
+                    
+                }
+            }
+            catch(Illuminate\Database\QueryException $ex){
+                $cssClass = NULL;
+                $msg= 'new task failed to be created'.$ex;
+                $newTodoItem=NULL;
+                Log::debug('failed to create new task.  '.$ex);
+                
+            }
             
         }
+            
+        return redirect('/')
+            ->with(['msg'=> $msg,'oldTodo' => NULL, 'currentTodo'=>$newTodoItem,'class' => $cssClass]);
+        
     }        
         
     
