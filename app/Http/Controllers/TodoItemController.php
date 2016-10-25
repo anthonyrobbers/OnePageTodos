@@ -101,7 +101,7 @@ class TodoItemController extends Controller
         if(null!==($request->input("new-todo"))){
             Log::debug('new todo detected');
             $inputTodos = [''];
-            $statusPartial = 'created';
+            $statusPartial = NULL;  //should change to created later
         }
         if(null!==($request->input("new-todo-list"))){
             Log::debug('new-todo-list detected');
@@ -138,30 +138,8 @@ class TodoItemController extends Controller
         }
 
         return redirect('/')
-        ->with(['msg'=> $msg,'oldTodo' => NULL, 'currentTodo'=>$newTodoItem,'class' => $cssClass]);
-
-        
-        if(null!==($request->input("new-todo-list"))){
-            Log::debug('new-todo-list detected');
-            $inputTodos = $request->input("new-todo-list");
-            try{
-                foreach($inputTodos as $todoId){
-                    
-                }
-            }
-            catch(Illuminate\Database\QueryException $ex){
-                $cssClass = NULL;
-                $msg= 'new task failed to be created'.$ex;
-                $newTodoItem=NULL;
-                Log::debug('failed to create new task.  '.$ex);
-                
-            }
-            
-        }
-            
-        return redirect('/')
-            ->with(['msg'=> $msg,'oldTodo' => NULL, 'currentTodo'=>$newTodoItem,'class' => $cssClass]);
-        
+        ->with(['msg'=> $msg,'oldTodo' => NULL, 'currentTodo'=>$newTodoItem,'class' => $cssClass,
+            'statusPartial'=>$statusPartial]);
     }        
         
     
