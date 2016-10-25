@@ -1,4 +1,4 @@
-@if ($msg and $options['verbosity']!=0)
+@if ($msg and ($options['verbosity']!=0))
     <?php $options['verbosity']=2;?>
         <section id="status" class="success">
             <div class="container">
