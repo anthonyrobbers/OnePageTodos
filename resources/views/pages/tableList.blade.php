@@ -1,5 +1,5 @@
 <div class="listContainer">
-    {!! view('pages/TodoForm') !!}
+    @include('pages/TodoForm')
 
     @foreach ($todos as $todo)
         @include('pages.defaultTodoDisplay')
