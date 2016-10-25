@@ -3,14 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/todolaravel/resources/views/pages/showOptionList.blade.php</file>
-            <file>file:/C:/xampp/htdocs/todolaravel/resources/views/pages/editOptionList.blade.php</file>
             <file>file:/C:/xampp/htdocs/todolaravel/routes/web.php</file>
-            <file>file:/C:/xampp/htdocs/todolaravel/resources/views/partials/filterButtons.blade.php</file>
             <file>file:/C:/xampp/htdocs/todolaravel/app/Http/Controllers/optionListController.php</file>
-            <file>file:/C:/xampp/htdocs/todolaravel/resources/views/partials/batchButtons.blade.php</file>
-            <file>file:/C:/xampp/htdocs/todolaravel/resources/views/partials/editOptionList.blade.php</file>
-            <file>file:/C:/xampp/htdocs/todolaravel/resources/views/partials/defaultOptionListDisplay.blade.php</file>
             <file>file:/C:/xampp/htdocs/todolaravel/app/Http/Controllers/TodoItemController.php</file>
         </group>
     </open-files>
