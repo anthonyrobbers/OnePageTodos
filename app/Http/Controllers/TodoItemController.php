@@ -111,12 +111,21 @@ class TodoItemController extends Controller
         if(null!==($request->input("new-todo-list"))){
             Log::debug('new-todo-list detected');
             $inputTodos = $request->input("new-todo-list");
+            Log::debug(':'.$inputTodos.' or ');
+            $inputTodos = explode(',',$inputTodos);
+            Log::debug(':'.implode(' ',$inputTodos));
             $statusPartial = NULL; // should eventually be createdMany later
         }
         foreach($inputTodos as $inputTodo)    {
             try {
-                $inputTodo = $request->input("new-todo".$inputTodo);
-                $inputPriority = $request->input("priority".$inputTodo);
+                Log::debug("new-todo".$inputTodo);
+                $inputTask = $request->input("new-todo".$inputTodo);
+                $inputPriority = 5;
+                
+                if(null!==($request->input("priority".$inputTodo))){
+                    $inputPriority = $request->input("priority".$inputTodo);
+                }
+                
                 // TODO: validate input data here
                 $group = $options['group'];
                 if(null!==($request->input("group".$inputTodo))){
@@ -126,7 +135,8 @@ class TodoItemController extends Controller
                 if(null!==($request->input("complete".$inputTodo))){
                     $complete =$request->input("complete".$inputTodo);
                 }
-                $newTodoItem = new TodoItem(['task'=>$inputTodo, 'priority'=>$inputPriority, 'group'=>$group, 'complete'=>$complete]);
+                Log::debug(implode(',',['task'=>$inputTask, 'priority'=>$inputPriority, 'group'=>$group, 'complete'=>$complete]));
+                $newTodoItem = new TodoItem(['task'=>$inputTask, 'priority'=>$inputPriority, 'group'=>$group, 'complete'=>$complete]);
                 // TODO: add newTodoItem to the repository of todos (i.e., store in the database)   
                 $newTodoItem->Save();
                 $cssClass = "success";
@@ -453,7 +463,7 @@ class TodoItemController extends Controller
         //$filter=$options['filter']; filter 2 is all 0 and 1 only display matching completion.
         
         
-        return view('pages/clearComplete'.['todos'=>$todos, 'options'=>$options, 'groups'=>$groups, 
+        return view('pages/clearComplete',['todos'=>$todos, 'options'=>$options, 'groups'=>$groups, 
             'statusPartial'=>$statusPartial, 'statusArgs'=>$statusArgs]);
     }
     

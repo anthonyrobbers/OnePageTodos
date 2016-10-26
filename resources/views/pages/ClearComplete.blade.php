@@ -7,12 +7,12 @@ ToDo List - Clear Completed Tasks
 @section('content')
     @include('partials/status')
     
-    <section id="todos" class="{{$class}}">
+    <section id="todos" class="todos">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 text-center">
                         <h2>todos to be deleted</h2>
-                        <hr class="star-<?php if ($class=='success'){echo'light';}else{echo'primary';}?>">
+                        <hr class="star-primary">
                     </div>
                 </div>
                 <div class="row">

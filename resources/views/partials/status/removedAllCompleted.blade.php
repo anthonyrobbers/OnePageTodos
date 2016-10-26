@@ -8,7 +8,7 @@
         </div>
         <div class="listButton col-sm-4 todos-item">
             <form name="updateTask" id="RestoreRemovedTodos" novalidate="" method="POST" action="<?php
-                echo(action('TodoItemController@store',['id'=>$todo['id']]).'"> '. method_field('POST')); 
+                echo(action('TodoItemController@store').'"> '. method_field('POST')); 
                 $newTodoList=[];
                 ?>
                 @foreach($removedTodos as $removedTodo)
@@ -18,7 +18,7 @@
                     <input type="hidden" name="complete{{$removedTodo['id']}}" value="{{$removedTodo['complete']}}" >
                     <input type="hidden" name="group{{$removedTodo['id']}}" value="{{$removedTodo['group']}}" >
                 @endforeach
-                    <button name="new-todo-list" type="submit" class="btn btn-success btn-sm" value="{{$newTodoList}}">Restore</button>  
+                    <button name="new-todo-list" type="submit" class="btn btn-success btn-sm" value="{{implode(',',$newTodoList)}}">Restore</button>  
                     <input type="hidden" name="_token" value="{{csrf_token()}}">
 
             </form>
