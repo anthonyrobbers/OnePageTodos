@@ -89,6 +89,11 @@ class TodoItemController extends Controller
     public function store(Request $request){
         // POST to /
         Log::info('Hit store function of the TodoItem controller');
+        ob_start();
+                var_dump($request->all());
+                $content = ob_get_contents();
+                ob_end_clean();
+                Log::debug('The request: '.$content);
         try{
             $options=optionList::find(1);
             $emergencyMsg='';
