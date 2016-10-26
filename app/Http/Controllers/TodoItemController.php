@@ -77,7 +77,8 @@ class TodoItemController extends Controller
         Log::info('Hit create function of the TodoItem controller');
         
         $cssClass = NULL;
-        return view('pages.newItem', ['class' => $cssClass, 'msg'=>NULL]);
+        return view('pages.newItem', ['class' => $cssClass, 'msg'=>NULL, 'statusArgs'=>NULL, 
+                'statusPartial'=>'defaultStatus']);
     }
 
     /**
@@ -172,7 +173,8 @@ class TodoItemController extends Controller
         //needs to be modified to only show one
         $todo = TodoItem::find($id);
         $cssClass = 'todos';
-        return view('pages.showOne', ['todo'=>$todo, 'class' => $cssClass, 'msg'=>NULL]);
+        return view('pages.showOne', ['todo'=>$todo, 'class' => $cssClass, 'msg'=>NULL, 'statusArgs'=>NULL, 
+                'statusPartial'=>'defaultStatus']);
     }
 
     /**
@@ -197,7 +199,9 @@ class TodoItemController extends Controller
         $todos = TodoItem::find($id);
         if($todos['group']===$options['group']){
             Log::debug('active group detected');
-            return view('pages.edit', ['todo'=>$todos, 'class'=>'todos','options'=>$options, 'msg'=>NULL]);
+            return view('pages.edit', ['todo'=>$todos, 'class'=>'todos',
+                'options'=>$options, 'msg'=>NULL, 'statusArgs'=>NULL, 
+                'statusPartial'=>'defaultStatus']);
         }
         else {
             Log::debug('active group not detected');
@@ -398,7 +402,8 @@ class TodoItemController extends Controller
         if($todos['group']===$options['group']){
             Log::debug('active group detected');
             $options['fast']=TRUE;
-            return view('pages.preDelete', ['todo'=>$todos, 'class'=>'todos','options'=>$options, 'msg'=>$emergencyMsg]);
+            return view('pages.preDelete', ['todo'=>$todos, 'class'=>'todos','options'=>$options, 'msg'=>$emergencyMsg, 'statusArgs'=>NULL, 
+                'statusPartial'=>'defaultStatus']);
         }
         else {
             Log::debug('active group not detected');
