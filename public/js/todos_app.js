@@ -36,28 +36,87 @@ jQuery(function ($) {
             
             $('#todo-list')
                 
-                
-                
+                .on('click', '.glyphicon-ok', function(event){
+                if(DEBUG==1){console.log('in event hendeler for prevent default glyphicon-ok');}
+                event.preventDefault();
+                })
+                .on('click', '.glyphicon-ok', this.toggleComplete.bind(this))
+                .on('click', '.glyphicon-unchecked', function(event){
+                    if(DEBUG==1){console.log('in event hendeler for prevent default glyphicon-unchecked');}
+                    event.preventDefault();
+                    })
+                .on('click', '.glyphicon-unchecked', this.toggleComplete.bind(this))
                 .on('click', '.destroy', function(event){
-                    console.log('in event hendeler for prevent default')
+                    if(DEBUG==1){console.log('in event hendeler for prevent default destroy');}
                     event.preventDefault();
         })
                 .on('click', '.destroy', this.destroy.bind(this));
             
         },
+        toggleComplete: function (e) {
+            if(DEBUG==1){console.log('in toggleComplete function todos = '+JSON.stringify(this.todos));}
+            var indexToToggle=this.indexFromEl(e.target);
+            if(DEBUG==1){console.log(JSON.stringify(indexToToggle)+' was indexToToggle');}
+            var thisTodo = this.todos[indexToToggle];
+            if(DEBUG==1){console.log(JSON.stringify(thisTodo)+' was thisTodo');}
+            this.toggleCompleteHome(thisTodo['id']);
+            this.toggleCompleteInDom($(e.target));
+            
+            this.todos[indexToToggle].complete=1-this.todos[indexToToggle].complete;
+            
+            if(DEBUG==1){console.log('leaving toggleComplete function todos = '+JSON.stringify(this.todos));}
+        },
+        toggleCompleteHome: function (homeId){
+            if(DEBUG==1){console.log('in toggleCompleteHome');}
+            if(!$('#new-todo').hasClass('loading')){
+                //ajax to GET at /TodoItem/{id}/complete
+                
+                var reply=' ';
+                $.ajax({ 
+                    url: "TodoItem/"+homeId+'/complete', 
+                    data: {
+                        _token :initOptions.token,
+                        ajax:1, 
+                        beforeSend: function() {
+                            if(DEBUG==1){console.log('sending ajax to toggle complete '+homeId);}
+                            $('#new-todo').addClass('loading');
+                        }
+                    }, 
+                    type: "GET"
+                }).done(function(responce){
+                    reply = responce;
+                    if(DEBUG==1){console.log('ajax success'+responce);}
+                }).fail( function(xhr, status, errorThrown){ 
+                    if(DEBUG==1){console.log('ajax failed'+errorThrown+status);}
+                    alert(errorThrown+status);
+                }).always(function(xhr, status){
+                    $('#new-todo').removeClass('loading');
+                    if(DEBUG==1){console.log('ajax finished');}
+                });
+            }
+        },
+        toggleCompleteInDom: function (glyphiconReference) {
+            if(DEBUG==1){console.log('in toggleCompleteInDom');}
+            if(glyphiconReference.hasClass('glyphicon-ok')){
+                glyphiconReference.removeClass('glyphicon-ok');
+                glyphiconReference.addClass('glyphicon-unchecked');
+            }
+            else {
+                glyphiconReference.removeClass('glyphicon-unchecked');
+                glyphiconReference.addClass('glyphicon-ok');
+            }
+            if(DEBUG==1){console.log('row removed');}
+            
+        },
         destroy: function (e) {
-            
+            if(DEBUG==1){console.log('in destroy function todos = '+JSON.stringify(this.todos));}
             var indexToDestroy=this.indexFromEl(e.target);
-            console.log(JSON.stringify(indexToDestroy));
-            console.log('was indexToDestroy');
-            var thisTodo = this.todos[indexToDestroy]
-            console.log(JSON.stringify(thisTodo));
-            console.log('was thisTodo');
-            this.destroyHome(thisTodo['id']);// add a ajax method here to remove the right item from the DB
-            //requires the 'id' of the thing to destroy in the DB
+            if(DEBUG==1){console.log(JSON.stringify(indexToDestroy)+' was indexToDestroy');}
+            var thisTodo = this.todos[indexToDestroy];
+            if(DEBUG==1){console.log(JSON.stringify(thisTodo)+' was thisTodo');}
+            this.destroyHome(thisTodo['id']);
             
-            //DOM manipulation here
-            this.destroyInDom($(e.target).closest('.row'))
+            this.destroyInDom($(e.target).closest('.row'));
             
             this.todos.splice(indexToDestroy, 1); //removing the todo from the js variable
             
@@ -65,34 +124,66 @@ jQuery(function ($) {
             
             //all actions are in triplicate first inform the DB then the DOM then the js variable
             
-            
+            if(DEBUG==1){console.log('leaving destroy function todos = '+JSON.stringify(this.todos));}
         },
         destroyHome: function (homeId) {
-            console.log('in destroyHome');
-            console.log('please insert a destroy home function.');
+            if(DEBUG==1){console.log('in destroyHome');}
+            if(!$('#new-todo').hasClass('loading')){
+                //ajax to DELETE /TodoItem/{id}
+                var reply=' ';
+                $.ajax({ 
+                    url: "TodoItem/"+homeId, 
+                    data: {
+                        _method: 'delete',
+                        _token :initOptions.token,
+                        ajax:1, 
+                        beforeSend: function() {
+                            if(DEBUG==1){console.log('sending ajax to delete '+homeId);}
+                            $('#new-todo').addClass('loading');
+                        }
+                    }, 
+                    type: "POST"
+                }).done(function(responce){
+                    reply = responce;
+                    if(DEBUG==1){console.log('ajax success'+responce);}
+                }).fail( function(xhr, status, errorThrown){ 
+                    if(DEBUG==1){console.log('ajax failed'+errorThrown+status);}
+                    alert(errorThrown+status);
+                }).always(function(xhr, status){
+                    $('#new-todo').removeClass('loading');
+                    if(DEBUG==1){console.log('ajax finished');}
+                });
+            }
         },
         destroyInDom: function (RowRefference){
-            console.log('in destroyInDom');
-            console.log('please insert a destroy in DOM function.');
+            if(DEBUG==1){console.log('in destroyInDom');}
+            RowRefference.remove();
+            if(DEBUG==1){console.log('row removed');}
+        },
+        hideTask: function (RowRefference) {
+            
+        },
+        revealTask: function (RowRefference) {
+            
+        },
+        NukeAndPave: function () {
+            
         },
         indexFromEl: function (el) {
-            console.log('in indexFromEl');
-            //console.log(JSON.stringify(el));
+            if(DEBUG==1){console.log('in indexFromEl');}
             var id = $(el).closest('.row').data('id'); //needs to be changed to divs of class row and those need a data-id="..." added to be checked
-            console.log(JSON.stringify(id));
+            //if(DEBUG==1){console.log(JSON.stringify(id)+' = target id');}
             var todos = this.todos;
-            //console.log(todos.length);
-            //console.log('todos.length');
+            //if(DEBUG==1){console.log(todos.length+'todos.length');}
             var i = todos.length;
-            console.log(i);
-            console.log('=i');
-
+            //if(DEBUG==1){console.log(i+'=i');}
+            
             while (i--) {
-                console.log(JSON.stringify(i));
-                console.log(JSON.stringify(todos[i]));
-                console.log(JSON.stringify(todos[i].id));
+                //if(DEBUG==1){console.log(JSON.stringify(i)+' =i in loop');}
+                //if(DEBUG==1){console.log(JSON.stringify(todos[i])+'=todo[i]');}
+                //if(DEBUG==1){console.log(JSON.stringify(todos[i].id)+'=id of todo[i]');}
                 if (todos[i].id == id) {
-                    console.log('found');
+                    if(DEBUG==1){console.log('found the right id in i');}
                     return i;
                 }
             }
