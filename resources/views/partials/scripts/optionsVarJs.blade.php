@@ -1,6 +1,7 @@
 <script id="options-init" >
     var initOptions = {
         group : "{{$options['group']}}",
-        filter: {{$options['filter']}}
+        filter: {{$options['filter']}},
+        token: "{{csrf_token()}}"
     };
 </script>
