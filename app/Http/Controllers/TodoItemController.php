@@ -170,11 +170,20 @@ class TodoItemController extends Controller
     {
         //GET /TodoItem/{id}
         Log::info('Hit show ('.$id.') function of the TodoItem controller');
+        try{
+            $options=optionList::find(1);
+            $emergencyMsg='';
+        }
+        catch(Illuminate\Database\QueryException $ex){
+            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2,'fast'=>0];
+            $emergencyMsg='database error. loading default options instead of saved options';
+            Log::debug('failed to load options.  loading defaults.'.$ex);
+        }
         //needs to be modified to only show one
         $todo = TodoItem::find($id);
         $cssClass = 'todos';
         return view('pages.showOne', ['todo'=>$todo, 'class' => $cssClass, 'msg'=>NULL, 'statusArgs'=>NULL, 
-                'statusPartial'=>'defaultStatus']);
+                'statusPartial'=>'defaultStatus', 'options'=>$options]);
     }
 
     /**
