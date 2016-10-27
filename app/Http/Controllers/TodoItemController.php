@@ -288,13 +288,18 @@ class TodoItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         //DELETE /TodoItem/{id}
         Log::info('Hit destroy ('.$id.') function of the TodoItem controller');
+        Log::debug($request);
         $active=TodoItem::find($id);
         
         $active->delete();
+        if($request['ajax']){
+            Log::debug('ajax detected');
+            return;
+        }
         return redirect('/') 
             ->with(['msg'=>'A task has been deleted.', 'oldTodo'=>$active,'currentTodo'=>NULL]);
     }
@@ -329,7 +334,7 @@ class TodoItemController extends Controller
             ->with(['msg'=>'All tasks marked complete.', 'oldTodo'=>NULL,'currentTodo'=>NULL]);
     }
     
-    public function toggleComplete($id) {
+    public function toggleComplete($id, Request $request) {
         //GET at /TodoItem/{id}/complete
         Log::info('Hit toggleComplete ('.$id.') function of the TodoItem controller');
         try{
@@ -346,6 +351,10 @@ class TodoItemController extends Controller
             }
             $active->save();
 
+            if($request['ajax']){
+            Log::debug('ajax detected');
+            return;
+        }
             return redirect('/') 
                 ->with(['msg'=>$msg, 'oldTodo'=>NULL,'currentTodo'=>NULL]);
         }
