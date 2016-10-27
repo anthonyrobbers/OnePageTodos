@@ -17,7 +17,7 @@ ToDo List
                 </div>
 
                 <div class="row">
-                     <div class="listContainer">
+                     <div id="todo-list" class="listContainer">
                         @include('pages/TodoForm')
                         <?php $activeCount=0;?>
                         @foreach ($todos as $todo)
