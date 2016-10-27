@@ -6,13 +6,15 @@ jQuery(function ($) {
 		return a === b ? options.fn(this) : options.inverse(this);
 	});
     
+    var DEBUG = 1;
     var ENTER_KEY = 13;
     var ESCAPE_KEY = 27;
     
     var App = {
         init: function () {
-            console.log('in init');
+            if(DEBUG==1){console.log('in init');}
             this.todos = initTodos;// get todos from partials/scripts/todoListVarJs.blade.php
+            this.options = initOptions; // from .../optionsVarJs.blade.php
             this.todoTemplate = Handlebars.compile($('#todo-template').html()); // get template for a item in the list
             this.footerTemplate = Handlebars.compile($('#footer-template').html()); 
             this.bindEvents();
