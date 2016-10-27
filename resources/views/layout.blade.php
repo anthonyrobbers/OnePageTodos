@@ -37,7 +37,7 @@
 
 <body id="page-top" class="index">
 
-@yield('content')
+    @yield('content')
 
 
     <!-- jQuery -->
@@ -55,6 +55,8 @@
 
     <!-- Theme JavaScript -->
     <script src="{{asset('js/SUInfo.min.js')}}"></script>
+    
+    @yield('scripts')
 
 </body>
 

@@ -32,5 +32,10 @@ ToDo List
                 </div>
             </div>
     </section>
-@stop
     
+    
+@stop
+
+@section('scripts')
+    @include('partials/scripts/todosApp')
+@stop
