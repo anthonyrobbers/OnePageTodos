@@ -82,6 +82,30 @@ jQuery(function ($) {
                 .on('click', '.destroy', this.destroy.bind(this));
             
         },
+        filterActive: function (e) {
+         if(DEBUG==1){console.log('in filterActive');}   
+          //first test to see if this is the active filter
+             // then call setFilter(2); //set filter will set the filter then render then new html
+        },
+        filterComplete: function (e) {
+         if(DEBUG==1){console.log('in filterComplete');}   
+          //first test to see if this is the active filter
+             // then call setFilter(2); //set filter will set the filter then render then new html
+        },
+        filterAll: function (e) {
+         if(DEBUG==1){console.log('in filterAll');}   
+         //first test to see if this is the active filter
+             // then call setFilter(2); //set filter will set the filter then render then new html
+        },
+        setFilter: function (filter) {
+         if(DEBUG==1){console.log('in setFilter');}   
+         // first find and remove the active class from the filter buttons might want to give them a special class to make this easy
+         // then set this.options.filter=filter;
+         // send ajax (write a send ajax function this time so it is not just a copy and paste of the last few
+         // sendHome(url, extra data(including method field), debuginfo, method)
+         // set the active filter to active class css
+         // nuke and pave with new filter deleting all the html in the just-todos id div
+        },
         clearCompleted: function (e) {
             if(DEBUG==1){console.log('in clearCompleted function todos = '+JSON.stringify(this.todos));}
             $('.glyphicon-ok').closest('.row').remove(); //look up proper syntax for each() 
