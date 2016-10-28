@@ -1,5 +1,5 @@
 @unless($todo==NULL)
-    <div class="row" data-id="{{$todo['id']}}" data-complete="{{$todo['complete']}}" 
+    <div class="row todo-item" data-id="{{$todo['id']}}" data-complete="{{$todo['complete']}}" 
          data-priority="{{$todo['priority']}}" data-task="{{$todo['task']}}" data-group="{{$todo['group']}}">
         
         <div class="listText col-sm-4 todos-item">
