@@ -7,19 +7,19 @@
         if($options['filter']==2){
             echo('active');
         }
-        ?>"> All
+        ?> filter"> All
       </button>
       <button type="submit" name="filter" value="1" id="filter-complete" class="btn btn-success btn-sm <?php 
         if($options['filter']==1){
             echo('active');
         }
-        ?>"> Complete
+        ?> filter"> Complete
       </button>
       <button type="submit" name="filter" value="0" id="filter-active" class="btn btn-success btn-sm <?php 
         if($options['filter']==0){
             echo('active');
         }
-        ?>"> Active
+        ?> filter"> Active
       </button>
       <button type="button" class="btn btn-secondary btn-sm">{{$activeCount}} Active Tasks</button>
     </form>
