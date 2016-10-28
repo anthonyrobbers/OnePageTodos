@@ -200,7 +200,7 @@ jQuery(function ($) {
                 glyphiconReference.removeClass('glyphicon-unchecked');
                 glyphiconReference.addClass('glyphicon-ok');
             }
-            if(DEBUG==1){console.log('row removed');}
+            if(DEBUG==1){console.log('complete toggled');}
             
         },
         destroy: function (e) {
@@ -256,7 +256,7 @@ jQuery(function ($) {
             if(DEBUG==1){console.log('row removed');}
         },
         hideTask: function (RowRefference) {
-            
+         if(DEBUG==1){console.log('in hideTask');}   
         },
         revealTask: function (RowRefference) {
             
