@@ -170,7 +170,7 @@ jQuery(function ($) {
                 $.ajax({ 
                     url: "TodoItem/"+homeId+'/complete', 
                     data: {
-                        _token :initOptions.token,
+                        _token :this.options.token,
                         ajax:1, 
                         beforeSend: function() {
                             if(DEBUG==1){console.log('sending ajax to toggle complete '+homeId);}
@@ -230,7 +230,7 @@ jQuery(function ($) {
                     url: "TodoItem/"+homeId, 
                     data: {
                         _method: 'delete',
-                        _token :initOptions.token,
+                        _token :this.options.token,
                         ajax:1, 
                         beforeSend: function() {
                             if(DEBUG==1){console.log('sending ajax to delete '+homeId);}
