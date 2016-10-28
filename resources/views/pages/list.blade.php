@@ -20,12 +20,14 @@ ToDo List
                      <div id="todo-list" class="listContainer">
                         @include('pages/TodoForm')
                         <?php $activeCount=0;?>
+                        <div id="just-todos">
                         @foreach ($todos as $todo)
                             @if($options['filter']==2 or $todo['complete']==$options['filter'])
                                 @include('pages.defaultTodoDisplay',['verbose'=>FALSE])
                             @endif
                             <?php $activeCount+=1-$todo['complete']; ?>
                         @endforeach
+                        </div>
                         @include('partials/filterButtons')
                         @include('partials/batchButtons')
                     </div>
