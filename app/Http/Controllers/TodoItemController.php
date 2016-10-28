@@ -319,7 +319,7 @@ class TodoItemController extends Controller
         return view('pages.Mvc');
     }
     
-    public function markAllComplete() {
+    public function markAllComplete(Request $request) {
         //GET at /complete
         Log::info('Hit markAllComplete function of the TodoItem controller');
         try{
@@ -338,7 +338,10 @@ class TodoItemController extends Controller
             $active->complete=TRUE;
             $active->save();
         }
-        
+        if($request['ajax']){
+            Log::debug('ajax detected');
+            return;
+        }
         return redirect('/') 
             ->with(['msg'=>'All tasks marked complete.', 'oldTodo'=>NULL,'currentTodo'=>NULL]);
     }
@@ -361,9 +364,9 @@ class TodoItemController extends Controller
             $active->save();
 
             if($request['ajax']){
-            Log::debug('ajax detected');
-            return;
-        }
+                Log::debug('ajax detected');
+                return;
+            }
             return redirect('/') 
                 ->with(['msg'=>$msg, 'oldTodo'=>NULL,'currentTodo'=>NULL]);
         }
@@ -432,7 +435,7 @@ class TodoItemController extends Controller
         
     }
     
-    public function removeAllCompleted(string $group){
+    public function removeAllCompleted(string $group, Request $request){
         // DELETE  /TodoItem/{group}/scour
         try{
             
@@ -448,7 +451,10 @@ class TodoItemController extends Controller
             $msg='database error.';
             Log::debug('failed to load options.  loading defaults.'.$ex);
         }
-        
+        if($request['ajax']){
+                Log::debug('ajax detected');
+                return;
+            }
         return redirect('/') 
             ->with(['statusPartial'=>'removedAllCompleted', 'statusArgs'=>['msg'=>$msg,'removedTodos'=>$todos]]);
     }
