@@ -33,7 +33,18 @@ jQuery(function ($) {
         
         bindEvents: function () {
             //add other events
-            
+            $('#clear-completed')
+                .on('click',function(event){
+                    if(DEBUG==1){console.log('in event hendeler for prevent default clear completed');}
+                    event.preventDefault();
+                })
+                .on('click',this.clearCompleted.bind(this));
+            $('#complete-all')
+                    .on('click',function(event){
+                    if(DEBUG==1){console.log('in event hendeler for prevent default complete all');}
+                    event.preventDefault();
+                })
+                .on('click',this.completeAll.bind(this));
             $('#todo-list')
                 
                 .on('click', '.glyphicon-ok', function(event){
