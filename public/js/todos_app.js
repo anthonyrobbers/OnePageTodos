@@ -64,6 +64,90 @@ jQuery(function ($) {
                 .on('click', '.destroy', this.destroy.bind(this));
             
         },
+        clearCompleted: function (e) {
+            if(DEBUG==1){console.log('in clearCompleted function todos = '+JSON.stringify(this.todos));}
+            $('.glyphicon-ok').closest('.row').remove(); //look up proper syntax for each() 
+            this.clearCompletedHome(this.options.group); //for a // DELETE  /TodoItem/{group}/scour
+            for(var i=0; i<this.todos.length;i++){
+                if (this.todos[i].complete == 1) {
+                    this.todos.splice(i, 1); //removing the todo from the js variable
+                }
+            }
+            if(DEBUG==1){console.log('leaving clearCompleted function todos = '+JSON.stringify(this.todos));}
+        },
+        clearCompletedHome: function (group) {
+            if(DEBUG==1){console.log('in clearCompletedHome function ');}
+            // DELETE  /TodoItem/{group}/scour
+            if(!$('#new-todo').hasClass('loading')){
+                //ajax to DELETE /TodoItem/{id}
+                var reply=' ';
+                $.ajax({ 
+                    url: "TodoItem/"+group+'/scour', 
+                    data: {
+                        _method: 'delete',
+                        _token :this.options.token,
+                        ajax:1, 
+                        beforeSend: function() {
+                            if(DEBUG==1){console.log('sending ajax to scour'+group);}
+                            $('#new-todo').addClass('loading');
+                        }
+                    }, 
+                    type: "POST"
+                }).done(function(responce){
+                    reply = responce;
+                    if(DEBUG==1){console.log('ajax success'+responce);}
+                }).fail( function(xhr, status, errorThrown){ 
+                    if(DEBUG==1){console.log('ajax failed'+errorThrown+status);}
+                    alert(errorThrown+status);
+                }).always(function(xhr, status){
+                    $('#new-todo').removeClass('loading');
+                    if(DEBUG==1){console.log('ajax finished clear all complete');}
+                });
+            }
+        },
+        completeAll: function (e) {
+            if(DEBUG==1){console.log('in completeAll function todos = '+JSON.stringify(this.todos));}
+            
+            this.completeAllHome();
+            //if(DEBUG==1){console.log('in completeAll function todos = '+JSON.stringify($('.glyphicon-unchecked')));}
+            $( '.glyphicon-unchecked' ).addClass('glyphicon-ok').removeClass('glyphicon-unchecked');
+            // glyphiconReference.removeClass('glyphicon-unchecked');
+              //  glyphiconReference.addClass('glyphicon-ok');
+            //for each one todo in list
+            for(var i=0;i<this.todos.length;i++){
+                this.todos[i].complete=1;
+            }
+            if(DEBUG==1){console.log('leaving completeAll function todos = '+JSON.stringify(this.todos));}    
+        },
+        completeAllHome: function   (){
+            if(DEBUG==1){console.log('in completeAllHome');}  
+            if(!$('#new-todo').hasClass('loading')){
+                //ajax to GET at /complete  //GET at /complete
+                
+                var reply=' ';
+                $.ajax({ 
+                    url: 'complete', 
+                    data: {
+                        _token :this.options.token,
+                        ajax:1, 
+                        beforeSend: function() {
+                            if(DEBUG==1){console.log('sending ajax to complete all');}
+                            $('#new-todo').addClass('loading');
+                        }
+                    }, 
+                    type: "GET"
+                }).done(function(responce){
+                    reply = responce;
+                    if(DEBUG==1){console.log('ajax success'+responce);}
+                }).fail( function(xhr, status, errorThrown){ 
+                    if(DEBUG==1){console.log('ajax failed'+errorThrown+status);}
+                    alert(errorThrown+status);
+                }).always(function(xhr, status){
+                    $('#new-todo').removeClass('loading');
+                    if(DEBUG==1){console.log('ajax complete all finished');}
+                });
+            }
+        },
         toggleComplete: function (e) {
             if(DEBUG==1){console.log('in toggleComplete function todos = '+JSON.stringify(this.todos));}
             var indexToToggle=this.indexFromEl(e.target);
