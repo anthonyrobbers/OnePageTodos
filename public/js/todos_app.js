@@ -33,6 +33,24 @@ jQuery(function ($) {
         
         bindEvents: function () {
             //add other events
+            $('#filter-active')
+                .on('click',function(event){
+                    if(DEBUG==1){console.log('in event hendeler for prevent default filter-active');}
+                    event.preventDefault();
+                })
+                .on('click',this.filterActive.bind(this));
+            $('#filter-complete')
+                .on('click',function(event){
+                    if(DEBUG==1){console.log('in event hendeler for prevent default filter complete');}
+                    event.preventDefault();
+                })
+                .on('click',this.filterComplete.bind(this));
+            $('#filter-all')
+                .on('click',function(event){
+                    if(DEBUG==1){console.log('in event hendeler for prevent default filter all');}
+                    event.preventDefault();
+                })
+                .on('click',this.filterAll.bind(this));
             $('#clear-completed')
                 .on('click',function(event){
                     if(DEBUG==1){console.log('in event hendeler for prevent default clear completed');}
