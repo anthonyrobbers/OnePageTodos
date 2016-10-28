@@ -33,24 +33,12 @@ jQuery(function ($) {
         
         bindEvents: function () {
             //add other events
-            $('#filter-active')
+            $('.filter')
                 .on('click',function(event){
-                    if(DEBUG==1){console.log('in event hendeler for prevent default filter-active');}
+                    if(DEBUG==1){console.log('in event hendeler for prevent default filter');}
                     event.preventDefault();
                 })
-                .on('click',this.filterActive.bind(this));
-            $('#filter-complete')
-                .on('click',function(event){
-                    if(DEBUG==1){console.log('in event hendeler for prevent default filter complete');}
-                    event.preventDefault();
-                })
-                .on('click',this.filterComplete.bind(this));
-            $('#filter-all')
-                .on('click',function(event){
-                    if(DEBUG==1){console.log('in event hendeler for prevent default filter all');}
-                    event.preventDefault();
-                })
-                .on('click',this.filterAll.bind(this));
+                .on('click',this.setFilter.bind(this));
             $('#clear-completed')
                 .on('click',function(event){
                     if(DEBUG==1){console.log('in event hendeler for prevent default clear completed');}
@@ -82,28 +70,19 @@ jQuery(function ($) {
                 .on('click', '.destroy', this.destroy.bind(this));
             
         },
-        filterActive: function (e) {
-         if(DEBUG==1){console.log('in filterActive');}   
-          //first test to see if this is the active filter
-             // then call setFilter(2); //set filter will set the filter then render then new html
-        },
-        filterComplete: function (e) {
-         if(DEBUG==1){console.log('in filterComplete');}   
-          //first test to see if this is the active filter
-             // then call setFilter(2); //set filter will set the filter then render then new html
-        },
-        filterAll: function (e) {
-         if(DEBUG==1){console.log('in filterAll');}   
-         //first test to see if this is the active filter
-             // then call setFilter(2); //set filter will set the filter then render then new html
-        },
-        setFilter: function (filter) {
+        setFilter: function (e) {
          if(DEBUG==1){console.log('in setFilter');}   
-         // first find and remove the active class from the filter buttons might want to give them a special class to make this easy
-         // then set this.options.filter=filter;
+         var newFilter = $(e.target).val(); //get the value of the button pressed
+         if(this.options.filter==newFilter){// test if this is the active filter
+             return 1;  // leave the function when it is not needed
+         }
+         // if not the active filter
+         $('.filter').removeClass('active');// find and remove the active class from the filter buttons 
+         $(e.target).addClass('active'); //set this button to the active class 
+         this.options.filter=newFilter;// then set the local variable to the new filter
          // send ajax (write a send ajax function this time so it is not just a copy and paste of the last few
-         // sendHome(url, extra data(including method field), debuginfo, method)
-         // set the active filter to active class css
+         // this.sendHome(url, extra data(including method field), debuginfo, method)
+         // this.sendHome('',"filter":newFilter,'set filter to '+newFilter,'PUT'); //send ajax to change the filter
          // nuke and pave with new filter deleting all the html in the just-todos id div
         },
         clearCompleted: function (e) {
