@@ -30,7 +30,7 @@ jQuery(function ($) {
                        
                        
         },
-        
+        // watches for any events that need to be watched for the app and calls the right functions in responce
         bindEvents: function () {
             //add other events
             $('.filter')
@@ -70,6 +70,7 @@ jQuery(function ($) {
                 .on('click', '.destroy', this.destroy.bind(this));
             
         },
+        // sets the filter to the value of the button clicked
         setFilter: function (e) {
          if(DEBUG==1){console.log('in setFilter');}   
          var newFilter = $(e.target).val(); //get the value of the button pressed
@@ -80,11 +81,11 @@ jQuery(function ($) {
          $('.filter').removeClass('active');// find and remove the active class from the filter buttons 
          $(e.target).addClass('active'); //set this button to the active class 
          this.options.filter=newFilter;// then set the local variable to the new filter
-         // send ajax (write a send ajax function this time so it is not just a copy and paste of the last few
-         // this.sendHome(url, extra data(including method field), debuginfo, method)
-         // this.sendHome('',"filter":newFilter,'set filter to '+newFilter,'PUT'); //send ajax to change the filter
+         this.sendHome('optionlist/1',{"filter":newFilter},'set filter to '+newFilter,'PUT'); //send ajax to change the filter
          // nuke and pave with new filter deleting all the html in the just-todos id div
         },
+        
+        // deletes all completed todos
         clearCompleted: function (e) {
             if(DEBUG==1){console.log('in clearCompleted function todos = '+JSON.stringify(this.todos));}
             $('.glyphicon-ok').closest('.row').remove(); //look up proper syntax for each() 
@@ -126,6 +127,7 @@ jQuery(function ($) {
                 });
             }
         },
+        // marks all todos complete
         completeAll: function (e) {
             if(DEBUG==1){console.log('in completeAll function todos = '+JSON.stringify(this.todos));}
             
@@ -169,6 +171,10 @@ jQuery(function ($) {
                 });
             }
         },
+        // toggleComplete (  e (an event assumed to point to the complete checkbox)  )
+        //  switches the complete in the this.todos variable, the database, and changes the checkbox 
+        //  from checked to unchecked or vice versa
+        // returns nothing
         toggleComplete: function (e) {
             if(DEBUG==1){console.log('in toggleComplete function todos = '+JSON.stringify(this.todos));}
             var indexToToggle=this.indexFromEl(e.target);
@@ -224,6 +230,9 @@ jQuery(function ($) {
             if(DEBUG==1){console.log('complete toggled');}
             
         },
+        // destroy (  e (an event assumed to point to a todo indirectly)  )
+        //  removes the todo pointed to by the event from the DOM, this.todos variable, and the database.
+        // returns nothing
         destroy: function (e) {
             if(DEBUG==1){console.log('in destroy function todos = '+JSON.stringify(this.todos));}
             var indexToDestroy=this.indexFromEl(e.target);
