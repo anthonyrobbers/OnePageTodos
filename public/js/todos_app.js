@@ -291,9 +291,55 @@ jQuery(function ($) {
         revealTask: function (RowRefference) {
             
         },
+        // NukeAndPave () a function to clear the html of old todos and reload the list as html
+        //  returns nothing
         NukeAndPave: function () {
             
         },
+        // this.sendHome(
+        //  url (a string that is the url: X, in the ajax function),
+        //  extra data(any data besides method field, token, ajax:1, and the beforesend function), 
+        //  debuginfo(a string to display in debug console comandes so ajax gets labeled for easier debuging), 
+        //  method ('GET','POST','DELETE','PUT',or other method.  get requests must be 'GET' caps required)
+        //  )
+        // returns nothing.  sends an ajax request as expected for the laravel setup running the backend.
+        sendHome: function (url, extraData, debugInfo, method) {
+            if(DEBUG==1){console.log('in sendHome for '+debugInfo);}
+            if(!$('#new-todo').hasClass('loading')){
+                //ajax to url
+                var reply=' ';
+                var baseData={
+                        _method: method,
+                        _token :this.options.token,
+                        ajax:1, 
+                        beforeSend: function() {
+                            if(DEBUG==1){console.log('sending ajax to '+debugInfo);}
+                            $('#new-todo').addClass('loading');
+                        }
+                    };
+                if(method!='GET'){ var baseMethod = 'POST'; }
+                else { var baseMethod = 'GET';}
+                
+                $.ajax({ 
+                    url: url, 
+                    data: $.extend(baseData,extraData), 
+                    type: baseMethod
+                }).done(function(responce){
+                    reply = responce;
+                    if(DEBUG==1){console.log('ajax success'+responce);}
+                }).fail( function(xhr, status, errorThrown){ 
+                    if(DEBUG==1){console.log('ajax failed'+errorThrown+status);}
+                    alert(errorThrown+status);
+                }).always(function(xhr, status){
+                    $('#new-todo').removeClass('loading');
+                    if(DEBUG==1){console.log('ajax finished for '+debugInfo);}
+                });
+            }
+        },
+        //indexFromEl (
+        //  el(an element) 
+        //  )
+        //  returns the index of the element in the todos variable this is a intiger
         indexFromEl: function (el) {
             if(DEBUG==1){console.log('in indexFromEl');}
             var id = $(el).closest('.row').data('id'); //needs to be changed to divs of class row and those need a data-id="..." added to be checked
