@@ -39,6 +39,7 @@ jQuery(function ($) {
             $('#clear-completed').on('click',this.clearCompleted.bind(this));
             $('#complete-all').on('click',this.completeAll.bind(this));
             $('#todo-list')
+                .on('click','.task-edit', this.openEdit.bind(this))
                 .on('click', '.glyphicon-ok', this.toggleComplete.bind(this))
                 .on('click', '.glyphicon-unchecked', this.toggleComplete.bind(this))
                 .on('click', 'task-edit', this.openEdit.bind(this))
@@ -52,15 +53,19 @@ jQuery(function ($) {
             if(DEBUG==1){console.log('in openEdit');} 
             e.preventDefault();
             
-            //find the index for this.todos
-            //find the task and the priority
-            //
-            //remove the task from the DOM (might need to remove the link as well.
+            var indexToEdit=this.indexFromEl(e.target);
+            var task=this.todos[indexToEdit].task;
+            var priority=this.todos[indexToEdit].priority;
+            var id=this.todos[indexToEdit].id;
+            
+            //remove the task from the DOM (might need to remove the link as well.   $(e.target).replaceWith(...);  ???
             //add the input for editing in that place and the priority field set defaults to their values
-            //
-            //find the delete button
-            //remove the delete button
-            //add the update button
+            $(e.target).html('<input id="edit-todo" name="new-todo" value="'+task+
+                '" autofocus="" class=""><input id="edit-priority" name="priority" type="number" value="'
+                +priority+'">');
+        
+            $(e.target).closest('.row').children('.listButton').html('<a class="btn btn-success btn-sm update" '+
+                'href="'+this.options.homeUrl+'TodoItem/'+id+'/edit" >Update</a>');
             
         },
         edit: function (e) {
