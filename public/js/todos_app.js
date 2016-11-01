@@ -70,19 +70,40 @@ jQuery(function ($) {
                 .on('click', '.destroy', this.destroy.bind(this));
             
         },
-        // sets the filter to the value of the button clicked
+        openEdit: function (e) {
+            // e = an event from clicking on the link that is the task name
+            // returns nothing but updates DOM and updates prepares functions for editing
+            if(DEBUG==1){console.log('in openEdit');} 
+            
+        },
+        edit: function (e) {
+            // e = an event from clicking on the add button or hitting enter
+            // returns nothing but sends ajax, updates DOM, and updates internal variables
+            if(DEBUG==1){console.log('in edit');} 
+            
+        },
+        create: function (e) {
+            // e = an event from clicking on the add button or hitting enter
+            // returns nothing but sends ajax, updates DOM, and updates internal variables
+            if(DEBUG==1){console.log('in create');} 
+            
+        },
+        // sets the filter to the value of the button clicked accepts an event and 
+        // returns nothing or 1 if the filter is already the one in the event
         setFilter: function (e) {
-         if(DEBUG==1){console.log('in setFilter');}   
-         var newFilter = $(e.target).val(); //get the value of the button pressed
-         if(this.primaryOptions.filter==newFilter){// test if this is the active filter
-             return 1;  // leave the function when it is not needed
-         }
-         // if not the active filter
-         $('.filter').removeClass('active');// find and remove the active class from the filter buttons 
-         $(e.target).addClass('active'); //set this button to the active class 
-         this.primaryOptions.filter=newFilter;// then set the local variable to the new filter
-         this.sendHome('optionList/1',{"filter":newFilter},'set filter to '+newFilter,'PUT'); //send ajax to change the filter
-         this.renderList();// nuke and pave with new filter deleting all the html in the just-todos id div and recountingthe active count
+             if(DEBUG==1){console.log('in setFilter');}   
+             var newFilter = $(e.target).val(); //get the value of the button pressed
+             if(this.primaryOptions.filter==newFilter){// test if this is the active filter
+                 return 1;  // leave the function when it is not needed
+             }
+             // if not the active filter
+             $('.filter').removeClass('active');// find and remove the active class from the filter buttons 
+             $(e.target).addClass('active'); //set this button to the active class 
+             
+             this.primaryOptions.filter=newFilter;// then set the local variable to the new filter
+             
+             this.sendHome('optionList/1',{"filter":newFilter},'set filter to '+newFilter,'PUT'); //send ajax to change the filter
+             this.renderList();// nuke and pave with new filter deleting all the html in the just-todos id div and recountingthe active count
         },
         
         // deletes all completed todos
