@@ -71,14 +71,12 @@ jQuery(function ($) {
             var priority=this.todos[indexToEdit].priority;
             var id=this.todos[indexToEdit].id;
             
-            //remove the task from the DOM (might need to remove the link as well.   $(e.target).replaceWith(...);  ???
-            //add the input for editing in that place and the priority field set defaults to their values
             $(e.target).html('<input id="edit-todo" name="new-todo" value="'+task+
-                '" autofocus="" class=""><input id="edit-priority" name="priority" type="number" value="'
-                +priority+'">');
+                '" autofocus="" class=""><input id="priority" name="priority" type="number" value="'
+                +priority+'">'); //replace link contents with inputs
         
             $(e.target).closest('.row').children('.listButton').html('<a class="btn btn-success btn-sm update" '+
-                'href="'+this.options.homeUrl+'TodoItem/'+id+'/edit" >Update</a>');
+                'href="'+this.primaryOptions.homeUrl+'TodoItem/'+id+'/edit" >Update</a>'); //replace button
             
         },
         edit: function (e) {
