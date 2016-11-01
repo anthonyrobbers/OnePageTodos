@@ -40,11 +40,24 @@ jQuery(function ($) {
             $('#complete-all').on('click',this.completeAll.bind(this));
             $('#todo-list')
                 .on('click','.task-edit', this.openEdit.bind(this))
+                .on('keyup', this.pressedEsc.bind(this))
+                .on('click','.update', this.edit.bind(this))
                 .on('click', '.glyphicon-ok', this.toggleComplete.bind(this))
                 .on('click', '.glyphicon-unchecked', this.toggleComplete.bind(this))
                 .on('click', 'task-edit', this.openEdit.bind(this))
                 .on('click', '.destroy', this.destroy.bind(this));
                 
+            
+        },
+        pressedEsc: function (e) {
+            // e = an event from presing the escape key
+            // returns nothing, but clears the edit field, the new todo field, and resets priority to 5
+            if (e.which !== ESCAPE_KEY) {
+                return;
+            }
+            this.renderList();
+            $('#new-todo').val('');
+            $('#priority').val('5');
             
         },
         openEdit: function (e) {
