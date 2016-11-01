@@ -140,6 +140,8 @@ jQuery(function ($) {
             for(var i=0;i<this.todos.length;i++){
                 this.todos[i].complete=1;
             }
+            this.primaryOptions.activeCount = 0;
+            $('#active-count').html(this.primaryOptions.activeCount+' Active Tasks');
             if(DEBUG==1){console.log('leaving completeAll function todos = '+JSON.stringify(this.todos));}    
         },
         completeAllHome: function   (){
@@ -181,10 +183,16 @@ jQuery(function ($) {
             if(DEBUG==1){console.log(JSON.stringify(indexToToggle)+' was indexToToggle');}
             var thisTodo = this.todos[indexToToggle];
             if(DEBUG==1){console.log(JSON.stringify(thisTodo)+' was thisTodo');}
+            
+            if (this.todos[indexToToggle].complete==0) {this.primaryOptions.activeCount-=1;}
+            else {this.primaryOptions.activeCount+=1;}
+            
             this.toggleCompleteHome(thisTodo['id']);
             this.toggleCompleteInDom($(e.target));
             
             this.todos[indexToToggle].complete=1-this.todos[indexToToggle].complete;
+            
+            
             
             if(DEBUG==1){console.log('leaving toggleComplete function todos = '+JSON.stringify(this.todos));}
         },
@@ -227,6 +235,9 @@ jQuery(function ($) {
                 glyphiconReference.removeClass('glyphicon-unchecked');
                 glyphiconReference.addClass('glyphicon-ok');
             }
+            
+            $('#active-count').html(this.primaryOptions.activeCount+' Active Tasks');
+            
             if(DEBUG==1){console.log('complete toggled');}
             
         },
@@ -240,6 +251,8 @@ jQuery(function ($) {
             var thisTodo = this.todos[indexToDestroy];
             if(DEBUG==1){console.log(JSON.stringify(thisTodo)+' was thisTodo');}
             this.destroyHome(thisTodo['id']);
+            if (this.todos[indexToDestroy].complete == 0){
+                this.primaryOptions.activeCount-=1;  } 
             
             this.destroyInDom($(e.target).closest('.row'));
             
@@ -283,6 +296,7 @@ jQuery(function ($) {
         destroyInDom: function (RowRefference){
             if(DEBUG==1){console.log('in destroyInDom');}
             RowRefference.remove();
+            $('#active-count').html(this.primaryOptions.activeCount+' Active Tasks');
             if(DEBUG==1){console.log('row removed');}
         },
         hideTask: function (RowRefference) {
@@ -291,7 +305,7 @@ jQuery(function ($) {
         revealTask: function (RowRefference) {
             
         },
-        // NukeAndPave () a function to clear the html of old todos and reload the list as html
+        // renderList () a function to clear the html of old todos and reload the list as html and update the active count
         //  returns nothing
         renderList: function () {
              if(DEBUG==1){console.log('in renderlist'+JSON.stringify(this.todos));}   
