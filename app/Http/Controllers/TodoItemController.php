@@ -291,11 +291,18 @@ class TodoItemController extends Controller
         } 
         else {
             Log::debug('active group not detected, active task is not NULL.  Nothing should reach here.');
+            if($request['ajax']){
+                Log::debug('ajax detected');
+                return;
+            }
             return redirect('/')
                 ->with(['msg'=>'something went wrong updating an entry.','currentTodo'=>NULL, 
                     'oldTodo'=>NULL]);
         }
-        
+        if($request['ajax']){
+            Log::debug('ajax detected');
+            return;
+        }
         return redirect('/') 
             ->with(['msg'=>'An item has been changed. Item updated to: ', 
                 'currentTodo'=>$active, 'oldTodo'=>$backup]);
