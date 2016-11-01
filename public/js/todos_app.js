@@ -52,10 +52,12 @@ jQuery(function ($) {
             if(DEBUG==1){console.log('in openEdit');} 
             e.preventDefault();
             
-            //remove the task from the DOM (might need to remove the link as well.
-            //find the index for the todos list
+            //find the index for this.todos
             //find the task and the priority
+            //
+            //remove the task from the DOM (might need to remove the link as well.
             //add the input for editing in that place and the priority field set defaults to their values
+            //
             //find the delete button
             //remove the delete button
             //add the update button
