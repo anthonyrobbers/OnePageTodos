@@ -324,8 +324,8 @@ jQuery(function ($) {
         // renderList () a function to clear the html of old todos and reload the list as html and update the active count
         //  returns nothing
         renderList: function () {
-             if(DEBUG==1){console.log('in renderlist'+JSON.stringify(this.todos));}   
-             if(DEBUG==1){console.log('in renderlist'+JSON.stringify(this.primaryOptions));}   
+             if(DEBUG==1){console.log('in renderlist todos: '+JSON.stringify(this.todos));}   
+             if(DEBUG==1){console.log('in renderlist options: '+JSON.stringify(this.primaryOptions));}   
             var listHtml = '';
             var activeCount = 0;
             var localOptions = this.primaryOptions;
@@ -333,7 +333,7 @@ jQuery(function ($) {
             this.todos.forEach(function(todo, index){
                  //if(DEBUG==1){console.log(JSON.stringify($().extend({},todo, localOptions)));} 
                 var longTodo= $().extend({},todo, localOptions); 
-                if(DEBUG==1){console.log(longTodo.complete);}
+                //if(DEBUG==1){console.log(longTodo.complete);}
                 //if (longTodo.complete == "0") {longTodo.complete=0;}
                 if (longTodo.filter==2 || longTodo.filter==longTodo.complete){
                     listHtml = listHtml + template(longTodo);
