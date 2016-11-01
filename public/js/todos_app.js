@@ -351,14 +351,17 @@ jQuery(function ($) {
         //  url (a string that is the url: X, in the ajax function),
         //  extra data(any data besides method field, token, ajax:1, and the beforesend function), 
         //  debuginfo(a string to display in debug console comandes so ajax gets labeled for easier debuging), 
-        //  method ('GET','POST','DELETE','PUT',or other method.  get requests must be 'GET' caps required)
+        //  method ('GET','POST','DELETE','PUT',or other method.  get requests must be 'GET' caps required),
+        //  that (what this should normally point to in the 
+        //      function calling sendHome  functions called should use that.todos)
         //  )
         // returns nothing.  sends an ajax request as expected for the laravel setup running the backend.
-        sendHome: function (url, extraData, debugInfo, method, successFunction, failFunction) {
+        sendHome: function (url, extraData, debugInfo, method, successFunction, failFunction, that) {
             if(DEBUG==1){console.log('in sendHome for '+debugInfo);}
             if(!$('#new-todo').hasClass('loading')){
                 //ajax to url
                 var reply=' ';
+                var argsLength= arguments.length;
                 var baseData={
                         _method: method,
                         _token :this.primaryOptions.token,
@@ -377,15 +380,16 @@ jQuery(function ($) {
                     type: baseMethod
                 }).done(function(responce){
                     reply = responce;
-                    if (arguments.length > 4) {
+                    if(DEBUG==1){console.log('arg length: '+argsLength);}
+                    if (argsLength > 6) {
                         if(DEBUG==1){console.log('ajax success function');}
-                        successFunction(reply);
+                        successFunction(reply, that);
                     }
                     if(DEBUG==1){console.log('ajax success'+responce);}
                 }).fail( function(xhr, status, errorThrown){ 
-                    if (arguments.length > 5) {
+                    if (argsLength > 6) {
                         if(DEBUG==1){console.log('ajax fail function');}
-                        failFunction(status);
+                        failFunction(status, that);
                     }
                 
                     if(DEBUG==1){console.log('ajax failed'+errorThrown+status);}
