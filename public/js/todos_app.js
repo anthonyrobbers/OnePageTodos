@@ -90,9 +90,10 @@ jQuery(function ($) {
             
             var newTodo = $('#edit-todo').val();
             var priority = $('#edit-priority').val();
+            var indexToEdit = this.indexFromEl(e.target);
             
-            this.sendHome('TodoItem',{"new-todo":newTodo, "priority":priority},
-                'create new todo: '+newTodo,'POST', this.renderList, this.editFailed, this);
+            this.sendHome('TodoItem/'+this.todos[indexToEdit].id,{"new-todo":newTodo, "priority":priority},
+                'edit todo: '+this.todos[indexToEdit].id,'PUT');
             
             // find the index of edited task in this.todos
             // edit it there
