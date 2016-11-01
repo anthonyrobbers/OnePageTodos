@@ -152,6 +152,16 @@ class TodoItemController extends Controller
                 Log::debug('failed to create new task.  '.$ex);
             }  
         }
+        if($request['ajax']){
+            Log::debug('ajax detected');
+            if($newTodoItem!=NULL){
+                //{"id":2,"task":"test","priority":1,"group":"testing","complete":0},
+                return response()->json(['id'=>$newTodoItem['id'],$newTodoItem['task'],
+                    'priority'=>$newTodoItem['priority'],'group'=>$newTodoItem['group'],
+                    'complete'=>$newTodoItem['complete']]);
+            }
+            else return;
+        }
 
         return redirect('/')
         ->with(['msg'=> $msg,'oldTodo' => NULL, 'currentTodo'=>$newTodoItem,'class' => $cssClass,
