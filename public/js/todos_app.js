@@ -85,6 +85,25 @@ jQuery(function ($) {
             if(DEBUG==1){console.log('in edit');} 
             e.preventDefault();
             
+            // go into css and make priority class by renaming the id priority to that
+            // make open edit give id to priority = edit-priority
+            
+            var newTodo = $('#edit-todo').val();
+            var priority = $('#edit-priority').val();
+            
+            this.sendHome('TodoItem',{"new-todo":newTodo, "priority":priority},
+                'create new todo: '+newTodo,'POST', this.renderList, this.editFailed, this);
+            
+            // find the index of edited task in this.todos
+            // edit it there
+            
+            this.renderList();
+            
+        },
+        editFailed: function (reply, that) {
+            if(DEBUG==1){console.log('in createFailed'+reply);} 
+            alert('Failed to edit task.');
+            if(DEBUG==1){console.log('leaving createFailed function todos = '+JSON.stringify(that.todos));}
         },
         create: function (e) {
             // e = an event from clicking on the add button or hitting enter
