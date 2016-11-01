@@ -33,6 +33,11 @@ jQuery(function ($) {
         // watches for any events that need to be watched for the app and calls the right functions in responce
         bindEvents: function () {
             //add other events
+            $('#add').on('click',function(event){
+                    if(DEBUG==1){console.log('in event hendeler for prevent default add button');}
+                    event.preventDefault();
+                })
+                .on('click',this.create.bind(this));
             $('.filter')
                 .on('click',function(event){
                     if(DEBUG==1){console.log('in event hendeler for prevent default filter');}
