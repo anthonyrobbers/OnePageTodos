@@ -8,7 +8,7 @@
             @else
             <a href="{{action('TodoItemController@toggleComplete',['id'=>$todo['id']])}}" class="glyphicon glyphicon-unchecked" aria-hidden="true"></a>
             @endif
-            <a href="{{action('TodoItemController@edit',['id'=>$todo['id']])}}">{{$todo['task']}}
+            <a class="task-edit" href="{{action('TodoItemController@edit',['id'=>$todo['id']])}}">{{$todo['task']}}
             @if($verbose)
                 Priority: {{$todo['priority']}}
             @endif

@@ -10,7 +10,7 @@
             @{{else}} 
                 <a href="@{{homeUrl}}/TodoItem/@{{id}}/complete" class="glyphicon glyphicon-unchecked" aria-hidden="true"></a>
             @{{/if}}  
-            <a href="@{{homeUrl}}/TodoItem/@{{id}}/edit">@{{task}}
+            <a class="task-edit" href="@{{homeUrl}}/TodoItem/@{{id}}/edit">@{{task}}
             @if($verbose)
                 Priority: @{{priority}}
             @endif
