@@ -181,6 +181,10 @@ class optionListController extends Controller
         }
         $active->save();
         
+        if($request['ajax']){
+                Log::debug('ajax detected');
+                return;
+            }
         
         return redirect('/') 
             ->with(['msg'=>'An option list has been changed. ', 
