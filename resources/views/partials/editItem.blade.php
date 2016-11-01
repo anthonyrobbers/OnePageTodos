@@ -5,7 +5,7 @@
             <div class="listText col-sm-4 todos-item">            
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <input id="new-todo" name="new-todo" value="{{$todo['task']}}" autofocus="" class="">
-                <input id="priority" name="priority" type="number" value="{{$todo['priority']}}">
+                <input id="priority" class="priority" name="priority" type="number" value="{{$todo['priority']}}">
             
             </div>
             <div class="listButton col-sm-4 todos-item">
