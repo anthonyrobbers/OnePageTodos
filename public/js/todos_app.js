@@ -379,7 +379,7 @@ jQuery(function ($) {
         //  method ('GET','POST','DELETE','PUT',or other method.  get requests must be 'GET' caps required)
         //  )
         // returns nothing.  sends an ajax request as expected for the laravel setup running the backend.
-        sendHome: function (url, extraData, debugInfo, method) {
+        sendHome: function (url, extraData, debugInfo, method, successFunction, failFunction) {
             if(DEBUG==1){console.log('in sendHome for '+debugInfo);}
             if(!$('#new-todo').hasClass('loading')){
                 //ajax to url
@@ -402,8 +402,17 @@ jQuery(function ($) {
                     type: baseMethod
                 }).done(function(responce){
                     reply = responce;
+                    if (arguments.length > 4) {
+                        if(DEBUG==1){console.log('ajax success function');}
+                        successFunction(reply);
+                    }
                     if(DEBUG==1){console.log('ajax success'+responce);}
                 }).fail( function(xhr, status, errorThrown){ 
+                    if (arguments.length > 5) {
+                        if(DEBUG==1){console.log('ajax fail function');}
+                        failFunction(status);
+                    }
+                
                     if(DEBUG==1){console.log('ajax failed'+errorThrown+status);}
                     alert(errorThrown+status);
                 }).always(function(xhr, status){
