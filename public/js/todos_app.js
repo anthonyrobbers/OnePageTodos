@@ -41,41 +41,62 @@ jQuery(function ($) {
             $('#todo-list')
                 .on('click', '.glyphicon-ok', this.toggleComplete.bind(this))
                 .on('click', '.glyphicon-unchecked', this.toggleComplete.bind(this))
+                .on('click', 'task-edit', this.openEdit.bind(this))
                 .on('click', '.destroy', this.destroy.bind(this));
+                
             
         },
         openEdit: function (e) {
             // e = an event from clicking on the link that is the task name
             // returns nothing but updates DOM and updates prepares functions for editing
             if(DEBUG==1){console.log('in openEdit');} 
+            e.preventDefault();
+            
+            //remove the task from the DOM (might need to remove the link as well.
+            //find the index for the todos list
+            //find the task and the priority
+            //add the input for editing in that place and the priority field set defaults to their values
+            //find the delete button
+            //remove the delete button
+            //add the update button
             
         },
         edit: function (e) {
             // e = an event from clicking on the add button or hitting enter
             // returns nothing but sends ajax, updates DOM, and updates internal variables
             if(DEBUG==1){console.log('in edit');} 
+            e.preventDefault();
             
         },
         create: function (e) {
             // e = an event from clicking on the add button or hitting enter
             // returns nothing but sends ajax, updates DOM, and updates internal variables
-            if(DEBUG==1){console.log('in create');} 
+            if(DEBUG==1){console.log('in create function todos = '+JSON.stringify(this.todos));}
             e.preventDefault();
-            //get input fields from task and priority.
-            //this.sendHome('TodoItem/',{"new-todo":newTodo, "priority":priority},'create new todo'+newTodo,'POST', this.createContinued, this.createFailed);
+            
+            var newTodo = $('#new-todo').val();
+            var priority = $('#priority').val();
+            
+            this.sendHome('TodoItem',{"new-todo":newTodo, "priority":priority},
+                'create new todo: '+newTodo,'POST', this.createContinued, this.createFailed, this);
             
             
         },
-        createContinued: function (reply) {
-            this.todos.push(reply);
-            todos.sort(function(a, b) {
+        createContinued: function (reply, that) {
+            if(DEBUG==1){console.log('entering createContinued function reply = '+JSON.stringify(reply));}
+            that.todos.push(reply);
+            
+            that.todos.sort(function(a, b) {
                 return parseFloat(a.priority) - parseFloat(b.priority);
             });
-            this.renderList();
+            that.renderList();
+            
+            if(DEBUG==1){console.log('leaving createContinued function todos = '+JSON.stringify(that.todos));}
         },
-        createFailed: function (reply) {
+        createFailed: function (reply, that) {
             if(DEBUG==1){console.log('in createFailed'+reply);} 
             alert('Failed to create new task.');
+            if(DEBUG==1){console.log('leaving createFailed function todos = '+JSON.stringify(that.todos));}
         },
         // sets the filter to the value of the button clicked accepts an event and 
         // returns nothing or 1 if the filter is already the one in the event
