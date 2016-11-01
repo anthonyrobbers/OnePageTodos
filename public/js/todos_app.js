@@ -33,45 +33,14 @@ jQuery(function ($) {
         // watches for any events that need to be watched for the app and calls the right functions in responce
         bindEvents: function () {
             //add other events
-            $('#add').on('click',function(event){
-                    if(DEBUG==1){console.log('in event hendeler for prevent default add button');}
-                    event.preventDefault();
-                })
-                .on('click',this.create.bind(this));
-            $('.filter')
-                .on('click',function(event){
-                    if(DEBUG==1){console.log('in event hendeler for prevent default filter');}
-                    event.preventDefault();
-                })
-                .on('click',this.setFilter.bind(this));
-            $('#clear-completed')
-                .on('click',function(event){
-                    if(DEBUG==1){console.log('in event hendeler for prevent default clear completed');}
-                    event.preventDefault();
-                })
-                .on('click',this.clearCompleted.bind(this));
-            $('#complete-all')
-                    .on('click',function(event){
-                    if(DEBUG==1){console.log('in event hendeler for prevent default complete all');}
-                    event.preventDefault();
-                })
-                .on('click',this.completeAll.bind(this));
+            //$('#AddTask').on('keyup',this.create.bind(this)); //disabled since it is redundant add button catches enter
+            $('#add').on('click',this.create.bind(this));
+            $('.filter').on('click',this.setFilter.bind(this));
+            $('#clear-completed').on('click',this.clearCompleted.bind(this));
+            $('#complete-all').on('click',this.completeAll.bind(this));
             $('#todo-list')
-                
-                .on('click', '.glyphicon-ok', function(event){
-                if(DEBUG==1){console.log('in event hendeler for prevent default glyphicon-ok');}
-                event.preventDefault();
-                })
                 .on('click', '.glyphicon-ok', this.toggleComplete.bind(this))
-                .on('click', '.glyphicon-unchecked', function(event){
-                    if(DEBUG==1){console.log('in event hendeler for prevent default glyphicon-unchecked');}
-                    event.preventDefault();
-                    })
                 .on('click', '.glyphicon-unchecked', this.toggleComplete.bind(this))
-                .on('click', '.destroy', function(event){
-                    if(DEBUG==1){console.log('in event hendeler for prevent default destroy');}
-                    event.preventDefault();
-        })
                 .on('click', '.destroy', this.destroy.bind(this));
             
         },
