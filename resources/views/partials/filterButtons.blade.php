@@ -21,7 +21,7 @@
         }
         ?> filter"> Active
       </button>
-      <button type="button" class="btn btn-secondary btn-sm">{{$activeCount}} Active Tasks</button>
+      <button id="active-count" type="button" class="btn btn-secondary btn-sm">{{$activeCount}} Active Tasks</button>
     </form>
   </div>
   
