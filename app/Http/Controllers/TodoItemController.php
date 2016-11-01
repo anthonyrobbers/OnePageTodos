@@ -22,7 +22,7 @@ class TodoItemController extends Controller
     
     public function index()
     {
-        // GET at / 
+        // GET at /         or GET at /TodoItem
         Log::info('Hit index function of the TodoItem controller');
         $msg='';
         try{
@@ -156,7 +156,7 @@ class TodoItemController extends Controller
             Log::debug('ajax detected');
             if($newTodoItem!=NULL){
                 //{"id":2,"task":"test","priority":1,"group":"testing","complete":0},
-                return response()->json(['id'=>$newTodoItem['id'],$newTodoItem['task'],
+                return response()->json(['id'=>$newTodoItem['id'],'task'=>$newTodoItem['task'],
                     'priority'=>$newTodoItem['priority'],'group'=>$newTodoItem['group'],
                     'complete'=>$newTodoItem['complete']]);
             }
