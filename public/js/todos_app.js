@@ -86,6 +86,12 @@ jQuery(function ($) {
             // e = an event from clicking on the add button or hitting enter
             // returns nothing but sends ajax, updates DOM, and updates internal variables
             if(DEBUG==1){console.log('in create');} 
+            //go into event binding to add the listeners for clicking add, hitting enter on the form
+            //get input fields from task and priority.
+            //send ajax
+            //this.sendHome('TodoItem/',{"new-todo":newTodo, "priority":priority},'create new todo'+newTodo,'POST');
+            //either insert into todos variable then sort or find right place then insert
+            //renderList 
             
         },
         // sets the filter to the value of the button clicked accepts an event and 
