@@ -7,7 +7,7 @@
             <input id="priority" name="priority" type="number" value="5">
         </div>
         <div class="listButton col-sm-4 todos-item">
-            <button type="submit" class="btn btn-success btn-sm">Add</button>    
+            <button id="add" type="submit" class="btn btn-success btn-sm">Add</button>    
         </div>
     </div>
 </form>
