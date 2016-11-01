@@ -1,7 +1,7 @@
 @include('partials/scripts/todoListVarJs')
 @include('partials/scripts/optionsVarJs')
 
-@include('handlebarsTemplates/todo')
+@include('partials/scripts/todoTemplate', ['verbose'=>FALSE])
 @include('handlebarsTemplates/footer')
 
 <script src="{{asset('node_modules/todomvc-common/base.js')}}"></script>
