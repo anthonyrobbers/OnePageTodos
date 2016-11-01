@@ -91,7 +91,7 @@ jQuery(function ($) {
             // e = an event from clicking on the add button or hitting enter
             // returns nothing but sends ajax, updates DOM, and updates internal variables
             if(DEBUG==1){console.log('in create');} 
-            //go into event binding to add the listeners for clicking add, hitting enter on the form
+            e.preventDefault();
             //get input fields from task and priority.
             //this.sendHome('TodoItem/',{"new-todo":newTodo, "priority":priority},'create new todo'+newTodo,'POST', this.createContinued, this.createFailed);
             
@@ -112,6 +112,7 @@ jQuery(function ($) {
         // returns nothing or 1 if the filter is already the one in the event
         setFilter: function (e) {
              if(DEBUG==1){console.log('in setFilter');}   
+             e.preventDefault();
              var newFilter = $(e.target).val(); //get the value of the button pressed
              if(this.primaryOptions.filter==newFilter){// test if this is the active filter
                  return 1;  // leave the function when it is not needed
@@ -129,6 +130,7 @@ jQuery(function ($) {
         // deletes all completed todos
         clearCompleted: function (e) {
             if(DEBUG==1){console.log('in clearCompleted function todos = '+JSON.stringify(this.todos));}
+            e.preventDefault();
             $('.glyphicon-ok').closest('.row').remove(); //look up proper syntax for each() 
             this.clearCompletedHome(this.primaryOptions.group); //for a // DELETE  /TodoItem/{group}/scour
             for(var i=0; i<this.todos.length;i++){
@@ -171,6 +173,7 @@ jQuery(function ($) {
         // marks all todos complete
         completeAll: function (e) {
             if(DEBUG==1){console.log('in completeAll function todos = '+JSON.stringify(this.todos));}
+            e.preventDefault();
             
             this.completeAllHome();
             //if(DEBUG==1){console.log('in completeAll function todos = '+JSON.stringify($('.glyphicon-unchecked')));}
@@ -220,6 +223,7 @@ jQuery(function ($) {
         // returns nothing
         toggleComplete: function (e) {
             if(DEBUG==1){console.log('in toggleComplete function todos = '+JSON.stringify(this.todos));}
+            e.preventDefault();
             var indexToToggle=this.indexFromEl(e.target);
             if(DEBUG==1){console.log(JSON.stringify(indexToToggle)+' was indexToToggle');}
             var thisTodo = this.todos[indexToToggle];
@@ -287,6 +291,7 @@ jQuery(function ($) {
         // returns nothing
         destroy: function (e) {
             if(DEBUG==1){console.log('in destroy function todos = '+JSON.stringify(this.todos));}
+            e.preventDefault();
             var indexToDestroy=this.indexFromEl(e.target);
             if(DEBUG==1){console.log(JSON.stringify(indexToDestroy)+' was indexToDestroy');}
             var thisTodo = this.todos[indexToDestroy];
@@ -342,6 +347,7 @@ jQuery(function ($) {
         },
         hideTask: function (RowRefference) {
          if(DEBUG==1){console.log('in hideTask');}   
+         
         },
         revealTask: function (RowRefference) {
             
