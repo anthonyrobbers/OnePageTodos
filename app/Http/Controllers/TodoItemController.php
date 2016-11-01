@@ -88,7 +88,7 @@ class TodoItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        // POST to /
+        // POST to /        or POST to /TodoItem
         Log::info('Hit store function of the TodoItem controller');
         ob_start();
                 var_dump($request->all());
