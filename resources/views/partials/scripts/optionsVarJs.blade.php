@@ -4,6 +4,6 @@
         filter: {{$options['filter']}},
         token: "{{csrf_token()}}",
         activeCount: {{$activeCount}},
-        homeUrl: "{{action('TodoItemController@index')}}"
+        homeUrl: "{{url('/')}}"
     };
 </script>
