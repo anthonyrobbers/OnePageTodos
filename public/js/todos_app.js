@@ -14,7 +14,7 @@ jQuery(function ($) {
         init: function () {
             if(DEBUG==1){console.log('in init');}
             this.todos = initTodos;// get todos from partials/scripts/todoListVarJs.blade.php
-            this.options = initOptions; // from .../optionsVarJs.blade.php
+            this.primaryOptions = initOptions; // from .../optionsVarJs.blade.php
             this.todoTemplate = Handlebars.compile($('#todo-template').html()); // get template for a item in the list
             this.footerTemplate = Handlebars.compile($('#footer-template').html()); 
             this.bindEvents();
@@ -74,22 +74,22 @@ jQuery(function ($) {
         setFilter: function (e) {
          if(DEBUG==1){console.log('in setFilter');}   
          var newFilter = $(e.target).val(); //get the value of the button pressed
-         if(this.options.filter==newFilter){// test if this is the active filter
+         if(this.primaryOptions.filter==newFilter){// test if this is the active filter
              return 1;  // leave the function when it is not needed
          }
          // if not the active filter
          $('.filter').removeClass('active');// find and remove the active class from the filter buttons 
          $(e.target).addClass('active'); //set this button to the active class 
-         this.options.filter=newFilter;// then set the local variable to the new filter
-         this.sendHome('optionlist/1',{"filter":newFilter},'set filter to '+newFilter,'PUT'); //send ajax to change the filter
-         // nuke and pave with new filter deleting all the html in the just-todos id div
+         this.primaryOptions.filter=newFilter;// then set the local variable to the new filter
+         this.sendHome('optionList/1',{"filter":newFilter},'set filter to '+newFilter,'PUT'); //send ajax to change the filter
+         this.renderList();// nuke and pave with new filter deleting all the html in the just-todos id div and recountingthe active count
         },
         
         // deletes all completed todos
         clearCompleted: function (e) {
             if(DEBUG==1){console.log('in clearCompleted function todos = '+JSON.stringify(this.todos));}
             $('.glyphicon-ok').closest('.row').remove(); //look up proper syntax for each() 
-            this.clearCompletedHome(this.options.group); //for a // DELETE  /TodoItem/{group}/scour
+            this.clearCompletedHome(this.primaryOptions.group); //for a // DELETE  /TodoItem/{group}/scour
             for(var i=0; i<this.todos.length;i++){
                 if (this.todos[i].complete == 1) {
                     this.todos.splice(i, 1); //removing the todo from the js variable
@@ -107,7 +107,7 @@ jQuery(function ($) {
                     url: "TodoItem/"+group+'/scour', 
                     data: {
                         _method: 'delete',
-                        _token :this.options.token,
+                        _token :this.primaryOptions.token,
                         ajax:1, 
                         beforeSend: function() {
                             if(DEBUG==1){console.log('sending ajax to scour'+group);}
@@ -151,7 +151,7 @@ jQuery(function ($) {
                 $.ajax({ 
                     url: 'complete', 
                     data: {
-                        _token :this.options.token,
+                        _token :this.primaryOptions.token,
                         ajax:1, 
                         beforeSend: function() {
                             if(DEBUG==1){console.log('sending ajax to complete all');}
@@ -197,7 +197,7 @@ jQuery(function ($) {
                 $.ajax({ 
                     url: "TodoItem/"+homeId+'/complete', 
                     data: {
-                        _token :this.options.token,
+                        _token :this.primaryOptions.token,
                         ajax:1, 
                         beforeSend: function() {
                             if(DEBUG==1){console.log('sending ajax to toggle complete '+homeId);}
@@ -260,7 +260,7 @@ jQuery(function ($) {
                     url: "TodoItem/"+homeId, 
                     data: {
                         _method: 'delete',
-                        _token :this.options.token,
+                        _token :this.primaryOptions.token,
                         ajax:1, 
                         beforeSend: function() {
                             if(DEBUG==1){console.log('sending ajax to delete '+homeId);}
@@ -310,7 +310,7 @@ jQuery(function ($) {
                 var reply=' ';
                 var baseData={
                         _method: method,
-                        _token :this.options.token,
+                        _token :this.primaryOptions.token,
                         ajax:1, 
                         beforeSend: function() {
                             if(DEBUG==1){console.log('sending ajax to '+debugInfo);}
