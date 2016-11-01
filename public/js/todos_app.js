@@ -93,11 +93,20 @@ jQuery(function ($) {
             if(DEBUG==1){console.log('in create');} 
             //go into event binding to add the listeners for clicking add, hitting enter on the form
             //get input fields from task and priority.
-            //send ajax
-            //this.sendHome('TodoItem/',{"new-todo":newTodo, "priority":priority},'create new todo'+newTodo,'POST');
-            //either insert into todos variable then sort or find right place then insert
-            //renderList 
+            //this.sendHome('TodoItem/',{"new-todo":newTodo, "priority":priority},'create new todo'+newTodo,'POST', this.createContinued, this.createFailed);
             
+            
+        },
+        createContinued: function (reply) {
+            this.todos.push(reply);
+            todos.sort(function(a, b) {
+                return parseFloat(a.priority) - parseFloat(b.priority);
+            });
+            this.renderList();
+        },
+        createFailed: function (reply) {
+            if(DEBUG==1){console.log('in createFailed'+reply);} 
+            alert('Failed to create new task.');
         },
         // sets the filter to the value of the button clicked accepts an event and 
         // returns nothing or 1 if the filter is already the one in the event
