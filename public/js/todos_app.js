@@ -71,12 +71,14 @@ jQuery(function ($) {
             var priority=this.todos[indexToEdit].priority;
             var id=this.todos[indexToEdit].id;
             
-            $(e.target).html('<input id="edit-todo" name="new-todo" value="'+task+
+            $(e.target).closest('.row').children('.listButton').html('<a class="btn btn-success btn-sm update" '+
+                'href="'+this.primaryOptions.homeUrl+'TodoItem/'+id+'/edit" >Update</a>'); //replace button
+        
+            $(e.target).replaceWith('<input id="edit-todo" name="new-todo" value="'+task+
                 '" autofocus="" class=""><input id="edit-priority" class="priority" name="priority" type="number" value="'
                 +priority+'">'); //replace link contents with inputs
         
-            $(e.target).closest('.row').children('.listButton').html('<a class="btn btn-success btn-sm update" '+
-                'href="'+this.primaryOptions.homeUrl+'TodoItem/'+id+'/edit" >Update</a>'); //replace button
+            
             
         },
         edit: function (e) {
