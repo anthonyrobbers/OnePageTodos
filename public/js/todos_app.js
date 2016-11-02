@@ -95,8 +95,13 @@ jQuery(function ($) {
             this.sendHome('TodoItem/'+this.todos[indexToEdit].id,{"new-todo":newTodo, "priority":priority},
                 'edit todo: '+this.todos[indexToEdit].id,'PUT');
             
-            // find the index of edited task in this.todos
-            // edit it there
+            
+            this.todos[indexToEdit].task=newTodo;
+            this.todos[indexToEdit].priority = priority;
+            
+            this.todos.sort(function(a, b) {
+                return parseFloat(a.priority) - parseFloat(b.priority);
+            });
             
             this.renderList();
             
