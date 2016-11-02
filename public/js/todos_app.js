@@ -33,6 +33,7 @@ jQuery(function ($) {
         // watches for any events that need to be watched for the app and calls the right functions in responce
         bindEvents: function () {
             //add other events
+            $('#page-top').on('keyup', this.pressedEsc.bind(this));   
             //$('#AddTask').on('keyup',this.create.bind(this)); //disabled since it is redundant add button catches enter
             $('#add').on('click',this.create.bind(this));
             $('.filter').on('click',this.setFilter.bind(this));
@@ -40,7 +41,6 @@ jQuery(function ($) {
             $('#complete-all').on('click',this.completeAll.bind(this));
             $('#todo-list')
                 .on('click','.task-edit', this.openEdit.bind(this))
-                .on('keyup', this.pressedEsc.bind(this))
                 .on('click','.update', this.edit.bind(this))
                 .on('click', '.glyphicon-ok', this.toggleComplete.bind(this))
                 .on('click', '.glyphicon-unchecked', this.toggleComplete.bind(this))
