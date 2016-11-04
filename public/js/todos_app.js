@@ -9,31 +9,27 @@ jQuery(function ($) {
     var DEBUG = 1;
     var ENTER_KEY = 13;
     var ESCAPE_KEY = 27;
+    var SESSION_LENGTH = 3600000; //how long a session should be
     
     var App = {
         init: function () {
             if(DEBUG==1){console.log('in init');}
             this.todos = initTodos;// get todos from partials/scripts/todoListVarJs.blade.php
             this.primaryOptions = initOptions; // from .../optionsVarJs.blade.php
+            this.timing= {};
             this.todoTemplate = Handlebars.compile($('#todo-template').html()); // get template for a item in the list
             this.footerTemplate = Handlebars.compile($('#footer-template').html()); 
+            this.statusTemplate = Handlebars.compile($('#status-template').html()); 
+            this.timing.session=window.setTimeout(expiringSession,3600000);
+            this.timing.status=window.setTimeout(clearStatus,20000);
             this.bindEvents();
-            
-            /*
-            new Router({
-                '/:filter': function (filter) {
-                    this.filter = filter;
-                    this.render();
-                }.bind(this)
-            }).init('/all'); 
-            */
-                       
                        
         },
         // watches for any events that need to be watched for the app and calls the right functions in responce
         bindEvents: function () {
             //add other events
-            $('#page-top').on('keyup', this.pressedEsc.bind(this));   
+            $('#page-top').on('keyup', this.pressedEsc.bind(this))
+                    .on('click', '#renew-session',this.renewSession.bind(this));   
             //$('#AddTask').on('keyup',this.create.bind(this)); //disabled since it is redundant add button catches enter
             $('#add').on('click',this.create.bind(this));
             $('.filter').on('click',this.setFilter.bind(this));
@@ -47,6 +43,49 @@ jQuery(function ($) {
                 .on('click', 'task-edit', this.openEdit.bind(this))
                 .on('click', '.destroy', this.destroy.bind(this));
                 
+            
+        },
+        clearStatus: function (){
+            //removes the status bar
+            if($("#status").length > 0) {
+                $('#status').remove();
+            }
+        },
+        expiringSession: function () {
+            //warns the user that the session is about to expire and gives a continue session button
+            //before sending an alert and status msg when the session expires.
+            
+            
+            addStatus('session is about to expire. <a class="btn" id="renew-session" href="'+this.primaryOptions.homeUrl+'">continue session</a>');
+            window.clearTimeout(this.timing.status); //ends the timout of this status msg so it stays up
+            
+           
+            this.timing.session = window.timeout(this.sessionEnd,1800000);
+        },
+        addStatus: function (body) {
+            var template = this.statusTemplate;
+            var originHtml = $('#page-top').html();
+            $('#page-top').html(template(body)+originHtml);
+            this.timing.status=window.setTimeout(clearStatus,20000);
+        },
+        sessionEnd: function (){
+             //if no button is hit it should timeout to an alert that stops the page and with a status that does not dissapear
+            //that says: session has timed out refresh page to continue
+            this.addStatus('session has timed out.  refresh page to continue.');
+            window.clearTimeout(this.timing.status); //ends the timout of this status msg so it stays up
+            
+            alert('session timed out please refresh the page to continue');
+            
+        },
+        renewSession: function (e){
+            //when the button is hit it should :
+            //sendHome('ajax/session',{},'refresh token','GET',function(reply){},function(status){},this);
+            //with filled out functions to add the new token to the primaryOptions.token,
+            //adds a status saying session renewed, starts a countdown for it to vanish in 20 sec, and
+            //add a new timeout function calling expiringSession again in an hour
+            //if js gets disabled while this is open it should link to this page
+            
+            window.clearTimeout(this.primaryOptions.sessionTimeout);  //abort the session timeout so session end is never called
             
         },
         pressedEsc: function (e) {
