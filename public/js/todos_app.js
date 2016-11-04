@@ -169,6 +169,9 @@ jQuery(function ($) {
             this.sendHome('TodoItem',{"new-todo":newTodo, "priority":priority},
                 'create new todo: '+newTodo,'POST', this.createContinued, this.createFailed, this);
             
+            $('#new-todo').val('');
+            $('#priority').val('5');
+            
             
         },
         createContinued: function (reply, that) {
