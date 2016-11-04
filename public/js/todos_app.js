@@ -104,6 +104,11 @@ jQuery(function ($) {
             // returns nothing but updates DOM and updates prepares functions for editing
             if(DEBUG==1){console.log('in openEdit');} 
             e.preventDefault();
+            if($("#edit-todo").length > 0) {
+                if(DEBUG==1){console.log('edit-todo detected');} 
+                this.renderList();
+                return;
+            }
             
             var indexToEdit=this.indexFromEl(e.target);
             var task=this.todos[indexToEdit].task;
