@@ -253,12 +253,15 @@ jQuery(function ($) {
         
         // deletes all completed todos
         clearCompleted: function (e) {
-            if(DEBUG==1){console.log('in clearCompleted function todos = '+JSON.stringify(this.todos));}
+            if(DEBUG==1){console.log('in clearCompleted function todos = '+JSON.stringify(this.todos)+' length='+this.todos.length);}
             e.preventDefault();
-            $('.glyphicon-ok').closest('.row').remove(); //look up proper syntax for each() 
+            var listLength=this.todos.length;
+            $('.glyphicon-ok').closest('.row').remove(); //find all check icons and remove the row it is on.
             this.clearCompletedHome(this.primaryOptions.group); //for a // DELETE  /TodoItem/{group}/scour
-            for(var i=0; i<this.todos.length;i++){
+            for(var i=listLength-1; i>=0;i--){
+                if(DEBUG==1){console.log('in clearCompleted function todo = '+JSON.stringify(this.todos[i])+' i='+i);}
                 if (this.todos[i].complete == 1) {
+                    if(DEBUG==1){console.log('complete detected');}
                     this.todos.splice(i, 1); //removing the todo from the js variable
                 }
             }
