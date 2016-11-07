@@ -53,11 +53,13 @@ jQuery(function ($) {
                 
             
         },
-        clearStatus: function (){
+        clearStatus: function (that){
+            if(DEBUG==1){console.log('in clearStatus');}
             //removes the status bar
             if($("#status").length > 0) {
                 $('#status').remove();
             }
+            if(DEBUG==1){console.log('in clearStatus'+that);}
         },
         expiringSession: function () {
             //warns the user that the session is about to expire and gives a continue session button
