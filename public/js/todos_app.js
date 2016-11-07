@@ -400,12 +400,22 @@ jQuery(function ($) {
         toggleCompleteInDom: function (glyphiconReference) {
             if(DEBUG==1){console.log('in toggleCompleteInDom');}
             if(glyphiconReference.hasClass('glyphicon-ok')){
-                glyphiconReference.removeClass('glyphicon-ok');
-                glyphiconReference.addClass('glyphicon-unchecked');
+                if(this.primaryOptions.filter ==1){
+                    this.destroyInDom($(glyphiconReference).closest('.row'));
+                }
+                else{
+                    glyphiconReference.removeClass('glyphicon-ok');
+                    glyphiconReference.addClass('glyphicon-unchecked');
+                }
             }
             else {
-                glyphiconReference.removeClass('glyphicon-unchecked');
-                glyphiconReference.addClass('glyphicon-ok');
+                if(this.primaryOptions.filter ==0){
+                    this.destroyInDom($(glyphiconReference).closest('.row'));
+                }
+                else {
+                    glyphiconReference.removeClass('glyphicon-unchecked');
+                    glyphiconReference.addClass('glyphicon-ok');
+                }
             }
             
             $('#active-count').html(this.primaryOptions.activeCount+' Active Tasks');
