@@ -79,11 +79,22 @@ jQuery(function ($) {
             $('#page-top').prepend(newStatus);
             timing.status=window.setTimeout(that.clearStatus, STATUS_LENGTH, that);
         },
-        sessionEnd: function (){
+        sessionEnd: function (that){
              //if no button is hit it should timeout to an alert that stops the page and with a status that does not dissapear
             //that says: session has timed out refresh page to continue
-            this.addStatus('session has timed out.  refresh page to continue.');
-            window.clearTimeout(this.timing.status); //ends the timout of this status msg so it stays up
+            if(DEBUG==1){console.log('in sessionEnd');}
+            that.addStatus('session has timed out.  refresh page to continue.',that);
+            window.clearTimeout(timing.status); //ends the timout of this status msg so it stays up
+            $('#page-top').off();
+            $('#add').off();
+            $('.filter').off();
+            $('#clear-completed').off();
+            $('#complete-all').off();
+            $('#todo-list').off();
+            
+            $('#page-top').on('click',function(event) {
+                if(DEBUG==1){console.log('preventing default behaviour because session has expired');}
+                event.preventDefault();});
             
             alert('session timed out please refresh the page to continue');
             
