@@ -126,6 +126,7 @@ jQuery(function ($) {
             if (e.which !== ESCAPE_KEY) {
                 return;
             }
+            if(DEBUG==1){console.log('in pressedEsc');}
             this.renderList();
             $('#new-todo').val('');
             $('#priority').val('5');
