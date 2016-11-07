@@ -513,5 +513,11 @@ class TodoItemController extends Controller
             'statusPartial'=>$statusPartial, 'statusArgs'=>$statusArgs]);
     }
     
+    
+    public function ajaxSession (Request $request){
+        Log::info('Hit ajaxSession function of the TodoItem controller');
+        Log::debug('the request is: '.$request);
+        return response()->json(['token'=>csrf_token()]);
+    }
  }
 
