@@ -109,6 +109,16 @@ jQuery(function ($) {
             this.clearStatus();
             window.clearTimeout(timing.session);  //abort the session timeout so session end is never called
         },
+        renewSessionContinued: function (reply, that){
+            if(DEBUG==1){console.log('in renewSessionContinued');}
+            that.primaryOptions.token=reply.token;
+            that.addStatus('session has been renewed.',that);
+            timing.session=window.setTimeout(that.expiringSession,SESSION_LENGTH,that);
+            if(DEBUG==1){console.log('leaving renewSessionContinued');}
+        },
+        renewSessionFailed: function (reply, that){
+            if(DEBUG==1){console.log('in renewSessionFailed');}
+            that.sessionEnd(that);
         },
         pressedEsc: function (e) {
             // e = an event from presing the escape key
