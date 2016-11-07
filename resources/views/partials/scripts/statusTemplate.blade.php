@@ -11,7 +11,7 @@
             </div>
 
             <div class="listContainer">
-                @{{statusBody}}
+                @{{{statusBody}}} @{{#if link}} <a class="@{{linkClass}}" id="@{{linkId}}" href="@{{link}}"> @{{linkText}} </a> @{{/if}}
             </div>
         </div>
     </section>
