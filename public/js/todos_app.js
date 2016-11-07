@@ -70,11 +70,14 @@ jQuery(function ($) {
             
             timing.session = window.setTimeout(that.sessionEnd,SESSION_LENGTH/2, that);
         },
-        addStatus: function (body) {
-            var template = this.statusTemplate;
-            var originHtml = $('#page-top').html();
-            $('#page-top').html(template(body)+originHtml);
-            this.timing.status=window.setTimeout(clearStatus,20000);
+        addStatus: function (body, that) {
+            if(DEBUG==1){console.log('in addStatus');}
+            that.clearStatus();
+            var template = that.statusTemplate;
+            
+            var newStatus = template({statusBody:body});
+            $('#page-top').prepend(newStatus);
+            timing.status=window.setTimeout(that.clearStatus, STATUS_LENGTH, that);
         },
         sessionEnd: function (){
              //if no button is hit it should timeout to an alert that stops the page and with a status that does not dissapear
