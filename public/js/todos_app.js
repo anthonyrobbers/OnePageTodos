@@ -43,8 +43,9 @@ jQuery(function ($) {
             $('#clear-completed').on('click',this.clearCompleted.bind(this));
             $('#complete-all').on('click',this.completeAll.bind(this));
             $('#todo-list')
-                .on('click','.task-edit', this.openEdit.bind(this))
-                .on('click','.update', this.edit.bind(this))
+                .on('click', '.task-edit', this.openEdit.bind(this))
+                .on('keyup', '#edit-todo', this.editKey.bind(this))
+                .on('click', '.update', this.edit.bind(this))
                 .on('click', '.glyphicon-ok', this.toggleComplete.bind(this))
                 .on('click', '.glyphicon-unchecked', this.toggleComplete.bind(this))
                 .on('click', 'task-edit', this.openEdit.bind(this))
