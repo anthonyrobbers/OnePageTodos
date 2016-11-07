@@ -22,17 +22,18 @@ jQuery(function ($) {
             if(DEBUG==1){console.log('in init');}
             this.todos = initTodos;// get todos from partials/scripts/todoListVarJs.blade.php
             this.primaryOptions = initOptions; // from .../optionsVarJs.blade.php
-            this.timing= {};
             this.todoTemplate = Handlebars.compile($('#todo-template').html()); // get template for a item in the list
             this.footerTemplate = Handlebars.compile($('#footer-template').html()); 
             this.statusTemplate = Handlebars.compile($('#status-template').html()); 
-            this.timing.session=window.setTimeout(expiringSession,3600000);
-            this.timing.status=window.setTimeout(clearStatus,20000);
+            var that = this;
+            timing.session=window.setTimeout(this.expiringSession,SESSION_LENGTH,that);
+            timing.status=window.setTimeout(this.clearStatus,STATUS_LENGTH,that);
             this.bindEvents();
                        
         },
         // watches for any events that need to be watched for the app and calls the right functions in responce
         bindEvents: function () {
+            if(DEBUG==1){console.log('in bindEvents');}
             //add other events
             $('#page-top').on('keyup', this.pressedEsc.bind(this))
                     .on('click', '#renew-session',this.renewSession.bind(this));   
