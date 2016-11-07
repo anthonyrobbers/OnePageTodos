@@ -13,6 +13,7 @@
 
 
 
+Route::post('ajax/session', 'TodoItemController@ajaxSession' );
 
 Route::get('mvc','TodoItemController@viewMvc');
 Route::get('about','TodoItemController@about');
