@@ -132,6 +132,15 @@ jQuery(function ($) {
             $('#priority').val('5');
             
         },
+        editKey: function (e) {
+            // e = an event from presing the a key on the edit field
+            // returns nothing, but triggers the edit function on enter
+            if (e.which !== ENTER_KEY) {
+                return;
+            }
+            if(DEBUG==1){console.log('in editKey enter detected');} 
+            this.edit(e);
+        },
         openEdit: function (e) {
             // e = an event from clicking on the link that is the task name
             // returns nothing but updates DOM and updates prepares functions for editing
