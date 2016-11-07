@@ -100,15 +100,15 @@ jQuery(function ($) {
             
         },
         renewSession: function (e){
-            //when the button is hit it should :
-            //sendHome('ajax/session',{},'refresh token','GET',function(reply){},function(status){},this);
-            //with filled out functions to add the new token to the primaryOptions.token,
-            //adds a status saying session renewed, starts a countdown for it to vanish in 20 sec, and
-            //add a new timeout function calling expiringSession again in an hour
-            //if js gets disabled while this is open it should link to this page
-            
-            window.clearTimeout(this.primaryOptions.sessionTimeout);  //abort the session timeout so session end is never called
-            
+            //for when the renew session button is hit  event (e)
+            //returns nothing, but sends ajax to get a new session token that gets stored in this.primaryOptions
+            //also clears the status and places a new status that times out normally.
+            if(DEBUG==1){console.log('in renewSession');}
+            e.preventDefault();
+            this.sendHome('ajax/session',{},'refresh token','POST',this.renewSessionContinued,this.renewSessionFailed,this);
+            this.clearStatus();
+            window.clearTimeout(timing.session);  //abort the session timeout so session end is never called
+        },
         },
         pressedEsc: function (e) {
             // e = an event from presing the escape key
