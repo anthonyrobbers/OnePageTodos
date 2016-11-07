@@ -61,16 +61,14 @@ jQuery(function ($) {
             }
             if(DEBUG==1){console.log('in clearStatus'+that);}
         },
-        expiringSession: function () {
+        expiringSession: function (that) {
             //warns the user that the session is about to expire and gives a continue session button
             //before sending an alert and status msg when the session expires.
+            if(DEBUG==1){console.log('in expiringSession');}
+            that.addStatus('session is about to expire. <a class="btn btn-success btn-sm" id="renew-session" href="'+that.primaryOptions.homeUrl+'">continue session</a>', that);
+            window.clearTimeout(timing.status); //ends the timout of this status msg so it stays up
             
-            
-            addStatus('session is about to expire. <a class="btn" id="renew-session" href="'+this.primaryOptions.homeUrl+'">continue session</a>');
-            window.clearTimeout(this.timing.status); //ends the timout of this status msg so it stays up
-            
-           
-            this.timing.session = window.timeout(this.sessionEnd,1800000);
+            timing.session = window.setTimeout(that.sessionEnd,SESSION_LENGTH/2, that);
         },
         addStatus: function (body) {
             var template = this.statusTemplate;
