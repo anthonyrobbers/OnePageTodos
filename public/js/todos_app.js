@@ -9,7 +9,13 @@ jQuery(function ($) {
     var DEBUG = 1;
     var ENTER_KEY = 13;
     var ESCAPE_KEY = 27;
-    var SESSION_LENGTH = 3600000; //how long a session should be
+    var SESSION_LENGTH = 3600000;  //how long a session should be in milliseconds
+    //3600000 is one hour this is half the session time of a default laravel session
+    var STATUS_LENGTH = 20000;  //how long status msg's should stay up by default (20000 is 20 sec)
+    var timing={
+                session:0,
+                status:0
+            };
     
     var App = {
         init: function () {
