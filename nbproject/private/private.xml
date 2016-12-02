@@ -6,8 +6,12 @@
             <file>file:/C:/xampp/htdocs/todolaravel/routes/web.php</file>
             <file>file:/C:/xampp/htdocs/todolaravel/public/js/todos_app.js</file>
             <file>file:/C:/xampp/htdocs/todolaravel/app/Http/Controllers/optionListController.php</file>
+            <file>file:/C:/xampp/htdocs/todolaravel/storage/logs/laravel-2016-11-07.log</file>
+            <file>file:/C:/xampp/htdocs/todolaravel/resources/views/partials/scripts/statusTemplate.blade.php</file>
+            <file>file:/C:/xampp/htdocs/todolaravel/resources/views/pages/list.blade.php</file>
             <file>file:/C:/xampp/htdocs/todolaravel/resources/views/partials/scripts/todosApp.blade.php</file>
-            <file>file:/C:/xampp/htdocs/todolaravel/resources/views/pages/defaultTodoDisplay.blade.php</file>
+            <file>file:/C:/xampp/htdocs/todolaravel/resources/views/partials/scripts/optionsVarJs.blade.php</file>
+            <file>file:/C:/xampp/htdocs/todolaravel/resources/views/partials/scripts/todoListVarJs.blade.php</file>
             <file>file:/C:/xampp/htdocs/todolaravel/public/js/app_mvc.js</file>
             <file>file:/C:/xampp/htdocs/todolaravel/app/Http/Controllers/TodoItemController.php</file>
         </group>
