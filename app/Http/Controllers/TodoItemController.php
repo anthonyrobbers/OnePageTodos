@@ -27,8 +27,31 @@ class TodoItemController extends Controller
         $msg='';
         try{
             $options=optionList::find(1);
+            if(NULL==$options){
+                $options= new optionList();
+            }
+            if(NULL==$options['group']){
+                $options['group']='INDEX';
+            }
+            if(NULL==$options['verbosity']){
+                $options['verbosity']=TRUE;
+            }
+            if(NULL==$options['filter']){
+                $options['filter']=2;
+            }
+            if(NULL==$options['fast']){
+                $options['fast']=FALSE;
+            }
+            if(NULL==$options['style']){
+                $options['style']='todos';
+            }
+            $options->Save();
+            
+           
+            
+            
             $groups=TodoItem::select('group')->distinct()->get();
-            $todos = TodoItem::where('group',$options['group'])->orderBy('priority','asc')->get();    
+             
         }
         catch(Illuminate\Database\QueryException $ex){
             $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2,'fast'=>0];
@@ -98,6 +121,9 @@ class TodoItemController extends Controller
         try{
             $options=optionList::find(1);
             $emergencyMsg='';
+            
+            
+            
         }
         catch(Illuminate\Database\QueryException $ex){
             $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2,'fast'=>0];
