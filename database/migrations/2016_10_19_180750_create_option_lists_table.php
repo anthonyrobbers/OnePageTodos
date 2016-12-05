@@ -23,6 +23,11 @@ class CreateOptionListsTable extends Migration
             
             $table->timestamps();
         });
+        
+        $newOptionList = new optionList(['group'=>'INDEX', 'filter'=>2, 
+                'style'=>'default', 'verbosity'=>true]);
+            // TODO: add first optoin list with the default options to the repository of option lists  
+            $newOptionList->Save();
     }
 
     /**
