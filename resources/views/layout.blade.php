@@ -65,7 +65,7 @@
    $savedPage = ob_get_contents(); 
 
    //do whatever you need to do to the html, save it to a seperate file, email it, etc
-   file_put_contents('C:\xampp\htdocs\ShadowedU\storage\app\public\log'.date('H\ofd\ofm\ofY').'.html',$savedPage);
+   //file_put_contents('C:\xampp\htdocs\ShadowedU\storage\app\public\log'.date('H\ofd\ofm\ofY').'.html',$savedPage);
    //fwrite($handle,$savedPage);
    //fclose($handle);
    ob_flush();
