@@ -186,7 +186,7 @@ class TodoItemController extends Controller
                     'priority'=>$newTodoItem['priority'],'group'=>$newTodoItem['group'],
                     'complete'=>$newTodoItem['complete']]);
             }
-            else return;
+            else {return;}
         }
 
         return redirect('/')
@@ -270,7 +270,6 @@ class TodoItemController extends Controller
         Log::info('Hit update ('.$id.') function of the TodoItem controller');
         $active=TodoItem::find($id);
         try{
-            $active=TodoItem::find($id);
             $options=optionList::find(1);
             $emergencyMsg='';
         }
@@ -310,7 +309,7 @@ class TodoItemController extends Controller
                 $cssClass = NULL;
                 $msg= 'new task failed to be created';
                 $active=NULL;
-                Log::debug('new task failed to be created'.$ex);
+                Log::debug($msg.$ex);
                 $backup=['task'=>$request->input("new-todo"),'priority'=>$request->input("priority"),'id'=>$id,'complete'=>0];
             } 
             
@@ -376,7 +375,6 @@ class TodoItemController extends Controller
             $todos=[];
             Log::debug('failed to load options.  loading defaults.'.$ex);
         }
-        
         foreach($todos as $active){
             $active->complete=TRUE;
             $active->save();
