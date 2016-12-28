@@ -26,24 +26,26 @@ class optionListController extends Controller
         Log::info('Hit index function of the OptionList controller');
         $options=optionList::find(1);
         $lists = optionList::all();          
-        $cssClass = NULL;
-        if($options['verbosity']){
+        $cssClass = null;
+        if($options['verbosity']) {
             Log::debug('status msg enabled by verbosity option');
-            $msg = session('msg',NULL);
-            $currentTodo =session('currentTodo',NULL);
-            $oldTodo =session('oldTodo',NULL);
+            $msg = session('msg', null);
+            $currentTodo =session('currentTodo', null);
+            $oldTodo =session('oldTodo', null);
         }
         else {
             Log::debug('status msg disabled by verbosity option');
-            $msg = NULL;
-            $currentTodo = NULL;
-            $oldTodo = NULL;
+            $msg = null;
+            $currentTodo = null;
+            $oldTodo = null;
         }
         //$filter=$options['filter']; // filter 2 is all 0 and 1 only display matching completion.
         
-        return view('pages.Options', 
+        return view(
+            'pages.Options', 
             ['lists' => $lists, 'class' => $cssClass, 'msg'=>$msg, 'currentTodo'=>$currentTodo, 
-                'oldTodo'=>$oldTodo, 'options'=>$options]);
+            'oldTodo'=>$oldTodo, 'options'=>$options]
+        );
     }
     
     public function create()
@@ -52,40 +54,41 @@ class optionListController extends Controller
         Log::info('Hit create function of the optionList controller');
         $options=optionList::find(1);
         
-        $cssClass = NULL;
+        $cssClass = null;
         return view('pages.newOption', ['class' => $cssClass,'options'=>$options]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         // POST to /optionList
         Log::info('Hit store function of the optionList controller');
         
         try {
-            if(null!==($request->input("new-group"))){
+            if(null!==($request->input("new-group"))) {
                 $inputGroup = $request->input("new-group");
             }
             else {
                 $inputGroup = 'INDEX';
             }
-            if(null!==($request->input("filter"))){
+            if(null!==($request->input("filter"))) {
                 $inputFilter = $request->input("filter");
             }
             else {
                 $inputFilter =2;
             }
-            if(null!==($request->input("new-style"))){
+            if(null!==($request->input("new-style"))) {
                 $inputStyle = $request->input("new-style");
             }
             else {
                 $inputStyle = 'todos';
             }
-            if(null!==($request->input("verbosity"))){
+            if(null!==($request->input("verbosity"))) {
                 $inputVerbosity = $request->input("verbosity");
             }
             else {
@@ -93,8 +96,10 @@ class optionListController extends Controller
             }
             // TODO: validate input data here
             
-            $newOptionList = new optionList(['group'=>$inputGroup, 'filter'=>$inputFilter, 
-                'style'=>$inputStyle, 'verbosity'=>$inputVerbosity]);
+            $newOptionList = new optionList(
+                ['group'=>$inputGroup, 'filter'=>$inputFilter, 
+                'style'=>$inputStyle, 'verbosity'=>$inputVerbosity]
+            );
             // TODO: add newTodoItem to the repository of todos (i.e., store in the database)   
             $newOptionList->Save();
             $cssClass = "success";
@@ -104,13 +109,13 @@ class optionListController extends Controller
         catch (Illuminate\Database\QueryException $ex){
             Log::debug('an exception has been caught'.$ex);
 
-            $cssClass = NULL;
+            $cssClass = null;
             $msg= 'new option list failed to be created'.$ex;
-            $newTodoItem=NULL;
+            $newTodoItem=null;
         }                
 
         return redirect('/')
-            ->with(['msg'=> $msg,'oldTodo' => NULL, 'currentTodo'=>NULL,'class' => $cssClass]);
+            ->with(['msg'=> $msg,'oldTodo' => null, 'currentTodo'=>null,'class' => $cssClass]);
         
     }        
         
@@ -119,7 +124,7 @@ class optionListController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -136,7 +141,7 @@ class optionListController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -154,8 +159,8 @@ class optionListController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int                      $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -167,41 +172,43 @@ class optionListController extends Controller
         // check for filled form entries
         
         // fill variables 
-        if(null!==($request->input("new-group"))){
+        if(null!==($request->input("new-group"))) {
             $active->group = $request->input("new-group");
         }
-        if(null!==($request->input("filter"))){
+        if(null!==($request->input("filter"))) {
             $active->filter = $request->input("filter");
         }
-        if(null!==($request->input("style"))){
+        if(null!==($request->input("style"))) {
             $active->style = $request->input("new-style");
         }
-        if(null!==($request->input("verbosity"))){
+        if(null!==($request->input("verbosity"))) {
             $active->verbosity = $request->input("verbosity");
         }
         $active->save();
         
-        if($request['ajax']){
+        if($request['ajax']) {
                 Log::debug('ajax detected');
                 return;
-            }
+        }
         
         return redirect('/') 
-            ->with(['msg'=>'An option list has been changed. ', 
-                'currentTodo'=>NULL, 'oldTodo'=>NULL]);
+            ->with(
+                ['msg'=>'An option list has been changed. ', 
+                'currentTodo'=>null, 'oldTodo'=>null]
+            );
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //DELETE /optionlist/{id}
         Log::info('Hit destroy ('.$id.') function of the optionList controller');
-        if($id!==1){
+        if($id!==1) {
             Log::debug('active id 1 not detected');
             $active=  optionList::find($id);
 
@@ -213,10 +220,10 @@ class optionListController extends Controller
             $msg='Deleting ID 1 is not allowed.  Edit it instead.';
         }
         return redirect('/') 
-            ->with(['msg'=>$msg, 'oldTodo'=>NULL,'currentTodo'=>NULL]);
+            ->with(['msg'=>$msg, 'oldTodo'=>null,'currentTodo'=>null]);
     }
     
     
     
- }
+}
 

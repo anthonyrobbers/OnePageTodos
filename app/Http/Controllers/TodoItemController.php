@@ -16,7 +16,8 @@ use App\Http\Requests;
 class TodoItemController extends Controller
 {
     //
-    public function about() {
+    public function about() 
+    {
         return view('welcome');
     }
     
@@ -27,22 +28,22 @@ class TodoItemController extends Controller
         $msg='';
         try{
             $options=optionList::find(1);
-            if(NULL==$options){
+            if(null==$options) {
                 $options= new optionList();
             }
-            if(NULL==$options['group']){
+            if(null==$options['group']) {
                 $options['group']='INDEX';
             }
-            if(NULL==$options['verbosity']){
-                $options['verbosity']=TRUE;
+            if(null==$options['verbosity']) {
+                $options['verbosity']=true;
             }
-            if(NULL==$options['filter']){
+            if(null==$options['filter']) {
                 $options['filter']=2;
             }
-            if(NULL==$options['fast']){
-                $options['fast']=FALSE;
+            if(null==$options['fast']) {
+                $options['fast']=false;
             }
-            if(NULL==$options['style']){
+            if(null==$options['style']) {
                 $options['style']='todos';
             }
             $options->Save();
@@ -54,39 +55,43 @@ class TodoItemController extends Controller
              
         }
         catch(Illuminate\Database\QueryException $ex){
-            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2,'fast'=>0];
+            $options=['group'=>'INDEX','verbosity'=>true,'filter'=>2,'fast'=>0];
             $groups=['INDEX'];
             $msg='database error.';
             Log::debug('failed to load options.  loading defaults.'.$ex);
         }
         try{
-            $todos = TodoItem::where('group',$options['group'])->orderBy('priority','asc')->get();    
+            $todos = TodoItem::where('group', $options['group'])->orderBy('priority', 'asc')->get();    
         }
         catch(Illuminate\Database\QueryException $ex){
             $msg='database error. failed to load list';
             $todos=[];
             Log::debug('failed to load list.'.$ex);
         }
-        $cssClass = NULL;
-        if($options['verbosity']){
+        $cssClass = null;
+        if($options['verbosity']) {
             Log::debug('status msg enabled by verbosity option');
-            $statusPartial = session('statusPartial','defaultStatus');
-            $statusArgs = session('statusArgs',['msg'=>$msg.session('msg',NULL),
-                'currentTodo'=>session('currentTodo',NULL),'oldTodo'=>session('oldTodo',NULL)]);
+            $statusPartial = session('statusPartial', 'defaultStatus');
+            $statusArgs = session(
+                'statusArgs', ['msg'=>$msg.session('msg', null),
+                'currentTodo'=>session('currentTodo', null),'oldTodo'=>session('oldTodo', null)]
+            );
             
             
             
         }
         else {
             Log::debug('status msg disabled by verbosity option');
-            $statusPartial = NULL;
-            $statusArgs = NULL;
+            $statusPartial = null;
+            $statusArgs = null;
         }
         //$filter=$options['filter']; filter 2 is all 0 and 1 only display matching completion.
         
-        return view('pages.list', 
+        return view(
+            'pages.list', 
             ['todos' => $todos, 'class' => $cssClass, 'statusArgs'=>$statusArgs, 
-                'statusPartial'=>$statusPartial, 'options'=>$options]);
+            'statusPartial'=>$statusPartial, 'options'=>$options]
+        );
     }
 
     /**
@@ -99,18 +104,21 @@ class TodoItemController extends Controller
         // GET  at /TodoItem/create  
         Log::info('Hit create function of the TodoItem controller');
         
-        $cssClass = NULL;
-        return view('pages.newItem', ['class' => $cssClass, 'msg'=>NULL, 'statusArgs'=>NULL, 
-                'statusPartial'=>'defaultStatus']);
+        $cssClass = null;
+        return view(
+            'pages.newItem', ['class' => $cssClass, 'msg'=>null, 'statusArgs'=>null, 
+            'statusPartial'=>'defaultStatus']
+        );
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         // POST to /        or POST to /TodoItem
         Log::info('Hit store function of the TodoItem controller');
         ob_start();
@@ -126,22 +134,22 @@ class TodoItemController extends Controller
             
         }
         catch(Illuminate\Database\QueryException $ex){
-            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2,'fast'=>0];
+            $options=['group'=>'INDEX','verbosity'=>true,'filter'=>2,'fast'=>0];
             $emergencyMsg='database error. loading default options instead of saved options';
             Log::debug('failed to load options.  loading defaults.'.$ex);
         }
-        if(null!==($request->input("new-todo"))){
+        if(null!==($request->input("new-todo"))) {
             Log::debug('new todo detected');
             $inputTodos = [''];
-            $statusPartial = NULL;  //should change to created later
+            $statusPartial = null;  //should change to created later
         }
-        if(null!==($request->input("new-todo-list"))){
+        if(null!==($request->input("new-todo-list"))) {
             Log::debug('new-todo-list detected');
             $inputTodos = $request->input("new-todo-list");
             Log::debug(':'.$inputTodos.' or ');
-            $inputTodos = explode(',',$inputTodos);
-            Log::debug(':'.implode(' ',$inputTodos));
-            $statusPartial = NULL; // should eventually be createdMany later
+            $inputTodos = explode(',', $inputTodos);
+            Log::debug(':'.implode(' ', $inputTodos));
+            $statusPartial = null; // should eventually be createdMany later
         }
         foreach($inputTodos as $inputTodo)    {
             try {
@@ -149,20 +157,20 @@ class TodoItemController extends Controller
                 $inputTask = $request->input("new-todo".$inputTodo);
                 $inputPriority = 5;
                 
-                if(null!==($request->input("priority".$inputTodo))){
+                if(null!==($request->input("priority".$inputTodo))) {
                     $inputPriority = $request->input("priority".$inputTodo);
                 }
                 
                 // TODO: validate input data here
                 $group = $options['group'];
-                if(null!==($request->input("group".$inputTodo))){
+                if(null!==($request->input("group".$inputTodo))) {
                     $group =$request->input("group".$inputTodo);
                 }
                 $complete = 0;
-                if(null!==($request->input("complete".$inputTodo))){
+                if(null!==($request->input("complete".$inputTodo))) {
                     $complete =$request->input("complete".$inputTodo);
                 }
-                Log::debug(implode(',',['task'=>$inputTask, 'priority'=>$inputPriority, 'group'=>$group, 'complete'=>$complete]));
+                Log::debug(implode(',', ['task'=>$inputTask, 'priority'=>$inputPriority, 'group'=>$group, 'complete'=>$complete]));
                 $newTodoItem = new TodoItem(['task'=>$inputTask, 'priority'=>$inputPriority, 'group'=>$group, 'complete'=>$complete]);
                 // TODO: add newTodoItem to the repository of todos (i.e., store in the database)   
                 $newTodoItem->Save();
@@ -172,26 +180,31 @@ class TodoItemController extends Controller
 
             catch (Illuminate\Database\QueryException $ex){
 
-                $cssClass = NULL;
+                $cssClass = null;
                 $msg= 'new task failed to be created'.$ex;
-                $newTodoItem=NULL;
+                $newTodoItem=null;
                 Log::debug('failed to create new task.  '.$ex);
             }  
         }
-        if($request['ajax']){
+        if($request['ajax']) {
             Log::debug('ajax detected');
-            if($newTodoItem!=NULL){
+            if($newTodoItem!=null) {
                 //{"id":2,"task":"test","priority":1,"group":"testing","complete":0},
-                return response()->json(['id'=>$newTodoItem['id'],'task'=>$newTodoItem['task'],
+                return response()->json(
+                    ['id'=>$newTodoItem['id'],'task'=>$newTodoItem['task'],
                     'priority'=>$newTodoItem['priority'],'group'=>$newTodoItem['group'],
-                    'complete'=>$newTodoItem['complete']]);
+                    'complete'=>$newTodoItem['complete']]
+                );
             }
-            else return;
+            else { return;
+            }
         }
 
         return redirect('/')
-        ->with(['msg'=> $msg,'oldTodo' => NULL, 'currentTodo'=>$newTodoItem,'class' => $cssClass,
-            'statusPartial'=>$statusPartial]);
+        ->with(
+            ['msg'=> $msg,'oldTodo' => null, 'currentTodo'=>$newTodoItem,'class' => $cssClass,
+            'statusPartial'=>$statusPartial]
+        );
     }        
         
     
@@ -199,7 +212,7 @@ class TodoItemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -211,21 +224,23 @@ class TodoItemController extends Controller
             $emergencyMsg='';
         }
         catch(Illuminate\Database\QueryException $ex){
-            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2,'fast'=>0];
+            $options=['group'=>'INDEX','verbosity'=>true,'filter'=>2,'fast'=>0];
             $emergencyMsg='database error. loading default options instead of saved options';
             Log::debug('failed to load options.  loading defaults.'.$ex);
         }
         //needs to be modified to only show one
         $todo = TodoItem::find($id);
         $cssClass = 'todos';
-        return view('pages.showOne', ['todo'=>$todo, 'class' => $cssClass, 'msg'=>NULL, 'statusArgs'=>NULL, 
-                'statusPartial'=>'defaultStatus', 'options'=>$options]);
+        return view(
+            'pages.showOne', ['todo'=>$todo, 'class' => $cssClass, 'msg'=>null, 'statusArgs'=>null, 
+            'statusPartial'=>'defaultStatus', 'options'=>$options]
+        );
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -237,31 +252,35 @@ class TodoItemController extends Controller
             $emergencyMsg='';
         }
         catch(Illuminate\Database\QueryException $ex){
-            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2,'fast'=>0];
+            $options=['group'=>'INDEX','verbosity'=>true,'filter'=>2,'fast'=>0];
             $emergencyMsg='database error.  Failed to load saved options.  Loading defaults instead.';
             Log::debug('failed to load options.  loading defaults.'.$ex);
         }
         $todos = TodoItem::find($id);
-        if($todos['group']===$options['group']){
+        if($todos['group']===$options['group']) {
             Log::debug('active group detected');
-            return view('pages.edit', ['todo'=>$todos, 'class'=>'todos',
-                'options'=>$options, 'msg'=>NULL, 'statusArgs'=>NULL, 
-                'statusPartial'=>'defaultStatus']);
+            return view(
+                'pages.edit', ['todo'=>$todos, 'class'=>'todos',
+                'options'=>$options, 'msg'=>null, 'statusArgs'=>null, 
+                'statusPartial'=>'defaultStatus']
+            );
         }
         else {
             Log::debug('active group not detected');
             
             return redirect('/') 
-            ->with(['msg'=>'Task not found.', 
-                'currentTodo'=>NULL, 'oldTodo'=>NULL]);
+            ->with(
+                ['msg'=>'Task not found.', 
+                'currentTodo'=>null, 'oldTodo'=>null]
+            );
         }
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int                      $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -275,13 +294,13 @@ class TodoItemController extends Controller
             $emergencyMsg='';
         }
         catch(Illuminate\Database\QueryException $ex){
-            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2,'fast'=>0];
+            $options=['group'=>'INDEX','verbosity'=>true,'filter'=>2,'fast'=>0];
             $emergencyMsg='options database error.';
             Log::debug('failed to load options.  loading defaults.'.$ex);
         }
         
         
-        if($active['group']===$options['group']){
+        if($active['group']===$options['group']) {
             Log::debug('active group detected');
             // check for filled form entries
             //make a backup so it can be sent forward for later reversion
@@ -292,7 +311,7 @@ class TodoItemController extends Controller
             $active->priority=$request['priority'];
             $active->save();
         }
-        elseif ($active['task']==NULL) {
+        elseif ($active['task']==null) {
             Log::debug('active group not detected, active task is NULL');
             try {
                 $inputTodo = $request->input("new-todo");
@@ -301,15 +320,15 @@ class TodoItemController extends Controller
                 $newTodoItem = new TodoItem(['task'=>$inputTodo, 'priority'=>$inputPriority, 'group'=>$group, 'complete'=>0]);
                 $newTodoItem->Save();
                 $cssClass = "success";
-                $backup=NULL;
+                $backup=null;
                 $active=$newTodoItem;
             }
 
             catch (Illuminate\Database\QueryException $ex){
                 Log::debug('catch statement'.$ex);
-                $cssClass = NULL;
+                $cssClass = null;
                 $msg= 'new task failed to be created';
-                $active=NULL;
+                $active=null;
                 Log::debug('new task failed to be created'.$ex);
                 $backup=['task'=>$request->input("new-todo"),'priority'=>$request->input("priority"),'id'=>$id,'complete'=>0];
             } 
@@ -317,27 +336,31 @@ class TodoItemController extends Controller
         } 
         else {
             Log::debug('active group not detected, active task is not NULL.  Nothing should reach here.');
-            if($request['ajax']){
+            if($request['ajax']) {
                 Log::debug('ajax detected');
                 return;
             }
             return redirect('/')
-                ->with(['msg'=>'something went wrong updating an entry.','currentTodo'=>NULL, 
-                    'oldTodo'=>NULL]);
+                ->with(
+                    ['msg'=>'something went wrong updating an entry.','currentTodo'=>null, 
+                    'oldTodo'=>null]
+                );
         }
-        if($request['ajax']){
+        if($request['ajax']) {
             Log::debug('ajax detected');
             return;
         }
         return redirect('/') 
-            ->with(['msg'=>'An item has been changed. Item updated to: ', 
-                'currentTodo'=>$active, 'oldTodo'=>$backup]);
+            ->with(
+                ['msg'=>'An item has been changed. Item updated to: ', 
+                'currentTodo'=>$active, 'oldTodo'=>$backup]
+            );
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id, Request $request)
@@ -348,70 +371,73 @@ class TodoItemController extends Controller
         $active=TodoItem::find($id);
         
         $active->delete();
-        if($request['ajax']){
+        if($request['ajax']) {
             Log::debug('ajax detected');
             return;
         }
         return redirect('/') 
-            ->with(['msg'=>'A task has been deleted.', 'oldTodo'=>$active,'currentTodo'=>NULL]);
+            ->with(['msg'=>'A task has been deleted.', 'oldTodo'=>$active,'currentTodo'=>null]);
     }
     
-    public function viewMvc() {
+    public function viewMvc() 
+    {
         // GET at /mvc/
         Log::info('Hit viewMvc function of the TodoItem controller');
         return view('pages.Mvc');
     }
     
-    public function markAllComplete(Request $request) {
+    public function markAllComplete(Request $request) 
+    {
         //GET at /complete
         Log::info('Hit markAllComplete function of the TodoItem controller');
         try{
             $options=optionList::find(1);
             $emergencyMsg='';
-            $todos = TodoItem::where('group',$options['group'])->orderBy('priority','asc')->get(); 
+            $todos = TodoItem::where('group', $options['group'])->orderBy('priority', 'asc')->get(); 
         }
         catch(Illuminate\Database\QueryException $ex){
-            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2,'fast'=>0];
+            $options=['group'=>'INDEX','verbosity'=>true,'filter'=>2,'fast'=>0];
             $emergencyMsg='database error.'.$ex;
             $todos=[];
             Log::debug('failed to load options.  loading defaults.'.$ex);
         }
         
         foreach($todos as $active){
-            $active->complete=TRUE;
+            $active->complete=true;
             $active->save();
         }
-        if($request['ajax']){
+        if($request['ajax']) {
             Log::debug('ajax detected');
             return;
         }
         return redirect('/') 
-            ->with(['msg'=>'All tasks marked complete.', 'oldTodo'=>NULL,'currentTodo'=>NULL]);
+            ->with(['msg'=>'All tasks marked complete.', 'oldTodo'=>null,'currentTodo'=>null]);
     }
     
-    public function toggleComplete($id, Request $request) {
+    public function toggleComplete($id, Request $request) 
+    {
         //GET at /TodoItem/{id}/complete
         Log::info('Hit toggleComplete ('.$id.') function of the TodoItem controller');
         try{
             $active=TodoItem::findOrFail($id);
-            if($active['complete']){
+            if($active['complete']) {
                 Log::debug('active complete detected');
-                $active->complete=FALSE;
+                $active->complete=false;
                 $msg='A task was marked as incomplete';
             }
             else{
                 Log::debug('active complete not detected');
-                $active->complete=TRUE;
+                $active->complete=true;
                 $msg='A task was marked complete';
             }
             $active->save();
 
-            if($request['ajax']){
+            if($request['ajax']) {
                 Log::debug('ajax detected');
                 return;
             }
             return redirect('/') 
-                ->with(['msg'=>$msg, 'oldTodo'=>NULL,'currentTodo'=>NULL]);
+                ->with(['msg'=>$msg, 'oldTodo'=>null,'currentTodo'=>null]);
         }
         catch(ModelNotFoundException $ex){
             $msg='database error.  Id '.$id.' not found.';
@@ -423,66 +449,73 @@ class TodoItemController extends Controller
         }
         
         return redirect('/') 
-            ->with(['msg'=>$msg, 'oldTodo'=>NULL,'currentTodo'=>NULL]);
+            ->with(['msg'=>$msg, 'oldTodo'=>null,'currentTodo'=>null]);
         
         
     }
     
-    public function undo(Request $request, $id) {
+    public function undo(Request $request, $id) 
+    {
         //PATCH at /TodoItem/{id}/undo
         Log::info('Hit undo ('.$id.') function of the TodoItem controller');
         $active=TodoItem::find($id);
         
-        if ($active['task']==NULL) {
+        if ($active['task']==null) {
             Log::debug('active task not detected');
-            return redirect()->action('TodoItemController@store',['request'=>$request]);
+            return redirect()->action('TodoItemController@store', ['request'=>$request]);
         }
         else {
             Log::debug('active task detected');
-            return redirect()->action('TodoItemController@update',['id'=>$id,'request'=>$request]);
+            return redirect()->action('TodoItemController@update', ['id'=>$id,'request'=>$request]);
         }
         
         //final return to catch if the others do not redirect to the right controller
         return redirect('/') 
-            ->with(['msg'=>'A task failed to be restored.', 'oldTodo'=>NULL,'currentTodo'=>NULL]);
+            ->with(['msg'=>'A task failed to be restored.', 'oldTodo'=>null,'currentTodo'=>null]);
         
     }
     
-    public function toDelete($id){
+    public function toDelete($id)
+    {
         
         // GET  /TodoItem/{id}/delete
         Log::info('Hit toDelete ('.$id.') function of the TodoItem controller');
         
         try{
             $options=optionList::find(1);
-            $emergencyMsg=NULL;
+            $emergencyMsg=null;
         }
         catch(Illuminate\Database\QueryException $ex){
-            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2,'fast'=>0];
+            $options=['group'=>'INDEX','verbosity'=>true,'filter'=>2,'fast'=>0];
             $emergencyMsg='database error.';
             Log::debug('failed to load options.  loading defaults.'.$ex);
         }
         $todos = TodoItem::find($id);
-        if($todos['group']===$options['group']){
+        if($todos['group']===$options['group']) {
             Log::debug('active group detected');
-            $options['fast']=TRUE;
-            return view('pages.preDelete', ['todo'=>$todos, 'class'=>'todos','options'=>$options, 'msg'=>$emergencyMsg, 'statusArgs'=>NULL, 
-                'statusPartial'=>'defaultStatus']);
+            $options['fast']=true;
+            return view(
+                'pages.preDelete', ['todo'=>$todos, 'class'=>'todos','options'=>$options, 'msg'=>$emergencyMsg, 'statusArgs'=>null, 
+                'statusPartial'=>'defaultStatus']
+            );
         }
         else {
             Log::debug('active group not detected');
             return redirect('/') 
-            ->with(['msg'=>'Task not found.'.$emergencyMsg, 
-                'currentTodo'=>NULL, 'oldTodo'=>NULL]);          
+            ->with(
+                ['msg'=>'Task not found.'.$emergencyMsg, 
+                'currentTodo'=>null, 'oldTodo'=>null]
+            );          
         }
         
     }
     
-    public function removeAllCompleted(string $group, Request $request){
+    public function removeAllCompleted(string $group, Request $request)
+    {
         // DELETE  /TodoItem/{group}/scour
         try{
             
-            $todos = TodoItem::where([['group','=',$group],['complete','=',1]])->orderBy('priority','asc')->get();    
+            $todos = TodoItem::where([['group','=',$group],['complete','=',1]])->orderBy('priority', 'asc')->get();    
             
             foreach($todos as $active){
                 $active->delete();
@@ -494,15 +527,16 @@ class TodoItemController extends Controller
             $msg='database error.';
             Log::debug('failed to load options.  loading defaults.'.$ex);
         }
-        if($request['ajax']){
+        if($request['ajax']) {
                 Log::debug('ajax detected');
                 return;
-            }
+        }
         return redirect('/') 
             ->with(['statusPartial'=>'removedAllCompleted', 'statusArgs'=>['msg'=>$msg,'removedTodos'=>$todos]]);
     }
     
-    public function toRemoveAllCompleted(string $group){
+    public function toRemoveAllCompleted(string $group)
+    {
         // GET  /TodoItem/{group}/scour
         
         Log::info('Hit toRemoveAllCompleted '.$group.' function of the TodoItem controller');
@@ -510,40 +544,45 @@ class TodoItemController extends Controller
         try{
             $options=optionList::find(1);
             $groups=TodoItem::select('group')->distinct()->get();
-            $todos = TodoItem::where([['group','=',$group],['complete','=',1]])->orderBy('priority','asc')->get();    
+            $todos = TodoItem::where([['group','=',$group],['complete','=',1]])->orderBy('priority', 'asc')->get();    
             
         }
         catch(Illuminate\Database\QueryException $ex){
-            $options=['group'=>'INDEX','verbosity'=>TRUE,'filter'=>2,'fast'=>0];
+            $options=['group'=>'INDEX','verbosity'=>true,'filter'=>2,'fast'=>0];
             $groups=['INDEX'];
             $todos=[];
             $msg='database error.';
             Log::debug('failed to load options.  loading defaults.'.$ex);
         }
-        $cssClass = NULL;
-        if($options['verbosity']){
+        $cssClass = null;
+        if($options['verbosity']) {
             Log::debug('status msg enabled by verbosity option');
-            $statusPartial = session('statusPartial','partials/status/defaultStatus');
-            $statusArgs = session('statusArgs',['msg'=>$msg.session('msg',NULL),
-                'currentTodo'=>session('currentTodo',NULL),'oldTodo'=>session('oldTodo',NULL)]);
+            $statusPartial = session('statusPartial', 'partials/status/defaultStatus');
+            $statusArgs = session(
+                'statusArgs', ['msg'=>$msg.session('msg', null),
+                'currentTodo'=>session('currentTodo', null),'oldTodo'=>session('oldTodo', null)]
+            );
         }
         else {
             Log::debug('status msg disabled by verbosity option');
-            $statusPartial = NULL;
-            $statusArgs = NULL;
+            $statusPartial = null;
+            $statusArgs = null;
         }
         //$filter=$options['filter']; filter 2 is all 0 and 1 only display matching completion.
         
         
-        return view('pages/clearComplete',['todos'=>$todos, 'options'=>$options, 'groups'=>$groups, 
-            'statusPartial'=>$statusPartial, 'statusArgs'=>$statusArgs]);
+        return view(
+            'pages/clearComplete', ['todos'=>$todos, 'options'=>$options, 'groups'=>$groups, 
+            'statusPartial'=>$statusPartial, 'statusArgs'=>$statusArgs]
+        );
     }
     
     
-    public function ajaxSession (Request $request){
+    public function ajaxSession(Request $request)
+    {
         Log::info('Hit ajaxSession function of the TodoItem controller');
         Log::debug('the request is: '.$request);
         return response()->json(['token'=>csrf_token()]);
     }
- }
+}
 
