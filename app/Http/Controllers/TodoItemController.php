@@ -8,7 +8,7 @@ use App\optionList;
 use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
+//use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException as ModelNotFoundException;
 
 use App\Http\Requests;
@@ -144,11 +144,9 @@ class TodoItemController extends Controller
             $statusPartial = null;  //should change to created later
         }
         if(null!==($request->input("new-todo-list"))) {
-            Log::debug('new-todo-list detected');
-            $inputTodos = $request->input("new-todo-list");
-            Log::debug(':'.$inputTodos.' or ');
-            $inputTodos = explode(',', $inputTodos);
-            Log::debug(':'.implode(' ', $inputTodos));
+            Log::debug('new-todo-list detected:'.$request->input("new-todo-list").' or ');
+            $inputTodos = explode(',',$request->input("new-todo-list"));
+            Log::debug(':'.implode(' ',$inputTodos));
             $statusPartial = null; // should eventually be createdMany later
         }
         foreach($inputTodos as $inputTodo)    {
