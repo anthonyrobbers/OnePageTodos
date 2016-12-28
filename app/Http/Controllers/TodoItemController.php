@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 //use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException as ModelNotFoundException;
 
-use App\Http\Requests;
+//use App\Http\Requests;
 
 class TodoItemController extends Controller
 {
