@@ -11,6 +11,15 @@ instalation:
 3. pull this repository (for windows to a directory in your user folder)
 
 
+4. cd to the cloned repository's main folder in the command line
+
+
+5. run "composer install" in the command line 
+
+
+6. run "php artisan key:generate" 
+
+
 
 
 operation (docker):
