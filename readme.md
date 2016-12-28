@@ -1,4 +1,4 @@
-#getting started with laradockTodos
+#getting started with Todos in docker
 
 instalation:
 
