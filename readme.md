@@ -13,7 +13,7 @@ instalation:
 
 
 
-operation:
+operation (docker):
 0. start virtual machine if it is needed using docker quickstart terminal (and note the ip of said virtual machine)
 
 
