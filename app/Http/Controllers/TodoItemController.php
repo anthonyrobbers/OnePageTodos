@@ -144,9 +144,17 @@ class TodoItemController extends Controller
             $statusPartial = null;  //should change to created later
         }
         if(null!==($request->input("new-todo-list"))) {
+<<<<<<< HEAD
             Log::debug('new-todo-list detected:'.$request->input("new-todo-list").' or ');
             $inputTodos = explode(',',$request->input("new-todo-list"));
             Log::debug(':'.implode(' ',$inputTodos));
+=======
+            Log::debug('new-todo-list detected');
+            $inputTodos = $request->input("new-todo-list");
+            Log::debug(':'.$inputTodos.' or ');
+            $inputTodos = explode(',', $inputTodos);
+            Log::debug(':'.implode(' ', $inputTodos));
+>>>>>>> 39bfbf02566f6aaff6b8e3f31f4208ece8a1fd32
             $statusPartial = null; // should eventually be createdMany later
         }
         foreach($inputTodos as $inputTodo)    {
@@ -194,7 +202,11 @@ class TodoItemController extends Controller
                     'complete'=>$newTodoItem['complete']]
                 );
             }
+<<<<<<< HEAD
             else {return;
+=======
+            else { return;
+>>>>>>> 39bfbf02566f6aaff6b8e3f31f4208ece8a1fd32
             }
         }
 
@@ -326,7 +338,11 @@ class TodoItemController extends Controller
                 $cssClass = null;
                 $msg= 'new task failed to be created';
                 $active=null;
+<<<<<<< HEAD
                 Log::debug($msg.$ex);
+=======
+                Log::debug('new task failed to be created'.$ex);
+>>>>>>> 39bfbf02566f6aaff6b8e3f31f4208ece8a1fd32
                 $backup=['task'=>$request->input("new-todo"),'priority'=>$request->input("priority"),'id'=>$id,'complete'=>0];
             } 
             
